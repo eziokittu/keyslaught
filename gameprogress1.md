@@ -19,6 +19,17 @@ Date: 2026-09-21
 - Added runtime, editor, EditMode-test, and PlayMode-test assembly boundaries.
 - Added repository ignore/LFS/YAML-merge rules while excluding the original assignment PDF and machine-local Codex files.
 - Documented the endless-mode gameplay contract and staged implementation order in `docs/GAMEPLAY_CONTRACT.md`.
+- Created and pushed the public repository: https://github.com/eziokittu/keyslaught
+
+## Verification evidence
+
+- Unity script compilation: passed with no compiler errors.
+- Unity project source-integrity scan: passed with zero findings across missing metadata, orphan metadata, duplicate GUIDs, merge markers, package-manifest validity, and editor-version drift.
+- WebGL player build: succeeded with 0 errors; 12,534,745-byte output containing `index.html` and compressed `.wasm`, `.data`, and framework files.
+- Windows 64-bit player build: succeeded with 0 errors; 101,570,399-byte output containing `KeySlaught.exe` and its player data.
+- Git: `main` is synchronized with `origin/main`; Unity pre-commit integrity hooks and UnityYAMLMerge are configured.
+
+The two builds currently contain the blank Universal 2D sample scene. They prove the source/toolchain/build foundation, not gameplay completion or a visual playtest.
 
 ## Architecture decision
 
