@@ -43,3 +43,42 @@ Desktop.ini
 # The original hiring assignment is private source material, not repository content.
 /Lila Game Designer - Written Test - Part 1.pdf
 
+# BEGIN unity vcs doctor
+# Unity ignore rules kept current by `unity vcs doctor --fix`. Managed block: edits here are overwritten. To opt out of a rule, negate it below this block (for example `!*.log`).
+*.VC.db
+*.app
+*.blend1
+*.blend1.meta
+*.log
+*.mdb
+*.mdb.meta
+*.opendb
+*.pdb
+*.pdb.meta
+*.pidb.meta
+*.suo
+*.svd
+*.tmp
+*.unitypackage.meta
+*.unityproj
+.consulo/
+.gradle/
+.utmp/
+/ServerData
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+/[Aa]ssets/AddressableAssetsData/link.xml*
+/[Aa]ssets/Addressables_Temp*
+/[Aa]ssets/Plugins/Editor/JetBrains*
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+/[Aa]ssets/[Ss]ceneDependencyCache*
+ExportedObj/
+InitTestScene*.unity*
+crashlytics-build.properties
+mono_crash.*
+sysinfo.txt
+# END unity vcs doctor
