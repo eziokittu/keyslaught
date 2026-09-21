@@ -1,0 +1,42 @@
+KeySlaught
+
+Genres - 
+1. Survival / Horde Survival
+2. Tower Defense
+3. Top-Down Shooter
+4. Typing / Typing Action
+5. Base/Defense Strategy
+
+Game Insipirations - 
+1. Vampire survivors
+2. Bloons TD 5/6
+3. The Textorcist: The Story of Ray Bibbia
+4. (Miniclip) Commando Assault
+
+Game Idea -
+It is a 2D tower defense typing game. You control a player who can move around and setup defences. Hordes of enemies come in waves through specific set paths from a starting point to the ending point which is the library. The player needs to defend the library from the enemies reaching there. For shooting by the player or the defence turrets, they will be shooting alphabets A to Z (All capital). In the game UI I will be having a keyword which on typing fills the player's gun's magazine. The player and turrets will have an attack range, attack speed, reload time and others which vary and are upgradable. Some upgrades will be permanent and some will be temporary for that game only and resets (needs to be repurchased again) for the next game. The enemies will come as stack of letters. So in the top screen I will be having all the game stats and enemy name. So say if two enemies come "hello" and "Milk" then I will see 2 stacks coming in following the set path towards the library. I will only see the first letters of that enemy in the top. The rest of the letters will be hidden. like in this case i will see "H" and "M". say "Hello" is coming first, then when the enemy reaches players range or the player moves towards the enemy so that the enemy is in its range, then in the top it will also show the full enemy like "HELLO". The player will have a magazine with fixed range of bullets (letters). The magazine, player shooting speed, reload speed, range - all are permanently upgradable. So if the player types "H" and moves towards the enemy "Hello" is attacked and the enemy is left with "ELLO". So in the top it will show "ELLO" and in the game as well I will be seeing "E" and "M" following along the path. There will be various types of turrents. For now I will have 4 types - 
+1. teacher - they can be of 4 types (A-F, G-M, N-T, U-Z) with high shooting speed and high range
+2. engineer - they can be of 2 types (A-M, N-z) - medium shooting speed, medium range
+3. scientist - they shoot all letters (A-Z) - low shooting speed, low range
+4. President - shoots only vowels (AEIOU and S,T), medium shooting and range.
+There can be more types and variabtions later on.
+The player can type all the letters (A-Z). There is a refresh button along with the letters to be typed. Say in case of "ELLO" and "MILK" they types "GHGH" when they had magazine of length 4, then they will have to refresh the magazine to type again. The refresh will cost some time. The turrets will not have any refrest thing. some can have in the future. The player does not have a health. The Library has helth which decreases as the enemies reach. So say the library has a health of 10 and "MILK" and "ELLO" reaches the library then the health will be 10 - 4 - 4 which is 2. This way i want the health system to be. For the player, in case the enemies hit the player, the player's gun will get corrupted for sometime making it not able to shoot. The player's reload time is dependent on the magazine size with approx 0.5 seconds per bullet. so in case the magazin is 3/4 full it will take 1.5 seconds to reload. This is upgradable and also depends on the gun type. I will also have varioud gun types.
+There will be no physics based interactions. The enemy and player movement will be based on the transform gameobject. Also for shoting, there will be no actual trajectory for the bullets. Instead whichever enemy is in range to the player (or turrent) and closer to the library will be shot first directly. 
+
+Game structure -
+It will be a horde survival game where enemies keep coming and the player has to defend the library for multiple waves. There will able be a boss wave where a very big name will appear (say 30-50 letters) and will move towards the library. For the turrents, the player has to physicaly move in the areas where turrets can be placed and then there wil eb an option to choose the turrent. After turrent is chosen and the player moves on top of that turrent, they will be again be able to see optiosn to upgrade the turrent or change its types using brain cells. Each enemy dying will throw away brain cells which will be auto collected and shown at the top on the game stats. Time and wave number will also be shown in the stats. There will also be abilities which the player can activate when they move inside the library area. They will see various options like repair, and then some abilities. For now there will be 3 abilities -
+1. History - where the enemies for some time keep going back (5 secs initially)
+2. Social Media Influence- the enemies freeze for some time (5 seconds initially)
+3. Politics - The enemies start killing itself for brief time (3 front enemies get halved like "MILK" becomes "LK", for odd say "HELLO" it will be upper limit of 5/2 which is 2.5 which is 3 so "LO")
+All these abilities are upgradable.
+
+Game Design. I want a 2D minimalist world where I will use various sprites to design the enemy paths, higher grounds (where enemies cant come). I will use tilemap to paint all these tiles. 
+
+Game Menu - 
+This is a 2D unity game. In the start there will be a game launch screen and after 2 seconds the buttons to continue and exit will apprear. On clicking continue it will launch the main menu where I will see - Start Game, Research (a research tree for various things like player, gun, library, turrets - for permanent upgrades), Credits (for now just tell it is developed by Bodhisatta Bhattacharjee). In the top left there will be a back button whcih will take to the launch screen. In the top right there will be a settings icon which will be for music, sfx ... (for now just focus on building core gameplay). On starting the game it will open another menu to choose the game mode - 
+1. Tutorial (This will be marked as recommended in case the player is launching the game for the first time. This will demontrate a full game teaching the player on how to move, shoot enemies, buy turrets, upgrade them, use abilities from library, repair library ... ) - Make this tutorial after all the base setups in the game are done.
+2. Lores (Each lore has multiple levels) - for now will only have 3 levels in the 1st lore.
+3. Endless mode (will be shown as locked. It will open once the player has completed the 1st level of the 1st lore) (This will be marked as in Development)
+
+Story - (will think of a lore later)
+You are an oracle protecting the divine library from souls so they cant steal knowledge.

@@ -1,0 +1,45 @@
+# Unity generated folders
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Builds and test output
+/[Bb]uild/
+/[Bb]uilds/
+/[Aa]rtifacts/
+/[Tt]est[Rr]esults/
+/CodeCoverage/
+*.apk
+*.aab
+*.unitypackage
+
+# IDE and generated solution files
+/.vs/
+/.vscode/
+/.idea/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.userprefs
+*.pidb
+*.booproj
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Machine-local Codex and Unity CLI integration
+/.agents/
+/.codex/
+/AgentScripts/
+/tmp/
+
+# The original hiring assignment is private source material, not repository content.
+/Lila Game Designer - Written Test - Part 1.pdf
+
