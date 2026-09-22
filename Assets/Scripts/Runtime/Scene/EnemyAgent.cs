@@ -83,7 +83,7 @@ namespace KeySlaught.SceneGameplay
         {
             if (wordLabel != null && WordState != null)
             {
-                wordLabel.text = WordState.RemainingWord;
+                wordLabel.text = WordState.NextLetter?.ToString() ?? string.Empty;
             }
         }
 

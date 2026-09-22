@@ -5,7 +5,9 @@ using System.Collections.ObjectModel;
 namespace KeySlaught.Gameplay
 {
     /// <summary>
-    /// Runtime state for wrong or currently unusable typed letters.
+    /// Runtime state for loaded letter rounds. The historical type name is retained so saved
+    /// scenes and older tests keep their serialized/API references, but this is a magazine: a
+    /// letter stays loaded until a matching in-range enemy can consume it or Refresh clears it.
     /// </summary>
     public sealed class ErrorRefreshBuffer
     {
@@ -43,6 +45,23 @@ namespace KeySlaught.Gameplay
             }
 
             occupiedLetters.Add(normalizedLetter);
+            return true;
+        }
+
+        public bool Contains(char letter)
+        {
+            return occupiedLetters.Contains(EnemyWordState.NormalizeCombatLetter(letter));
+        }
+
+        public bool TryConsume(char letter)
+        {
+            var index = occupiedLetters.IndexOf(EnemyWordState.NormalizeCombatLetter(letter));
+            if (index < 0 || IsRefreshing)
+            {
+                return false;
+            }
+
+            occupiedLetters.RemoveAt(index);
             return true;
         }
 

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Book
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.EnemyDefinition
   word: BOOK
-  movementSpeed: 1.45
+  movementSpeed: 1.15

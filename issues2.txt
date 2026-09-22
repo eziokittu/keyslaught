@@ -1,0 +1,2 @@
+I tested the game again and found some more issues and changes to be made.
+1. 

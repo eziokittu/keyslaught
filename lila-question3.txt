@@ -1,0 +1,14 @@
+Question #3: Design Specification 
+Scenario: We’re building a mobile survivor-like: auto-attacking combat, escalating hordes, and build-defining upgrades the player picks mid-run (think Survivor.io or Vampire Survivors). Design a single, innovative feature for it. 
+● Start by providing a clear rationale for why you chose this feature. 
+● Include enough detail so we can understand your design intent. 
+● One section must be fully detailed to demonstrate your writing proficiency and your ability to effectively curate AI-generated text (a skill most applicants lack). 
+● Include 2-3 key wireframes or screen mockups to explain your feature’s user experience 
+visually.
+
+-------------------------------------------------
+For a mobile survivor-like game like vampire survivors, or survivor.io, there can be many more cool feature that could be built. 
+To pick one of them i would go with a base building mechanism. Say I am considering vampire survivors (have played hundreds of hours and completed most of the game). in this game the player is the only one who is attacking without any support. So we can have a base building mechanism to build a protected area and place defenses. That would make things so much more cool (like SAS: Zombie Assault 4, or Zombie Defense) the defenses and base can have their own upgrades. We can either have a build menu in game UI clicking which we can bild defences/traps/walls/baits/bombs ... or we can also put things in the game world itself where we can move the player and repair those units to make them working. Like say we an repair an old broken tower which shoots nearby enemies
+
+After this pull up reference images from vampire survivors and add an ingame build menu for adding fences, walls and turrets. And also have another image where the turrents are shooting the vampires in the game along with the player. 
+

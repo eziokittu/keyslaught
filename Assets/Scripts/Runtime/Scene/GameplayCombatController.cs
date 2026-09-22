@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using KeySlaught.Gameplay;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -10,6 +11,8 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private GameplaySceneCoordinator sceneCoordinator;
         [SerializeField] private TextMesh bufferLabel;
         [SerializeField] private TextMesh statusLabel;
+        [SerializeField] private Text magazineUiLabel;
+        [SerializeField] private Text statusUiLabel;
         [SerializeField] private LineRenderer shotLine;
         [SerializeField, Min(1)] private int bufferCapacity = 4;
         [SerializeField, Min(0f)] private float secondsPerOccupiedSlot = 0.5f;
@@ -25,6 +28,7 @@ namespace KeySlaught.SceneGameplay
         private float shotSecondsRemaining;
 
         public event Action<EnemyAgent> TargetHit;
+        public event Action<EnemyAgent> TargetDefeated;
 
         public ErrorRefreshBuffer ErrorBuffer
         {
@@ -47,6 +51,13 @@ namespace KeySlaught.SceneGameplay
         public bool CanType => !Corruption.IsCorrupted && ErrorBuffer.CanAcceptInput;
 
         public GameplaySceneCoordinator SceneCoordinator => sceneCoordinator;
+
+        public void ConfigureUi(Text magazineLabel, Text combatStatusLabel)
+        {
+            magazineUiLabel = magazineLabel;
+            statusUiLabel = combatStatusLabel;
+            RefreshHud();
+        }
 
         public void Configure(
             GameplaySceneCoordinator coordinator,
@@ -89,21 +100,7 @@ namespace KeySlaught.SceneGameplay
                     : sceneCoordinator.CreateTargetSnapshots(),
                 errorBuffer);
 
-            if (result.Outcome == TypedAttackOutcome.TargetHit && sceneCoordinator != null)
-            {
-                var enemy = sceneCoordinator.FindEnemy(result.Target.Word);
-                if (enemy != null)
-                {
-                    enemy.RefreshLabel();
-                    ShowShot(enemy);
-                    TargetHit?.Invoke(enemy);
-                    if (enemy.WordState.IsDefeated)
-                    {
-                        touchingEnemies.Remove(enemy);
-                        sceneCoordinator.RemoveDefeatedEnemy(enemy);
-                    }
-                }
-            }
+            ApplyHit(result);
 
             RefreshHud();
             return result;
@@ -133,9 +130,59 @@ namespace KeySlaught.SceneGameplay
             EnsureRuntimeState();
             corruption.Advance(deltaSeconds);
             errorBuffer.AdvanceRefresh(deltaSeconds);
+            ProcessLoadedMagazine();
             TickShot(deltaSeconds);
             DetectEnemyContact();
             RefreshHud();
+        }
+
+        private void ProcessLoadedMagazine()
+        {
+            if (corruption.IsCorrupted || sceneCoordinator == null ||
+                errorBuffer.IsRefreshing || errorBuffer.OccupiedSlotCount == 0)
+            {
+                return;
+            }
+
+            var safety = errorBuffer.OccupiedSlotCount;
+            while (safety-- > 0 && errorBuffer.OccupiedSlotCount > 0)
+            {
+                var result = TypedAttackResolver.ResolveLoadedMagazine(
+                    sceneCoordinator.CreateTargetSnapshots(),
+                    errorBuffer);
+                if (result.Outcome != TypedAttackOutcome.TargetHit)
+                {
+                    break;
+                }
+
+                ApplyHit(result);
+            }
+        }
+
+        private void ApplyHit(TypedAttackResult result)
+        {
+            if (result.Outcome != TypedAttackOutcome.TargetHit || sceneCoordinator == null)
+            {
+                return;
+            }
+
+            var enemy = sceneCoordinator.FindEnemy(result.Target.Word);
+            if (enemy == null)
+            {
+                return;
+            }
+
+            enemy.RefreshLabel();
+            ShowShot(enemy);
+            TargetHit?.Invoke(enemy);
+            if (!enemy.WordState.IsDefeated)
+            {
+                return;
+            }
+
+            TargetDefeated?.Invoke(enemy);
+            touchingEnemies.Remove(enemy);
+            sceneCoordinator.RemoveDefeatedEnemy(enemy);
         }
 
         private void Awake()
@@ -245,49 +292,57 @@ namespace KeySlaught.SceneGameplay
 
         private void RefreshHud()
         {
-            if (bufferLabel != null && errorBuffer != null)
+            if (errorBuffer != null)
             {
                 var slots = new string[errorBuffer.Settings.Capacity];
                 for (var index = 0; index < slots.Length; index++)
                 {
                     slots[index] = index < errorBuffer.OccupiedSlotCount
-                        ? $"[{errorBuffer.OccupiedLetters[index]}]"
-                        : "[ ]";
+                        ? errorBuffer.OccupiedLetters[index].ToString()
+                        : "●";
                 }
 
-                bufferLabel.text = $"ERROR BUFFER  {string.Join(" ", slots)}";
+                var magazineText = $"▰  [ {string.Join("  ", slots)} ]";
+                if (bufferLabel != null) bufferLabel.text = magazineText;
+                if (magazineUiLabel != null) magazineUiLabel.text = magazineText;
             }
 
-            if (statusLabel == null || errorBuffer == null || corruption == null)
+            if ((statusLabel == null && statusUiLabel == null) || errorBuffer == null || corruption == null)
             {
                 return;
             }
 
+            string statusText;
+            Color statusColor;
+
             if (corruption.IsCorrupted)
             {
-                statusLabel.text = $"GUN CORRUPTED  {corruption.SecondsRemaining:0.0}s  //  INPUT DISABLED";
-                statusLabel.color = new Color(1f, 0.32f, 0.42f, 1f);
+                statusText = $"GUN CORRUPTED  {corruption.SecondsRemaining:0.0}s";
+                statusColor = new Color(0.95f, 0.95f, 0.95f, 1f);
             }
             else if (errorBuffer.IsRefreshing)
             {
                 var progress = activeRefreshDuration <= 0f
                     ? 1f
                     : 1f - errorBuffer.RefreshSecondsRemaining / activeRefreshDuration;
-                statusLabel.text = $"REFRESHING  {progress * 100f:0}%  //  {errorBuffer.RefreshSecondsRemaining:0.0}s";
-                statusLabel.color = new Color(0.3f, 0.85f, 1f, 1f);
+                statusText = $"RELOADING  {progress * 100f:0}%";
+                statusColor = Color.white;
             }
             else if (errorBuffer.IsFull)
             {
-                statusLabel.text = "BUFFER LOCKED  //  SPACE TO REFRESH";
-                statusLabel.color = new Color(1f, 0.68f, 0.18f, 1f);
+                statusText = "MAGAZINE FULL  •  SPACE TO RELOAD";
+                statusColor = Color.white;
             }
             else
             {
-                statusLabel.text = allowRefreshBeforeFull
-                    ? "TYPE A-Z TO FIRE  //  SPACE REFRESH (EARLY ON)"
-                    : "TYPE A-Z TO FIRE  //  REFRESH WHEN FULL";
-                statusLabel.color = new Color(0.68f, 0.82f, 0.95f, 1f);
+                statusText = allowRefreshBeforeFull
+                    ? "TYPE A-Z TO LOAD  //  SPACE RELOAD"
+                    : "TYPE A-Z TO LOAD  //  RELOAD WHEN FULL";
+                statusColor = new Color(0.8f, 0.82f, 0.86f, 1f);
             }
+
+            if (statusLabel != null) { statusLabel.text = statusText; statusLabel.color = statusColor; }
+            if (statusUiLabel != null) { statusUiLabel.text = statusText; statusUiLabel.color = statusColor; }
         }
     }
 }

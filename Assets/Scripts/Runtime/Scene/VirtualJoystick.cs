@@ -6,6 +6,7 @@ namespace KeySlaught.SceneGameplay
     public sealed class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         [SerializeField] private PlayerMover player;
+        [SerializeField] private RectTransform activationSurface;
         [SerializeField] private RectTransform baseRect;
         [SerializeField] private RectTransform handleRect;
         [SerializeField, Range(0f, 0.9f)] private float deadZone = 0.15f;
@@ -16,9 +17,23 @@ namespace KeySlaught.SceneGameplay
 
         public void Configure(PlayerMover playerMover, RectTransform joystickBase, RectTransform handle)
         {
+            Configure(playerMover, joystickBase, joystickBase, handle);
+        }
+
+        public void Configure(
+            PlayerMover playerMover,
+            RectTransform surface,
+            RectTransform joystickBase,
+            RectTransform handle)
+        {
             player = playerMover;
+            activationSurface = surface;
             baseRect = joystickBase;
             handleRect = handle;
+            if (baseRect != null && activationSurface != baseRect)
+            {
+                baseRect.gameObject.SetActive(false);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -26,6 +41,16 @@ namespace KeySlaught.SceneGameplay
             if (activePointerId == int.MinValue)
             {
                 activePointerId = eventData.pointerId;
+                if (baseRect != null && activationSurface != null && activationSurface != baseRect)
+                {
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        activationSurface,
+                        eventData.position,
+                        eventData.pressEventCamera,
+                        out var spawnPoint);
+                    baseRect.anchoredPosition = spawnPoint;
+                    baseRect.gameObject.SetActive(true);
+                }
                 UpdateValue(eventData);
             }
         }
@@ -84,6 +109,10 @@ namespace KeySlaught.SceneGameplay
             }
 
             player?.SetVirtualMovement(Vector2.zero);
+            if (baseRect != null && activationSurface != null && activationSurface != baseRect)
+            {
+                baseRect.gameObject.SetActive(false);
+            }
         }
     }
 }

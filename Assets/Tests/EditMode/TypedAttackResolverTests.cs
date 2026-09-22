@@ -1,4 +1,6 @@
+using System;
 using KeySlaught.Gameplay;
+using KeySlaught.SceneGameplay;
 using NUnit.Framework;
 
 namespace KeySlaught.Tests.EditMode
@@ -56,6 +58,46 @@ namespace KeySlaught.Tests.EditMode
 
             Assert.That(result.Outcome, Is.EqualTo(TypedAttackOutcome.InvalidLetter));
             Assert.That(buffer.OccupiedSlotCount, Is.Zero);
+        }
+
+        [Test]
+        public void ResolveLoadedMagazine_FiresLetterThatWasStoredBeforeTargetEnteredRange()
+        {
+            var magazine = Buffer(capacity: 4);
+            Assert.That(
+                TypedAttackResolver.Resolve('B', Array.Empty<EnemyTargetSnapshot>(), magazine).Outcome,
+                Is.EqualTo(TypedAttackOutcome.LoadedIntoMagazine));
+            var book = Target("BOOK", distanceToLibrary: 1f);
+
+            var result = TypedAttackResolver.ResolveLoadedMagazine(new[] { book }, magazine);
+
+            Assert.That(result.Outcome, Is.EqualTo(TypedAttackOutcome.TargetHit));
+            Assert.That(book.Word.RemainingWord, Is.EqualTo("OOK"));
+            Assert.That(magazine.OccupiedSlotCount, Is.Zero);
+        }
+
+        [Test]
+        public void ResolveLoadedMagazine_PrioritizesEnemyClosestToLibraryAcrossLoadedLetters()
+        {
+            var magazine = Buffer(capacity: 4);
+            TypedAttackResolver.Resolve('H', Array.Empty<EnemyTargetSnapshot>(), magazine);
+            TypedAttackResolver.Resolve('B', Array.Empty<EnemyTargetSnapshot>(), magazine);
+            var history = Target("HISTORY", distanceToLibrary: 4f);
+            var book = Target("BOOK", distanceToLibrary: 1f);
+
+            var result = TypedAttackResolver.ResolveLoadedMagazine(new[] { history, book }, magazine);
+
+            Assert.That(result.Target, Is.SameAs(book));
+            Assert.That(book.Word.RemainingWord, Is.EqualTo("OOK"));
+            Assert.That(history.Word.RemainingWord, Is.EqualTo("HISTORY"));
+            Assert.That(magazine.OccupiedLetters, Is.EqualTo(new[] { 'H' }));
+        }
+
+        [Test]
+        public void BrainCellReward_EqualsOriginalWordLength()
+        {
+            Assert.That(BrainCellEconomy.CalculateReward(new EnemyWordState("BOOK")), Is.EqualTo(4));
+            Assert.That(BrainCellEconomy.CalculateReward(new EnemyWordState("BORING")), Is.EqualTo(6));
         }
 
         private static EnemyTargetSnapshot Target(string word, float distanceToLibrary)

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: History
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.EnemyDefinition
   word: HISTORY
-  movementSpeed: 1.1
+  movementSpeed: 1.15

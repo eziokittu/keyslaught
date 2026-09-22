@@ -1,0 +1,832 @@
+fileFormatVersion: 2
+guid: 419b21ad8d5961d4886f9a187f48931d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1267497936904404495
+    second: Milestone6_StyleAtlas_0
+  - first:
+      213: 5148690122815955585
+    second: Milestone6_StyleAtlas_1
+  - first:
+      213: 649717907513149027
+    second: Milestone6_StyleAtlas_2
+  - first:
+      213: -8283689394681547572
+    second: Milestone6_StyleAtlas_3
+  - first:
+      213: -7842978582572876854
+    second: Milestone6_StyleAtlas_4
+  - first:
+      213: -3748998507485684882
+    second: Milestone6_StyleAtlas_5
+  - first:
+      213: -7732202945082247728
+    second: Milestone6_StyleAtlas_6
+  - first:
+      213: -5216680871114995103
+    second: Milestone6_StyleAtlas_7
+  - first:
+      213: -7593747381584779061
+    second: Milestone6_StyleAtlas_8
+  - first:
+      213: -3687427613409451051
+    second: Milestone6_StyleAtlas_9
+  - first:
+      213: 3051081012935944184
+    second: Milestone6_StyleAtlas_10
+  - first:
+      213: 48773118766241240
+    second: Milestone6_StyleAtlas_11
+  - first:
+      213: 1697184916795485534
+    second: Milestone6_StyleAtlas_12
+  - first:
+      213: 2015961583783877774
+    second: Milestone6_StyleAtlas_13
+  - first:
+      213: -4814673945337483257
+    second: Milestone6_StyleAtlas_14
+  - first:
+      213: -2210655070336108924
+    second: Milestone6_StyleAtlas_15
+  - first:
+      213: -6988591122153988090
+    second: Milestone6_StyleAtlas_16
+  - first:
+      213: 5656192827901477840
+    second: Milestone6_StyleAtlas_17
+  - first:
+      213: 6619722289939121274
+    second: Milestone6_StyleAtlas_18
+  - first:
+      213: -5714201243960818841
+    second: Milestone6_StyleAtlas_19
+  - first:
+      213: 2350935924755235592
+    second: Milestone6_StyleAtlas_20
+  - first:
+      213: -4419048345802018154
+    second: Milestone6_StyleAtlas_21
+  - first:
+      213: 2803808105057254158
+    second: Milestone6_StyleAtlas_22
+  - first:
+      213: -7349853992711007771
+    second: Milestone6_StyleAtlas_23
+  - first:
+      213: -4490758621051255910
+    second: Milestone6_StyleAtlas_24
+  - first:
+      213: -8648075757370094569
+    second: Milestone6_StyleAtlas_25
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 794
+        width: 226
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0e3aba78ae079110800000000000000
+      internalID: 1267497936904404495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_1
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 797
+        width: 187
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 182e1054362d37740800000000000000
+      internalID: 5148690122815955585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_2
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 831
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36608899ef2440900800000000000000
+      internalID: 649717907513149027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_3
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 796
+        width: 200
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc4f558626c6a0d80800000000000000
+      internalID: -8283689394681547572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_4
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 793
+        width: 200
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acb3fb47884282390800000000000000
+      internalID: -7842978582572876854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_5
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 796
+        width: 185
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6b98d178b1e8fbc0800000000000000
+      internalID: -3748998507485684882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_6
+      rect:
+        serializedVersion: 2
+        x: 1101
+        y: 796
+        width: 196
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d5b42f6362b1b490800000000000000
+      internalID: -7732202945082247728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_7
+      rect:
+        serializedVersion: 2
+        x: 1304
+        y: 796
+        width: 203
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16a8d9a0360aa97b0800000000000000
+      internalID: -5216680871114995103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_8
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 554
+        width: 196
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc826966df69d9690800000000000000
+      internalID: -7593747381584779061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_9
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 554
+        width: 205
+        height: 202
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d363c75f10a3dcc0800000000000000
+      internalID: -3687427613409451051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_10
+      rect:
+        serializedVersion: 2
+        x: 445
+        y: 248
+        width: 374
+        height: 508
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f76cf4140e975a20800000000000000
+      internalID: 3051081012935944184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_11
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 554
+        width: 199
+        height: 203
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d556a2a4e64da000800000000000000
+      internalID: 48773118766241240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_12
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 501
+        width: 184
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5deeb390bc9d8710800000000000000
+      internalID: 1697184916795485534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_13
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 489
+        width: 176
+        height: 269
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8c954221622afb10800000000000000
+      internalID: 2015961583783877774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_14
+      rect:
+        serializedVersion: 2
+        x: 1312
+        y: 522
+        width: 179
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700b4d25e87de2db0800000000000000
+      internalID: -4814673945337483257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_15
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 305
+        width: 121
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48633b31dec2251e0800000000000000
+      internalID: -2210655070336108924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_16
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 316
+        width: 95
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 600209bc669830f90800000000000000
+      internalID: -6988591122153988090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_17
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 313
+        width: 103
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d30e20c865de7e40800000000000000
+      internalID: 5656192827901477840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_18
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 317
+        width: 110
+        height: 177
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a748e83995afddb50800000000000000
+      internalID: 6619722289939121274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_19
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 273
+        width: 388
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 763ce966e3413b0b0800000000000000
+      internalID: -5714201243960818841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_20
+      rect:
+        serializedVersion: 2
+        x: 1246
+        y: 260
+        width: 147
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8038dbc84c330a020800000000000000
+      internalID: 2350935924755235592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_21
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 375
+        width: 25
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 692713f41f26ca2c0800000000000000
+      internalID: -4419048345802018154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_22
+      rect:
+        serializedVersion: 2
+        x: 1420
+        y: 271
+        width: 71
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0b7c48cd9029e620800000000000000
+      internalID: 2803808105057254158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1159
+        height: 268
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e1597d1cb2100a90800000000000000
+      internalID: -7349853992711007771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_24
+      rect:
+        serializedVersion: 2
+        x: 1162
+        y: 47
+        width: 122
+        height: 179
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a938734c3de9da1c0800000000000000
+      internalID: -4490758621051255910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Milestone6_StyleAtlas_25
+      rect:
+        serializedVersion: 2
+        x: 1292
+        y: 49
+        width: 232
+        height: 179
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71cc94b0becdbf780800000000000000
+      internalID: -8648075757370094569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Milestone6_StyleAtlas_0: 1267497936904404495
+      Milestone6_StyleAtlas_1: 5148690122815955585
+      Milestone6_StyleAtlas_10: 3051081012935944184
+      Milestone6_StyleAtlas_11: 48773118766241240
+      Milestone6_StyleAtlas_12: 1697184916795485534
+      Milestone6_StyleAtlas_13: 2015961583783877774
+      Milestone6_StyleAtlas_14: -4814673945337483257
+      Milestone6_StyleAtlas_15: -2210655070336108924
+      Milestone6_StyleAtlas_16: -6988591122153988090
+      Milestone6_StyleAtlas_17: 5656192827901477840
+      Milestone6_StyleAtlas_18: 6619722289939121274
+      Milestone6_StyleAtlas_19: -5714201243960818841
+      Milestone6_StyleAtlas_2: 649717907513149027
+      Milestone6_StyleAtlas_20: 2350935924755235592
+      Milestone6_StyleAtlas_21: -4419048345802018154
+      Milestone6_StyleAtlas_22: 2803808105057254158
+      Milestone6_StyleAtlas_23: -7349853992711007771
+      Milestone6_StyleAtlas_24: -4490758621051255910
+      Milestone6_StyleAtlas_25: -8648075757370094569
+      Milestone6_StyleAtlas_3: -8283689394681547572
+      Milestone6_StyleAtlas_4: -7842978582572876854
+      Milestone6_StyleAtlas_5: -3748998507485684882
+      Milestone6_StyleAtlas_6: -7732202945082247728
+      Milestone6_StyleAtlas_7: -5216680871114995103
+      Milestone6_StyleAtlas_8: -7593747381584779061
+      Milestone6_StyleAtlas_9: -3687427613409451051
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

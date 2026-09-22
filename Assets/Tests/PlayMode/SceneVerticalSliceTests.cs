@@ -5,6 +5,7 @@ using KeySlaught.SceneGameplay;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace KeySlaught.Tests.PlayMode
@@ -39,6 +40,36 @@ namespace KeySlaught.Tests.PlayMode
             mover.SetVirtualMovement(Vector2.zero);
             Assert.That(mover.VirtualMovement, Is.EqualTo(Vector2.zero));
 
+            Object.Destroy(playerObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator VirtualJoystick_AppearsAtPointerAndHidesOnRelease()
+        {
+            var playerObject = new GameObject("Dynamic Joystick Player");
+            var mover = playerObject.AddComponent<PlayerMover>();
+            var surfaceObject = new GameObject("Surface", typeof(RectTransform));
+            var baseObject = new GameObject("Base", typeof(RectTransform));
+            baseObject.transform.SetParent(surfaceObject.transform, false);
+            var handleObject = new GameObject("Handle", typeof(RectTransform));
+            handleObject.transform.SetParent(baseObject.transform, false);
+            surfaceObject.GetComponent<RectTransform>().sizeDelta = new Vector2(400f, 400f);
+            baseObject.GetComponent<RectTransform>().sizeDelta = new Vector2(120f, 120f);
+            var joystick = surfaceObject.AddComponent<VirtualJoystick>();
+            joystick.Configure(mover, surfaceObject.GetComponent<RectTransform>(), baseObject.GetComponent<RectTransform>(), handleObject.GetComponent<RectTransform>());
+            Assert.That(baseObject.activeSelf, Is.False);
+
+            var eventSystemObject = new GameObject("Event System", typeof(EventSystem));
+            var pointer = new PointerEventData(eventSystemObject.GetComponent<EventSystem>()) { pointerId = 7, position = Vector2.zero };
+            joystick.OnPointerDown(pointer);
+            Assert.That(baseObject.activeSelf, Is.True);
+            joystick.OnPointerUp(pointer);
+            Assert.That(baseObject.activeSelf, Is.False);
+            Assert.That(mover.VirtualMovement, Is.EqualTo(Vector2.zero));
+
+            Object.Destroy(eventSystemObject);
+            Object.Destroy(surfaceObject);
             Object.Destroy(playerObject);
             yield return null;
         }
@@ -151,6 +182,25 @@ namespace KeySlaught.Tests.PlayMode
             Assert.That(second.Outcome, Is.EqualTo(TypedAttackOutcome.TargetHit));
             Assert.That(fixture.Spawner.ActiveEnemies, Is.Empty);
 
+            fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator CombatController_LoadedLetterAutoFiresWhenEnemyEntersRange()
+        {
+            var fixture = CreateCombatFixture("BOOK", 4);
+            fixture.Combat.SceneCoordinator.Player.transform.position = Vector3.left * 20f;
+            Assert.That(
+                fixture.Combat.TryTypeLetter('B').Outcome,
+                Is.EqualTo(TypedAttackOutcome.LoadedIntoMagazine));
+            Assert.That(fixture.Combat.ErrorBuffer.OccupiedLetters, Is.EqualTo(new[] { 'B' }));
+
+            fixture.Combat.SceneCoordinator.Player.transform.position = Vector3.zero;
+            fixture.Combat.Tick(0f);
+
+            Assert.That(fixture.Enemy.WordState.RemainingWord, Is.EqualTo("OOK"));
+            Assert.That(fixture.Combat.ErrorBuffer.OccupiedSlotCount, Is.Zero);
             fixture.Destroy();
             yield return null;
         }

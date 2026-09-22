@@ -51,8 +51,8 @@ namespace KeySlaught.SceneGameplay
             if (healthLabel != null)
             {
                 healthLabel.text = State == null
-                    ? "LIBRARY"
-                    : $"LIBRARY  {State.CurrentHealth}/{State.MaximumHealth}";
+                    ? "HP"
+                    : $"HP  {State.CurrentHealth}/{State.MaximumHealth}";
             }
         }
     }

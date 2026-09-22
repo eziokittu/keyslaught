@@ -78,6 +78,33 @@ namespace KeySlaught.SceneGameplay
             return null;
         }
 
+        public EnemyAgent GetPrimaryInRangeEnemy()
+        {
+            if (spawner == null || player == null)
+            {
+                return null;
+            }
+
+            EnemyAgent best = null;
+            foreach (var enemy in spawner.ActiveEnemies)
+            {
+                if (enemy == null || enemy.HasArrived || enemy.WordState == null ||
+                    Vector2.Distance(player.transform.position, enemy.transform.position) > playerAttackRange)
+                {
+                    continue;
+                }
+
+                if (best == null || enemy.DistanceToLibrary < best.DistanceToLibrary ||
+                    (Mathf.Approximately(enemy.DistanceToLibrary, best.DistanceToLibrary) &&
+                     enemy.TieBreakOrder < best.TieBreakOrder))
+                {
+                    best = enemy;
+                }
+            }
+
+            return best;
+        }
+
         public bool RemoveDefeatedEnemy(EnemyAgent enemy)
         {
             if (enemy == null || enemy.WordState == null || !enemy.WordState.IsDefeated)
