@@ -1,7 +1,11 @@
 {
   "name": "KeySlaught.Runtime",
   "rootNamespace": "KeySlaught",
-  "references": [],
+  "references": [
+    "Unity.InputSystem",
+    "Unity.ugui",
+    "Unity.2D.Tilemap"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
@@ -12,4 +16,3 @@
   "versionDefines": [],
   "noEngineReferences": false
 }
-

@@ -2,7 +2,8 @@
   "name": "KeySlaught.PlayModeTests",
   "rootNamespace": "KeySlaught.Tests.PlayMode",
   "references": [
-    "KeySlaught.Runtime"
+    "KeySlaught.Runtime",
+    "Unity.ugui"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
@@ -19,4 +20,3 @@
     "TestAssemblies"
   ]
 }
-

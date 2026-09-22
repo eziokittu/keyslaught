@@ -40,6 +40,12 @@ Desktop.ini
 /AgentScripts/
 /tmp/
 
+# Keep reproducible authored-scene builders while ignoring other agent scratch files.
+!/AgentScripts/
+!/AgentScripts/BuildMilestone3Scene.cs
+!/AgentScripts/BuildMilestone4Scene.cs
+!/AgentScripts/BuildMilestone5Scene.cs
+
 # The original hiring assignment is private source material, not repository content.
 /Lila Game Designer - Written Test - Part 1.pdf
 
