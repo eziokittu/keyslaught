@@ -10,18 +10,27 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Text timeLabel;
         [SerializeField] private Text targetWordLabel;
         [SerializeField] private int waveNumber = 1;
+        [SerializeField] private WaveRunController waveRun;
         private float elapsedSeconds;
+
+        public void ResetState()
+        {
+            elapsedSeconds = 0f;
+            Refresh();
+        }
 
         public void Configure(
             GameplaySceneCoordinator sceneCoordinator,
             Text wave,
             Text time,
-            Text targetWord)
+            Text targetWord,
+            WaveRunController runController = null)
         {
             coordinator = sceneCoordinator;
             waveLabel = wave;
             timeLabel = time;
             targetWordLabel = targetWord;
+            waveRun = runController;
             Refresh();
         }
 
@@ -35,7 +44,10 @@ namespace KeySlaught.SceneGameplay
         {
             if (waveLabel != null)
             {
-                waveLabel.text = $"Wave {waveNumber}";
+                var number = waveRun == null ? waveNumber : waveRun.CurrentWaveNumber;
+                waveLabel.text = waveRun != null && waveRun.Phase == WaveRunPhase.Intermission
+                    ? $"NEXT WAVE  {Mathf.CeilToInt(waveRun.IntermissionRemaining)}s"
+                    : waveRun != null && waveRun.IsBossWave ? $"BOSS {number}" : $"WAVE {number}";
             }
 
             if (timeLabel != null)
@@ -47,7 +59,7 @@ namespace KeySlaught.SceneGameplay
             if (targetWordLabel != null)
             {
                 var target = coordinator == null ? null : coordinator.GetPrimaryInRangeEnemy();
-                targetWordLabel.text = target == null ? "NO TARGET IN RANGE" : target.WordState.RemainingWord;
+                targetWordLabel.text = target == null ? string.Empty : target.WordState.RemainingWord;
             }
         }
     }

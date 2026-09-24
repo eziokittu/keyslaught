@@ -7,6 +7,17 @@ namespace KeySlaught.Tests.EditMode
     public sealed class EnemyWordStateTests
     {
         [Test]
+        public void ConsumePrefix_RemovesRequestedLettersAndClampsAtEnd()
+        {
+            var state = new EnemyWordState("HELLO");
+
+            Assert.That(state.ConsumePrefix(3), Is.EqualTo(3));
+            Assert.That(state.RemainingWord, Is.EqualTo("LO"));
+            Assert.That(state.ConsumePrefix(99), Is.EqualTo(2));
+            Assert.That(state.IsDefeated, Is.True);
+        }
+
+        [Test]
         public void Constructor_NormalizesWordToUppercase()
         {
             var word = new EnemyWordState("Hello");

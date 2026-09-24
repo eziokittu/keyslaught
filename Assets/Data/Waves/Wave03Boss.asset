@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddce233cc899c614a9e3ba742a65bf2e, type: 3}
+  m_Name: Wave03Boss
+  m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.WaveDefinition
+  enemies:
+  - {fileID: 11400000, guid: fa3e4b2afa5bb1c4683a33634d3cf4f9, type: 2}
+  - {fileID: 11400000, guid: 67a5d2970d43fba48bc3e4d50b6f43ed, type: 2}
+  - {fileID: 11400000, guid: c64c20f600dc39d4f8cdb3c3e4c095cb, type: 2}
+  spawnInterval: 1.5
+  bossWave: 1

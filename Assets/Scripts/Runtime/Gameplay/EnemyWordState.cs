@@ -62,6 +62,18 @@ namespace KeySlaught.Gameplay
             return true;
         }
 
+        public int ConsumePrefix(int letterCount)
+        {
+            if (letterCount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(letterCount));
+            }
+
+            var consumed = Math.Min(letterCount, RemainingLetterCount);
+            consumedLetterCount += consumed;
+            return consumed;
+        }
+
         internal static bool IsCombatLetter(char letter)
         {
             return letter >= 'A' && letter <= 'Z';

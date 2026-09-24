@@ -1,4 +1,5 @@
 using UnityEngine;
+using KeySlaught.Progression;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -7,6 +8,8 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private GameObject pauseOverlay;
         [SerializeField] private GameObject menuConfirmation;
         [SerializeField] private GameObject controlsPanel;
+        [SerializeField] private GameShellController gameShell;
+        [SerializeField] private GameObject modalDimmer;
 
         public bool IsPaused { get; private set; }
 
@@ -18,6 +21,8 @@ namespace KeySlaught.SceneGameplay
             SetPaused(false);
         }
 
+        public void ConfigureModalDimmer(GameObject dimmer) => modalDimmer = dimmer;
+
         public void TogglePause() => SetPaused(!IsPaused);
 
         public void Continue() => SetPaused(false);
@@ -27,6 +32,7 @@ namespace KeySlaught.SceneGameplay
             if (menuConfirmation != null)
             {
                 menuConfirmation.SetActive(true);
+                SetModalDimmed(true);
             }
         }
 
@@ -35,7 +41,16 @@ namespace KeySlaught.SceneGameplay
             if (menuConfirmation != null)
             {
                 menuConfirmation.SetActive(false);
+                SetModalDimmed(controlsPanel != null && controlsPanel.activeSelf);
             }
+        }
+
+        public void ConfigureShell(GameShellController shell) => gameShell = shell;
+
+        public void ConfirmBackToMenu()
+        {
+            SetPaused(false);
+            gameShell?.ReturnToMainFromRun();
         }
 
         public void ToggleControls()
@@ -43,7 +58,14 @@ namespace KeySlaught.SceneGameplay
             if (controlsPanel != null)
             {
                 controlsPanel.SetActive(!controlsPanel.activeSelf);
+                SetModalDimmed(controlsPanel.activeSelf);
             }
+        }
+
+        public void HideControls()
+        {
+            if (controlsPanel != null) controlsPanel.SetActive(false);
+            SetModalDimmed(menuConfirmation != null && menuConfirmation.activeSelf);
         }
 
         private void SetPaused(bool paused)
@@ -62,7 +84,13 @@ namespace KeySlaught.SceneGameplay
                 {
                     controlsPanel.SetActive(false);
                 }
+                SetModalDimmed(false);
             }
+        }
+
+        private void SetModalDimmed(bool visible)
+        {
+            if (modalDimmer != null) modalDimmer.SetActive(visible);
         }
 
         private void OnDisable()

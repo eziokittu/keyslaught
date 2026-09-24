@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 namespace KeySlaught.SceneGameplay
 {
-    public enum TileContextKind { None, Library, BuildableGround, OccupiedGround }
+    public enum TileContextKind { None, Library, BuildableGround, OccupiedGround, ClearableObstacle }
 
     public sealed class TileContextActionPanel : MonoBehaviour
     {
-        private enum MenuDepth { Root, TurretChoice, Confirm }
+        private enum MenuDepth { Root, TurretChoice, Confirm, Abilities }
         private static readonly Key[] NumberKeys =
         {
             Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5,
@@ -30,6 +30,10 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Sprite engineerSprite;
         [SerializeField] private Sprite scientistSprite;
         [SerializeField] private BrainCellEconomy economy;
+        [SerializeField] private GameplaySceneCoordinator coordinator;
+        [SerializeField] private GameplayCombatController combat;
+        [SerializeField] private TurretDefinition[] turretDefinitions;
+        [SerializeField] private LibraryAbilityController abilityController;
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private Text titleLabel;
         [SerializeField] private Text statusLabel;
@@ -37,10 +41,18 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Text[] actionLabels;
 
         private readonly Dictionary<Vector3Int, TurretPadController> turrets = new();
+        private readonly Dictionary<Vector3Int, TileBase> clearedObstacles = new();
         private Vector3Int lastCell = new(int.MinValue, int.MinValue, int.MinValue);
         private MenuDepth menuDepth;
         private TurretPadController activePad;
         private TurretKind previewKind;
+        private bool optionPauseActive;
+
+        public static bool ContinueDuringSelections
+        {
+            get => PlayerPrefs.GetInt("KeySlaught.ContinueDuringSelections", 0) != 0;
+            set => PlayerPrefs.SetInt("KeySlaught.ContinueDuringSelections", value ? 1 : 0);
+        }
 
         public TileContextKind CurrentContext { get; private set; }
         public TurretPadController ActivePad => activePad;
@@ -52,12 +64,25 @@ namespace KeySlaught.SceneGameplay
             RefreshLabels();
         }
 
+        public void ConfigureRuntimeSystems(GameplaySceneCoordinator sceneCoordinator,
+            GameplayCombatController combatController, TurretDefinition[] dataDefinitions,
+            LibraryAbilityController libraryAbilities)
+        {
+            coordinator = sceneCoordinator;
+            combat = combatController;
+            turretDefinitions = dataDefinitions;
+            abilityController = libraryAbilities;
+            RefreshLabels();
+        }
+
         public void Configure(
             PlayerMover playerMover, Tilemap ground, Tilemap path, Tilemap blocked,
             LibraryEndpoint libraryEndpoint, Vector3Int libraryMinimum,
             Vector3Int libraryMaximum, SpriteRenderer highlight,
             Transform authoredTurretRoot, Sprite teacher, Sprite engineer, Sprite scientist,
-            GameObject root, Text title, Text status, Button[] buttons, Text[] labels)
+            GameObject root, Text title, Text status, Button[] buttons, Text[] labels,
+            GameplaySceneCoordinator sceneCoordinator = null, GameplayCombatController combatController = null,
+            TurretDefinition[] dataDefinitions = null, LibraryAbilityController libraryAbilities = null)
         {
             player = playerMover;
             groundTilemap = ground;
@@ -76,6 +101,10 @@ namespace KeySlaught.SceneGameplay
             statusLabel = status;
             actionButtons = buttons;
             actionLabels = labels;
+            coordinator = sceneCoordinator;
+            combat = combatController;
+            turretDefinitions = dataDefinitions;
+            abilityController = libraryAbilities;
             lastCell = new Vector3Int(int.MinValue, int.MinValue, int.MinValue);
             menuDepth = MenuDepth.Root;
             ReindexAuthoredTurrets();
@@ -90,9 +119,11 @@ namespace KeySlaught.SceneGameplay
                 TileContextKind.Library => SelectLibraryAction(oneBasedIndex),
                 TileContextKind.BuildableGround => SelectBuildAction(oneBasedIndex),
                 TileContextKind.OccupiedGround => SelectOccupiedAction(oneBasedIndex),
+                TileContextKind.ClearableObstacle => SelectObstacleAction(oneBasedIndex),
                 _ => false
             };
             RefreshLabels();
+            RefreshOptionPause();
             return changed;
         }
 
@@ -118,13 +149,18 @@ namespace KeySlaught.SceneGameplay
             CancelPreview();
             lastCell = cell;
             menuDepth = MenuDepth.Root;
+            ReleaseOptionPause();
             var isLibrary = cell.x >= libraryCellMin.x && cell.x <= libraryCellMax.x &&
                 cell.y >= libraryCellMin.y && cell.y <= libraryCellMax.y;
             var isGround = groundTilemap.HasTile(cell);
-            var blocked = (pathTilemap != null && pathTilemap.HasTile(cell)) ||
-                (blockedTilemap != null && blockedTilemap.HasTile(cell));
+            var pathBlocked = pathTilemap != null && pathTilemap.HasTile(cell);
+            var obstacleTile = blockedTilemap == null ? null : blockedTilemap.GetTile(cell);
+            var blocked = pathBlocked || obstacleTile != null;
+            var clearable = obstacleTile != null &&
+                (obstacleTile.name.Contains("Tree") || obstacleTile.name.Contains("Boulder"));
 
             if (isLibrary) SetContext(TileContextKind.Library, null);
+            else if (isGround && clearable) SetContext(TileContextKind.ClearableObstacle, null);
             else if (isGround && !blocked)
             {
                 turrets.TryGetValue(cell, out var pad);
@@ -135,7 +171,7 @@ namespace KeySlaught.SceneGameplay
 
             if (highlightRenderer != null)
             {
-                highlightRenderer.gameObject.SetActive(CurrentContext is TileContextKind.BuildableGround or TileContextKind.OccupiedGround);
+                highlightRenderer.gameObject.SetActive(CurrentContext is TileContextKind.BuildableGround or TileContextKind.OccupiedGround or TileContextKind.ClearableObstacle);
                 highlightRenderer.transform.position = groundTilemap.GetCellCenterWorld(cell);
             }
         }
@@ -150,6 +186,15 @@ namespace KeySlaught.SceneGameplay
 
         private bool SelectLibraryAction(int index)
         {
+            if (menuDepth == MenuDepth.Abilities && index >= 1 && index <= 3 && abilityController != null)
+            {
+                var kind = (LibraryAbilityKind)(index - 1);
+                var definition = abilityController.GetDefinition(kind);
+                var activated = abilityController.TryActivate(kind);
+                SetStatus(activated ? $"{FormatAbility(kind)} ACTIVE" : $"NEED {definition?.Cost ?? 0} BRAIN CELLS OR ABILITY BUSY");
+                if (activated) menuDepth = MenuDepth.Root;
+                return activated;
+            }
             if (index == 1 && library != null)
             {
                 if (library.State != null && library.State.CurrentHealth >= library.State.MaximumHealth)
@@ -166,7 +211,11 @@ namespace KeySlaught.SceneGameplay
                 SetStatus(amount > 0 ? $"REPAIRED +{amount}" : "HEALTH ALREADY FULL");
                 return amount > 0;
             }
-            if (index == 2) SetStatus("ABILITIES UNLOCK IN A LATER MILESTONE");
+            if (index == 2)
+            {
+                menuDepth = MenuDepth.Abilities;
+                return true;
+            }
             return false;
         }
 
@@ -200,6 +249,7 @@ namespace KeySlaught.SceneGameplay
                     return false;
                 }
                 activePad.GetComponent<SpriteRenderer>().color = Color.white;
+                activePad.SetPreview(false);
                 turrets[lastCell] = activePad;
                 previewKind = TurretKind.None;
                 menuDepth = MenuDepth.Root;
@@ -251,8 +301,10 @@ namespace KeySlaught.SceneGameplay
             renderer.sortingOrder = 12;
             renderer.color = new Color(1f, 1f, 1f, 0.65f);
             var pad = gameObject.AddComponent<TurretPadController>();
-            pad.Configure(lastCell, renderer, teacherSprite, engineerSprite, scientistSprite);
+            pad.Configure(lastCell, renderer, teacherSprite, engineerSprite, scientistSprite,
+                coordinator, combat, turretDefinitions);
             pad.Build(kind);
+            pad.SetPreview(true);
             return pad;
         }
 
@@ -266,6 +318,7 @@ namespace KeySlaught.SceneGameplay
             Destroy(activePad.gameObject);
             activePad = null;
             previewKind = TurretKind.None;
+            ReleaseOptionPause();
         }
 
         private void ReindexAuthoredTurrets()
@@ -282,19 +335,36 @@ namespace KeySlaught.SceneGameplay
             switch (CurrentContext)
             {
                 case TileContextKind.Library:
-                    SetTitle("LIBRARY");
-                    var canRepair = economy != null && economy.Balance >= 5 && library != null && library.State != null && library.State.CurrentHealth < library.State.MaximumHealth;
-                    SetAction(1, "1  REPAIR +5  •  5", canRepair); SetAction(2, "2  ABILITIES"); break;
+                    if (menuDepth == MenuDepth.Abilities)
+                    {
+                        SetTitle("LIBRARY ABILITIES");
+                        SetAbilityAction(1, LibraryAbilityKind.History, "HISTORY");
+                        SetAbilityAction(2, LibraryAbilityKind.SocialMediaInfluence, "SOCIAL INFLUENCE");
+                        SetAbilityAction(3, LibraryAbilityKind.Politics, "POLITICS");
+                    }
+                    else
+                    {
+                        SetTitle("LIBRARY");
+                        var canRepair = economy != null && economy.Balance >= 5 && library != null && library.State != null && library.State.CurrentHealth < library.State.MaximumHealth;
+                        SetAction(1, "1  REPAIR +5  •  5", canRepair);
+                        SetAction(2, "2  ABILITIES");
+                    }
+                    break;
                 case TileContextKind.BuildableGround:
                     if (menuDepth == MenuDepth.Root) { SetTitle("EMPTY GROUND"); SetAction(1, "1  TURRETS"); }
                     else if (menuDepth == MenuDepth.TurretChoice)
-                    { SetTitle("CHOOSE TURRET"); SetAction(1, "1  TEACHER • 6", economy != null && economy.Balance >= 6); SetAction(2, "2  ENGINEER • 8", economy != null && economy.Balance >= 8); SetAction(3, "3  SCIENTIST • 10", economy != null && economy.Balance >= 10); }
+                    { SetTitle("CHOOSE TURRET"); SetAction(1, $"1  TEACHER • {CostFor(TurretKind.Teacher)}", CanAfford(TurretKind.Teacher)); SetAction(2, $"2  ENGINEER • {CostFor(TurretKind.Engineer)}", CanAfford(TurretKind.Engineer)); SetAction(3, $"3  SCIENTIST • {CostFor(TurretKind.Scientist)}", CanAfford(TurretKind.Scientist)); }
                     else { SetTitle($"{previewKind.ToString().ToUpperInvariant()} PREVIEW"); SetAction(1, "1  KEEP"); SetAction(2, "2  CANCEL"); }
                     break;
                 case TileContextKind.OccupiedGround:
                     SetTitle($"{activePad.Kind.ToString().ToUpperInvariant()}  LV {activePad.Level}");
                     var upgradeCost = 5 + activePad.Level * 3;
                     SetAction(1, activePad.Level >= 3 ? "1  MAX LEVEL" : $"1  UPGRADE • {upgradeCost}", activePad.Level < 3 && economy != null && economy.Balance >= upgradeCost); SetAction(2, "2  SELL"); break;
+                case TileContextKind.ClearableObstacle:
+                    SetTitle("BLOCKED GROUND");
+                    var clearCost = ObstacleClearCost();
+                    SetAction(1, $"1  CLEAR • {clearCost}", economy != null && economy.Balance >= clearCost);
+                    break;
                 default: SetTitle(string.Empty); SetStatus(string.Empty); break;
             }
         }
@@ -319,12 +389,76 @@ namespace KeySlaught.SceneGameplay
         }
         private void SetTitle(string text) { if (titleLabel != null) titleLabel.text = text; }
         private void SetStatus(string text) { if (statusLabel != null) statusLabel.text = text; }
-        private static int CostFor(TurretKind kind) => kind switch
+        private int CostFor(TurretKind kind)
         {
-            TurretKind.Teacher => 6,
-            TurretKind.Engineer => 8,
-            TurretKind.Scientist => 10,
-            _ => int.MaxValue
+            if (turretDefinitions != null)
+                foreach (var definition in turretDefinitions)
+                    if (definition != null && definition.Kind == kind) return definition.BuildCost;
+            return kind switch { TurretKind.Teacher => 6, TurretKind.Engineer => 8, TurretKind.Scientist => 10, _ => int.MaxValue };
+        }
+
+        public void ResetState()
+        {
+            CancelPreview();
+            if (blockedTilemap != null)
+                foreach (var pair in clearedObstacles) blockedTilemap.SetTile(pair.Key, pair.Value);
+            clearedObstacles.Clear();
+            ReindexAuthoredTurrets();
+            lastCell = new Vector3Int(int.MinValue, int.MinValue, int.MinValue);
+            menuDepth = MenuDepth.Root;
+            RefreshContext(true);
+            ReleaseOptionPause();
+        }
+
+        private bool SelectObstacleAction(int index)
+        {
+            if (index != 1 || blockedTilemap == null) return false;
+            var cost = ObstacleClearCost();
+            if (economy == null || !economy.TrySpend(cost)) { SetStatus($"NEED {cost} BRAIN CELLS"); return false; }
+            var tile = blockedTilemap.GetTile(lastCell);
+            if (tile != null) clearedObstacles[lastCell] = tile;
+            blockedTilemap.SetTile(lastCell, null);
+            SetStatus("OBSTACLE CLEARED");
+            SetContext(TileContextKind.BuildableGround, null);
+            return true;
+        }
+
+        private int ObstacleClearCost()
+        {
+            var tile = blockedTilemap == null ? null : blockedTilemap.GetTile(lastCell);
+            return tile != null && tile.name.Contains("Boulder") ? 6 : 4;
+        }
+
+        private bool CanAfford(TurretKind kind) => economy != null && economy.Balance >= CostFor(kind);
+
+        private void SetAbilityAction(int index, LibraryAbilityKind kind, string label)
+        {
+            var definition = abilityController == null ? null : abilityController.GetDefinition(kind);
+            var cost = definition == null ? 0 : definition.Cost;
+            SetAction(index, $"{index}  {label} • {cost}", definition != null && economy != null && economy.Balance >= cost && abilityController.ActiveAbility == null);
+        }
+
+        private static string FormatAbility(LibraryAbilityKind kind) => kind switch
+        {
+            LibraryAbilityKind.SocialMediaInfluence => "SOCIAL INFLUENCE",
+            _ => kind.ToString().ToUpperInvariant()
         };
+
+        private void RefreshOptionPause()
+        {
+            var shouldPause = !ContinueDuringSelections && menuDepth != MenuDepth.Root;
+            if (shouldPause == optionPauseActive) return;
+            optionPauseActive = shouldPause;
+            Time.timeScale = shouldPause ? 0f : 1f;
+        }
+
+        private void ReleaseOptionPause()
+        {
+            if (!optionPauseActive) return;
+            optionPauseActive = false;
+            Time.timeScale = 1f;
+        }
+
+        private void OnDisable() => ReleaseOptionPause();
     }
 }

@@ -14,6 +14,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Text currencyLabel;
         [SerializeField, Min(0.1f)] private float collectRadius = 0.55f;
         [SerializeField, Min(0.1f)] private float clumpRadius = 0.65f;
+        [SerializeField, Min(0f)] private float scatterRadius = 0.48f;
         private readonly List<BrainCellPickup> activePickups = new();
 
         public int Balance { get; private set; }
@@ -60,6 +61,15 @@ namespace KeySlaught.SceneGameplay
                 Collect(activePickups[index]);
         }
 
+        public void ResetState()
+        {
+            for (var index = activePickups.Count - 1; index >= 0; index--)
+                if (activePickups[index] != null) Destroy(activePickups[index].gameObject);
+            activePickups.Clear();
+            Balance = 0;
+            RefreshLabel();
+        }
+
         private void OnEnable() { if (combat != null) combat.TargetDefeated += OnTargetDefeated; }
         private void OnDisable() { if (combat != null) combat.TargetDefeated -= OnTargetDefeated; }
 
@@ -91,7 +101,8 @@ namespace KeySlaught.SceneGameplay
             BrainCellPickup pickup;
             if (pickupPrefab != null)
             {
-                pickup = Instantiate(pickupPrefab, enemy.transform.position, Quaternion.identity, transform);
+                var scatter = UnityEngine.Random.insideUnitCircle * scatterRadius;
+                pickup = Instantiate(pickupPrefab, enemy.transform.position + (Vector3)scatter, Quaternion.identity, transform);
             }
             else
             {
@@ -106,6 +117,8 @@ namespace KeySlaught.SceneGameplay
                 TryAddPointLight(pickupObject);
             }
             pickup.Initialize(value);
+            var pickupRenderer = pickup.GetComponent<SpriteRenderer>();
+            if (pickupRenderer != null) pickupRenderer.color = new Color(.18f, .92f, 1f);
             activePickups.Add(pickup);
         }
 
@@ -134,15 +147,4 @@ namespace KeySlaught.SceneGameplay
         }
     }
 
-    public sealed class BrainCellPickup : MonoBehaviour
-    {
-        public int Value { get; private set; }
-        public void Initialize(int value) => Value = Mathf.Max(0, value);
-        public void Add(int value)
-        {
-            Value += Mathf.Max(0, value);
-            name = $"Brain Cells +{Value}";
-            transform.localScale = Vector3.one * Mathf.Min(0.7f, 0.42f + Value * 0.015f);
-        }
-    }
 }

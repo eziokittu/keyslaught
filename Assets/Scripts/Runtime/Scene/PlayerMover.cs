@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -10,6 +11,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField, Min(0f)] private float movementSpeed = 5f;
         [SerializeField] private Vector2 minimumBounds = new Vector2(-7f, -8f);
         [SerializeField] private Vector2 maximumBounds = new Vector2(7f, 8f);
+        [SerializeField] private Tilemap blockedTerrain;
 
         private InputAction resolvedMoveAction;
         private Vector2 virtualMovement;
@@ -26,8 +28,19 @@ namespace KeySlaught.SceneGameplay
             var next = (Vector2)transform.position + direction * movementSpeed * deltaSeconds;
             next.x = Mathf.Clamp(next.x, minimumBounds.x, maximumBounds.x);
             next.y = Mathf.Clamp(next.y, minimumBounds.y, maximumBounds.y);
-            transform.position = new Vector3(next.x, next.y, transform.position.z);
+            var current = (Vector2)transform.position;
+            var resolved = current;
+            var xCandidate = new Vector2(next.x, current.y);
+            if (!IsBlocked(xCandidate)) resolved.x = xCandidate.x;
+            var yCandidate = new Vector2(resolved.x, next.y);
+            if (!IsBlocked(yCandidate)) resolved.y = yCandidate.y;
+            transform.position = new Vector3(resolved.x, resolved.y, transform.position.z);
         }
+
+        public void ConfigureBlockedTerrain(Tilemap blocked) => blockedTerrain = blocked;
+
+        private bool IsBlocked(Vector2 position) => blockedTerrain != null &&
+            blockedTerrain.HasTile(blockedTerrain.WorldToCell(position));
 
         public void Configure(float speed, Vector2 minBounds, Vector2 maxBounds)
         {

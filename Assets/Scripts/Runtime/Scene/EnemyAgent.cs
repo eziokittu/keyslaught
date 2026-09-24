@@ -14,6 +14,9 @@ namespace KeySlaught.SceneGameplay
         private bool hasArrived;
         private float travelledDistance;
         private long tieBreakOrder;
+        private float movementMultiplier = 1f;
+        private float movementSpeed;
+        private SpriteRenderer cardRenderer;
 
         public event Action<EnemyAgent> ArrivedAtLibrary;
 
@@ -29,12 +32,31 @@ namespace KeySlaught.SceneGameplay
 
         public long TieBreakOrder => tieBreakOrder;
 
+        public void SetMovementMultiplier(float multiplier)
+        {
+            movementMultiplier = Mathf.Clamp(multiplier, -1f, 1f);
+        }
+
         public void Initialize(EnemyDefinition enemyDefinition, WaypointPath waypointPath, long order)
         {
             definition = enemyDefinition ?? throw new ArgumentNullException(nameof(enemyDefinition));
             path = waypointPath ?? throw new ArgumentNullException(nameof(waypointPath));
             tieBreakOrder = order;
             WordState = new EnemyWordState(definition.Word);
+            movementSpeed = definition.MovementSpeed;
+            travelledDistance = 0f;
+            hasArrived = false;
+            initialized = true;
+            transform.position = path.StartPosition;
+            RefreshLabel();
+        }
+
+        public void InitializeWord(string word, float speed, WaypointPath waypointPath, long order)
+        {
+            path = waypointPath ?? throw new ArgumentNullException(nameof(waypointPath));
+            tieBreakOrder = order;
+            WordState = new EnemyWordState(NormalizeWord(word));
+            movementSpeed = Mathf.Max(0.01f, speed);
             travelledDistance = 0f;
             hasArrived = false;
             initialized = true;
@@ -54,9 +76,10 @@ namespace KeySlaught.SceneGameplay
                 throw new ArgumentOutOfRangeException(nameof(deltaSeconds));
             }
 
-            travelledDistance = Mathf.Min(
-                path.TotalLength,
-                travelledDistance + definition.MovementSpeed * deltaSeconds);
+            travelledDistance = Mathf.Clamp(
+                travelledDistance + movementSpeed * movementMultiplier * deltaSeconds,
+                0f,
+                path.TotalLength);
             transform.position = path.EvaluateDistance(travelledDistance);
 
             if (travelledDistance < path.TotalLength)
@@ -84,7 +107,18 @@ namespace KeySlaught.SceneGameplay
             if (wordLabel != null && WordState != null)
             {
                 wordLabel.text = WordState.NextLetter?.ToString() ?? string.Empty;
+                var remaining = WordState.RemainingWord.Length;
+                var cardColor = EnemyLengthPalette.Evaluate(remaining);
+                if (cardRenderer == null) cardRenderer = GetComponent<SpriteRenderer>();
+                if (cardRenderer != null) cardRenderer.color = cardColor;
+                wordLabel.color = EnemyLengthPalette.UseDarkText(remaining) ? new Color(.12f,.07f,.13f) : new Color(1f,.96f,.88f);
             }
+        }
+
+        private static string NormalizeWord(string word)
+        {
+            var normalized = string.IsNullOrWhiteSpace(word) ? "BOOK" : word.Trim().ToUpperInvariant();
+            return normalized.Length <= 64 ? normalized : normalized.Substring(0, 64);
         }
 
         private void Start()

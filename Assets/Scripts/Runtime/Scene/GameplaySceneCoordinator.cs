@@ -19,6 +19,11 @@ namespace KeySlaught.SceneGameplay
 
         public float PlayerAttackRange => playerAttackRange;
 
+        public void SetPlayerAttackRange(float range)
+        {
+            playerAttackRange = Mathf.Max(0f, range);
+        }
+
         public void Configure(
             PlayerMover playerMover,
             EnemySpawner enemySpawner,

@@ -125,6 +125,30 @@ namespace KeySlaught.SceneGameplay
             RefreshHud();
         }
 
+        public void ResolveExternalDamage(EnemyAgent enemy)
+        {
+            if (enemy == null || enemy.WordState == null) return;
+            enemy.RefreshLabel();
+            TargetHit?.Invoke(enemy);
+            if (!enemy.WordState.IsDefeated) return;
+            TargetDefeated?.Invoke(enemy);
+            touchingEnemies.Remove(enemy);
+            sceneCoordinator?.RemoveDefeatedEnemy(enemy);
+        }
+
+        public void ResetCombatState()
+        {
+            enabled = true;
+            ResetRuntimeState();
+        }
+
+        public void ApplyPermanentStats(int capacity, float secondsPerSlot)
+        {
+            bufferCapacity = Mathf.Max(1, capacity);
+            secondsPerOccupiedSlot = Mathf.Max(0f, secondsPerSlot);
+            ResetRuntimeState();
+        }
+
         public void Tick(float deltaSeconds)
         {
             EnsureRuntimeState();
@@ -302,7 +326,7 @@ namespace KeySlaught.SceneGameplay
                         : "●";
                 }
 
-                var magazineText = $"▰  [ {string.Join("  ", slots)} ]";
+                var magazineText = $"[ {string.Join("  ", slots)} ]";
                 if (bufferLabel != null) bufferLabel.text = magazineText;
                 if (magazineUiLabel != null) magazineUiLabel.text = magazineText;
             }
@@ -317,7 +341,7 @@ namespace KeySlaught.SceneGameplay
 
             if (corruption.IsCorrupted)
             {
-                statusText = $"GUN CORRUPTED  {corruption.SecondsRemaining:0.0}s";
+                statusText = $"WAND CORRUPTED  {corruption.SecondsRemaining:0.0}s";
                 statusColor = new Color(0.95f, 0.95f, 0.95f, 1f);
             }
             else if (errorBuffer.IsRefreshing)

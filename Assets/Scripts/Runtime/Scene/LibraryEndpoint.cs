@@ -41,6 +41,17 @@ namespace KeySlaught.SceneGameplay
             return repaired;
         }
 
+        public void ResetState()
+        {
+            Initialize(maximumHealth);
+        }
+
+        public void SetMaximumHealth(int health)
+        {
+            maximumHealth = Mathf.Max(1, health);
+            Initialize(maximumHealth);
+        }
+
         private void Awake()
         {
             Initialize(maximumHealth);

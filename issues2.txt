@@ -1,2 +1,6 @@
-I tested the game again and found some more issues and changes to be made.
-1. 
+I tested the game again and found some more issues and changes to be made. But overall tyhe core mechanics are working.
+1. The bottom and top part needs to be 20% of the viewport each. Also the Enemy name needs to be shown in the bottom area itself along with the gun and ammo. Also the reload button icon looks stupid. For all the icons make them look crisp and polished. 
+2. for the enemy name, if there are no enemies in target dont show anything (dont show that no target text). Doe the player tile related options in the top section, the background needs to be transparent so part of the game world can be seen. In case i dont have a lot of options, then I want theworld below to be seen easily.
+3. Change the gun image in the bottom to a wand and make sure all the icons including this one look crisp and polished and not clunky. In the above the pause, timer and wave ... they all dont look alighed properly. I want aligned and good UI.
+4. For the keyboard make the letters bigger but make the key boxes smaller so they take less space. Also keep the reload button in the bottom right
+5. For the keyboard rather than placing each key one at a time, create a prefab so in other places also same asset can be used. This applies to all others as well. Also i wanted to have cinemachine. Read issues.txt and see the other requirement you have missed.

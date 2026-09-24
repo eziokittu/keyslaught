@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7025483982213411930}
   - component: {fileID: 5974176140574100444}
-  - component: {fileID: 83760899842966595}
+  - component: {fileID: 1091572602371329231}
   m_Layer: 0
   m_Name: BrainCellPickup
   m_TagString: Untagged
@@ -82,8 +82,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 18
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: f050c0035ecc4cc40b6d089c94ec0e70, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 8c12ff7e86e7bdc4d8364092ba6cf025, type: 3}
+  m_Color: {r: 0.21960784, g: 0.8862745, b: 0.9098039, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &83760899842966595
+--- !u!114 &1091572602371329231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +101,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4110827587232296635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 77de3788b9f994f44abce15628f9dcec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.BrainCellPickup

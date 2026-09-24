@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 279dd23286ecbac4b9ac433fde0d4174, type: 3}
+  m_Name: Teacher
+  m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.TurretDefinition
+  kind: 1
+  coveredLetters: ABCDEF
+  range: 5.2
+  secondsPerShot: 0.42
+  buildCost: 6
+  rangePerUpgrade: 0.45
+  cadenceMultiplierPerUpgrade: 0.82

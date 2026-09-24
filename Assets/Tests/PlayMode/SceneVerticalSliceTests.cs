@@ -293,6 +293,92 @@ namespace KeySlaught.Tests.PlayMode
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator EnemyTraversal_HistoryCanReverseProgressWithoutLeavingPath()
+        {
+            var path = CreatePath(Vector3.zero, Vector3.right * 4f);
+            var definition = CreateDefinition("BOOK", 2f);
+            var enemyObject = new GameObject("Reversible Enemy");
+            var enemy = enemyObject.AddComponent<EnemyAgent>();
+            enemy.Initialize(definition, path, 0);
+            enemy.Advance(1f);
+            enemy.SetMovementMultiplier(-1f);
+            enemy.Advance(0.5f);
+
+            Assert.That(enemy.TravelledDistance, Is.EqualTo(1f).Within(0.001f));
+            Assert.That(enemyObject.transform.position.x, Is.EqualTo(1f).Within(0.001f));
+            Object.Destroy(enemyObject); Object.Destroy(definition); Object.Destroy(path.gameObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TurretPad_AttacksClosestCoveredEnemyFromDefinition()
+        {
+            var fixture = CreateCombatFixture("BOOK", 4);
+            var definition = ScriptableObject.CreateInstance<TurretDefinition>();
+            SetPrivateField(definition, "kind", TurretKind.Teacher);
+            SetPrivateField(definition, "coveredLetters", "ABCDEF");
+            SetPrivateField(definition, "range", 5f);
+            SetPrivateField(definition, "secondsPerShot", 1f);
+            var turretObject = new GameObject("Attacking Teacher");
+            turretObject.AddComponent<SpriteRenderer>();
+            var turret = turretObject.AddComponent<TurretPadController>();
+            turret.Configure(Vector3Int.zero, turretObject.GetComponent<SpriteRenderer>(), null, null, null,
+                fixture.Combat.SceneCoordinator, fixture.Combat, new[] { definition });
+            turret.Build(TurretKind.Teacher);
+
+            turret.Tick(0f);
+
+            Assert.That(fixture.Enemy.WordState.RemainingWord, Is.EqualTo("OOK"));
+            Object.Destroy(turretObject); Object.Destroy(definition); fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator Politics_RemovesRoundedUpFrontHalfFromFrontEnemies()
+        {
+            var fixture = CreateCombatFixture("HELLO", 4);
+            var economyObject = new GameObject("Ability Economy");
+            var economy = economyObject.AddComponent<BrainCellEconomy>();
+            economy.Credit(20);
+            var definition = ScriptableObject.CreateInstance<AbilityDefinition>();
+            SetPrivateField(definition, "kind", LibraryAbilityKind.Politics);
+            SetPrivateField(definition, "cost", 12);
+            SetPrivateField(definition, "targetCount", 3);
+            var abilityObject = new GameObject("Library Abilities");
+            var abilities = abilityObject.AddComponent<LibraryAbilityController>();
+            abilities.Configure(fixture.Spawner, fixture.Combat, economy, new[] { definition });
+
+            Assert.That(abilities.TryActivate(LibraryAbilityKind.Politics), Is.True);
+            Assert.That(fixture.Enemy.WordState.RemainingWord, Is.EqualTo("LO"));
+            Assert.That(economy.Balance, Is.EqualTo(8));
+            Object.Destroy(abilityObject); Object.Destroy(definition); Object.Destroy(economyObject); fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator WaveRun_FiniteWaveEndsInVictoryAfterLastEnemyFalls()
+        {
+            var fixture = CreateCombatFixture("A", 4, spawnEnemy: false);
+            var wave = ScriptableObject.CreateInstance<WaveDefinition>();
+            SetPrivateField(wave, "enemies", new[] { fixture.Definition });
+            SetPrivateField(wave, "spawnInterval", 0.1f);
+            var runObject = new GameObject("Finite Run");
+            var run = runObject.AddComponent<WaveRunController>();
+            run.Configure(fixture.Spawner, fixture.Combat.SceneCoordinator.Library, null, fixture.Combat,
+                fixture.Combat.SceneCoordinator.Player, null, null, new[] { wave });
+            run.StartRun();
+            run.Tick(0f);
+            var enemy = fixture.Spawner.ActiveEnemies[0];
+            enemy.WordState.ConsumePrefix(1);
+            fixture.Combat.ResolveExternalDamage(enemy);
+            run.Tick(0f);
+
+            Assert.That(run.Phase, Is.EqualTo(WaveRunPhase.Victory));
+            Object.Destroy(runObject); Object.Destroy(wave); fixture.Destroy();
+            yield return null;
+        }
+
         private static WaypointPath CreatePath(params Vector3[] positions)
         {
             var pathObject = new GameObject("Test Path");
@@ -404,8 +490,12 @@ namespace KeySlaught.Tests.PlayMode
 
             public EnemyAgent Enemy { get; }
 
+            public EnemyDefinition Definition => definition;
+
             public void Destroy()
             {
+                foreach (var active in Spawner.ActiveEnemies)
+                    if (active != null) Object.Destroy(active.gameObject);
                 if (Enemy != null)
                 {
                     Object.Destroy(Enemy.gameObject);

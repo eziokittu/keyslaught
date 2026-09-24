@@ -17,6 +17,7 @@ namespace KeySlaught.SceneGameplay
         private float spawnTimer;
         private int definitionIndex;
         private long nextSpawnOrder;
+        private float movementMultiplier = 1f;
 
         public event Action<EnemyAgent> EnemySpawned;
 
@@ -50,13 +51,62 @@ namespace KeySlaught.SceneGameplay
             var definition = definitions[definitionIndex % definitions.Length];
             definitionIndex++;
 
+            return Spawn(definition);
+        }
+
+        public EnemyAgent Spawn(EnemyDefinition definition)
+        {
+            if (enemyPrefab == null || path == null || definition == null)
+            {
+                throw new InvalidOperationException($"{name} is missing its prefab, path, or enemy definition.");
+            }
+
             var enemy = Instantiate(enemyPrefab, path.StartPosition, Quaternion.identity, spawnRoot);
             enemy.name = $"Enemy_{nextSpawnOrder:000}_{definition.Word}";
             enemy.Initialize(definition, path, nextSpawnOrder++);
+            enemy.SetMovementMultiplier(movementMultiplier);
             enemy.ArrivedAtLibrary += OnEnemyArrived;
             activeEnemies.Add(enemy);
             EnemySpawned?.Invoke(enemy);
             return enemy;
+        }
+
+        public EnemyAgent SpawnWord(string word, float movementSpeed)
+        {
+            if (enemyPrefab == null || path == null)
+                throw new InvalidOperationException($"{name} is missing its prefab or path.");
+            var enemy = Instantiate(enemyPrefab, path.StartPosition, Quaternion.identity, spawnRoot);
+            enemy.name = $"Enemy_{nextSpawnOrder:000}_{word}";
+            enemy.InitializeWord(word, movementSpeed, path, nextSpawnOrder++);
+            enemy.SetMovementMultiplier(movementMultiplier);
+            enemy.ArrivedAtLibrary += OnEnemyArrived;
+            activeEnemies.Add(enemy);
+            EnemySpawned?.Invoke(enemy);
+            return enemy;
+        }
+
+        public void SetMovementMultiplier(float multiplier)
+        {
+            movementMultiplier = Mathf.Clamp(multiplier, -1f, 1f);
+            foreach (var enemy in activeEnemies)
+                if (enemy != null) enemy.SetMovementMultiplier(movementMultiplier);
+        }
+
+        public void ClearAll()
+        {
+            for (var index = activeEnemies.Count - 1; index >= 0; index--)
+            {
+                var enemy = activeEnemies[index];
+                if (enemy != null)
+                {
+                    enemy.ArrivedAtLibrary -= OnEnemyArrived;
+                    Destroy(enemy.gameObject);
+                }
+            }
+            activeEnemies.Clear();
+            definitionIndex = 0;
+            nextSpawnOrder = 0;
+            movementMultiplier = 1f;
         }
 
         public bool Despawn(EnemyAgent enemy)

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0c08f6e7b37ef49bf368791fae4615, type: 3}
+  m_Name: LoreOneLevelOne
+  m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.LevelDefinition
+  displayName: LORE I - LEVEL 1
+  waves:
+  - title: WAVE 1
+    words:
+    - word: HISTORY
+      delayAfterPrevious: 1.8
+    - word: BOOK
+      delayAfterPrevious: 2.2
+    - word: ARCHIVE
+      delayAfterPrevious: 2.4
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 30
+    enemyMovementSpeed: 0.8625
+  - title: WAVE 2
+    words:
+    - word: KNOWLEDGE
+      delayAfterPrevious: 2
+    - word: MEMORY
+      delayAfterPrevious: 2
+    - word: LIBRARY
+      delayAfterPrevious: 2.3
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 30
+    enemyMovementSpeed: 0.8625
+  - title: WAVE 3
+    words:
+    - word: PRESERVE
+      delayAfterPrevious: 1.8
+    - word: CULTURE
+      delayAfterPrevious: 1.8
+    - word: WISDOM
+      delayAfterPrevious: 2
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 30
+    enemyMovementSpeed: 0.8625
+  intermissionSeconds: 30

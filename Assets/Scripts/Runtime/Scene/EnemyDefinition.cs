@@ -14,7 +14,8 @@ namespace KeySlaught.SceneGameplay
 
         private void OnValidate()
         {
-            word = string.IsNullOrWhiteSpace(word) ? "BOOK" : word.ToUpperInvariant();
+            word = string.IsNullOrWhiteSpace(word) ? "BOOK" : word.Trim().ToUpperInvariant();
+            if (word.Length > 64) word = word.Substring(0, 64);
             movementSpeed = Mathf.Max(0.01f, movementSpeed);
         }
     }

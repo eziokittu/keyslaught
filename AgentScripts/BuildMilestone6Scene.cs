@@ -23,6 +23,8 @@ public static class BuildMilestone6Scene
     private const string EnemyPrefabPath = "Assets/Prefabs/EnemyPrototype.prefab";
     private const string TorchPrefabPath = "Assets/Prefabs/MonochromeTorch.prefab";
     private const string BrainPrefabPath = "Assets/Prefabs/BrainCellPickup.prefab";
+    private const string UiTextButtonPrefabPath = "Assets/Prefabs/UiTextButton.prefab";
+    private const string UiIconButtonPrefabPath = "Assets/Prefabs/UiIconButton.prefab";
     private static readonly Color32 Transparent = new(0, 0, 0, 0);
     private static readonly Color32 Black = new(8, 9, 11, 255);
     private static readonly Color32 Charcoal = new(28, 31, 36, 255);
@@ -138,6 +140,13 @@ public static class BuildMilestone6Scene
             var renderer = turret.AddComponent<SpriteRenderer>(); renderer.sprite = Sprite(pair.Item2); renderer.sharedMaterial = LitMaterial(); renderer.sortingOrder = 12;
             PrefabUtility.SaveAsPrefabAsset(turret, $"Assets/Prefabs/Turret{pair.Item1}.prefab"); Object.DestroyImmediate(turret);
         }
+
+        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        var solid = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Prototype/SolidSprite.asset");
+        var textButton = CreateTextButtonSource("Reusable Text Button", font, solid, 24);
+        PrefabUtility.SaveAsPrefabAsset(textButton.gameObject, UiTextButtonPrefabPath); Object.DestroyImmediate(textButton.gameObject);
+        var iconButton = CreateIconButtonSource("Reusable Icon Button", Sprite("UI_Pause_128"), solid);
+        PrefabUtility.SaveAsPrefabAsset(iconButton.gameObject, UiIconButtonPrefabPath); Object.DestroyImmediate(iconButton.gameObject);
     }
 
     private static void GenerateArt()
@@ -166,7 +175,7 @@ public static class BuildMilestone6Scene
         Save("Cell_Highlight_128", 128, p => DrawHighlight(p, 128));
         Save("UI_Circle_128", 128, p => DrawCircleUi(p, 128));
         Save("UI_Reload_128", 128, p => DrawReload(p, 128));
-        Save("UI_Gun_128", 128, p => DrawGun(p, 128));
+        Save("UI_Wand_128", 128, p => DrawWand(p, 128));
         Save("UI_Pause_128", 128, p => DrawPause(p, 128));
         Save("UI_Time_128", 128, p => DrawTime(p, 128));
     }
@@ -394,32 +403,32 @@ public static class BuildMilestone6Scene
         var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         var solid = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Prototype/SolidSprite.asset");
 
-        var top = Panel("Top 30 Percent", canvas.transform, solid, new Color(0.025f,0.027f,0.032f,1f));
-        Rect(top.rectTransform, new Vector2(0,0.7f), Vector2.one, Vector2.zero, Vector2.zero);
-        var wave = Label("Wave 1", top.transform, font, 30, White); Rect(wave.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(28,-30), new Vector2(210,58));
-        var timeIcon = Image("Time Icon", top.transform, Sprite("UI_Time_128"), Color.white); Rect(timeIcon.rectTransform, new Vector2(.5f,1), new Vector2(.5f,1), new Vector2(-80,-30), new Vector2(42,42));
-        var time = Label("00:00", top.transform, font, 28, White); Rect(time.rectTransform, new Vector2(.5f,1), new Vector2(.5f,1), new Vector2(-25,-30), new Vector2(150,58));
-        var pauseButton = IconButton("Pause", top.transform, Sprite("UI_Pause_128"), solid); Rect(pauseButton.GetComponent<RectTransform>(), new Vector2(1,1), new Vector2(1,1), new Vector2(-28,-26), new Vector2(62,62));
-        var target = Label("NO TARGET IN RANGE", top.transform, font, 40, White); target.fontStyle = FontStyle.Bold;
-        Rect(target.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(35,-145), new Vector2(-70,62));
-        var divider = Panel("Divider", top.transform, solid, new Color(1,1,1,.38f)); Rect(divider.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(40,-190), new Vector2(-80,3));
+        var top = Panel("Top 20 Percent", canvas.transform, solid, new Color(0,0,0,0.001f)); top.raycastTarget = false;
+        Rect(top.rectTransform, new Vector2(0,0.8f), Vector2.one, Vector2.zero, Vector2.zero);
+        var statsBar = Panel("Aligned Stats Bar", top.transform, solid, new Color(0.025f,0.027f,0.032f,.96f)); statsBar.raycastTarget = false;
+        Rect(statsBar.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(0,-41), new Vector2(0,82));
+        var wave = Label("Wave 1", statsBar.transform, font, 27, White); Rect(wave.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(24,-13), new Vector2(190,56));
+        var currency = Label("BRAIN CELLS  0", statsBar.transform, font, 18, White); Rect(currency.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(230,-13), new Vector2(245,56));
+        var timeIcon = Image("Time Icon", statsBar.transform, Sprite("UI_Time_128"), Color.white); Rect(timeIcon.rectTransform, new Vector2(.5f,1), new Vector2(.5f,1), new Vector2(38,-18), new Vector2(42,42));
+        var time = Label("00:00", statsBar.transform, font, 27, White); Rect(time.rectTransform, new Vector2(.5f,1), new Vector2(.5f,1), new Vector2(87,-13), new Vector2(125,56));
+        var pauseButton = IconButton("Pause", statsBar.transform, Sprite("UI_Pause_128"), solid); Rect(pauseButton.GetComponent<RectTransform>(), new Vector2(1,1), new Vector2(1,1), new Vector2(-22,-12), new Vector2(58,58));
 
-        var contextPanel = Panel("Context Actions", top.transform, solid, new Color(.07f,.075f,.085f,1f));
+        var contextPanel = Panel("Transparent Context Actions", top.transform, solid, new Color(0,0,0,0.001f)); contextPanel.raycastTarget = false;
         contextPanel.rectTransform.anchorMin = new Vector2(0,0); contextPanel.rectTransform.anchorMax = new Vector2(1,0);
-        contextPanel.rectTransform.pivot = new Vector2(.5f,0); contextPanel.rectTransform.anchoredPosition = new Vector2(0,20);
-        contextPanel.rectTransform.sizeDelta = new Vector2(-52,250);
-        var contextTitle = Label("CONTEXT", contextPanel.transform, font, 24, Light); contextTitle.fontStyle = FontStyle.Bold;
-        Rect(contextTitle.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(18,-12), new Vector2(-36,46));
+        contextPanel.rectTransform.pivot = new Vector2(.5f,0); contextPanel.rectTransform.anchoredPosition = new Vector2(0,12);
+        contextPanel.rectTransform.sizeDelta = new Vector2(-40,214);
+        var contextTitle = Label("CONTEXT", contextPanel.transform, font, 22, Light); contextTitle.fontStyle = FontStyle.Bold;
+        Rect(contextTitle.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(18,-4), new Vector2(-36,34));
         var buttons = new Button[9]; var labels = new Text[9];
         for (var i = 0; i < 9; i++)
         {
-            buttons[i] = TextButton($"Action {i+1}", contextPanel.transform, font, solid, 18);
+            buttons[i] = TextButton($"Action {i+1}", contextPanel.transform, font, solid, 17);
             var row = i / 3; var col = i % 3;
-            Rect(buttons[i].GetComponent<RectTransform>(), new Vector2(0,1), new Vector2(0,1), new Vector2(18 + col * 278, -65 - row * 62), new Vector2(256,50));
+            Rect(buttons[i].GetComponent<RectTransform>(), new Vector2(0,1), new Vector2(0,1), new Vector2(18 + col * 278, -43 - row * 50), new Vector2(256,42));
             labels[i] = buttons[i].GetComponentInChildren<Text>();
         }
         var contextStatus = Label(string.Empty, contextPanel.transform, font, 18, Light);
-        Rect(contextStatus.rectTransform, new Vector2(0,0), new Vector2(1,0), new Vector2(18,10), new Vector2(-36,42));
+        Rect(contextStatus.rectTransform, new Vector2(0,0), new Vector2(1,0), new Vector2(18,4), new Vector2(-36,30));
 
         var controller = canvasGo.AddComponent<TileContextActionPanel>();
         controller.Configure(player, map.Ground, map.Path, map.Blocked, library, new Vector3Int(0,6,0), new Vector3Int(1,7,0),
@@ -427,26 +436,29 @@ public static class BuildMilestone6Scene
         for (var i = 0; i < buttons.Length; i++) { var action = buttons[i].gameObject.AddComponent<ContextActionButton>(); action.Configure(controller, i + 1); }
 
         var playSurface = Panel("Dynamic Joystick Surface", canvas.transform, solid, new Color(0,0,0,0.001f));
-        Rect(playSurface.rectTransform, new Vector2(0,.3f), new Vector2(1,.7f), Vector2.zero, Vector2.zero);
+        Rect(playSurface.rectTransform, new Vector2(0,.2f), new Vector2(1,.8f), Vector2.zero, Vector2.zero);
         var joystickBase = Image("Dynamic Circular Joystick", playSurface.transform, Sprite("UI_Circle_128"), new Color(1,1,1,.36f));
         joystickBase.raycastTarget = false; Rect(joystickBase.rectTransform, new Vector2(.5f,.5f), new Vector2(.5f,.5f), Vector2.zero, new Vector2(176,176));
         var handle = Image("Joystick Handle", joystickBase.transform, Sprite("UI_Circle_128"), new Color(.18f,.18f,.2f,.72f));
         handle.raycastTarget = false; Rect(handle.rectTransform, new Vector2(.5f,.5f), new Vector2(.5f,.5f), Vector2.zero, new Vector2(72,72));
         var joystick = playSurface.gameObject.AddComponent<VirtualJoystick>(); joystick.Configure(player, playSurface.rectTransform, joystickBase.rectTransform, handle.rectTransform);
 
-        var bottom = Panel("Bottom 30 Percent", canvas.transform, solid, new Color(.025f,.027f,.032f,1f));
-        Rect(bottom.rectTransform, Vector2.zero, new Vector2(1,.3f), Vector2.zero, Vector2.zero);
-        var gun = Image("Gun Icon", bottom.transform, Sprite("UI_Gun_128"), Color.white); Rect(gun.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(32,-22), new Vector2(72,72));
-        var magazine = Label("▰  [ ●  ●  ●  ● ]", bottom.transform, font, 32, White); magazine.fontStyle = FontStyle.Bold;
-        Rect(magazine.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(112,-22), new Vector2(-245,72));
-        var reload = IconButton("Reload", bottom.transform, Sprite("UI_Reload_128"), solid); Rect(reload.GetComponent<RectTransform>(), new Vector2(1,1), new Vector2(1,1), new Vector2(-28,-20), new Vector2(112,78));
+        var bottom = Panel("Bottom 20 Percent", canvas.transform, solid, new Color(.025f,.027f,.032f,1f));
+        Rect(bottom.rectTransform, Vector2.zero, new Vector2(1,.2f), Vector2.zero, Vector2.zero);
+        var target = Label(string.Empty, bottom.transform, font, 33, White); target.fontStyle = FontStyle.Bold;
+        Rect(target.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(28,-24), new Vector2(-56,45));
+        var divider = Panel("Target Divider", bottom.transform, solid, new Color(1,1,1,.32f)); divider.raycastTarget = false;
+        Rect(divider.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(34,-48), new Vector2(-68,2));
+        var wand = Image("Wand Icon", bottom.transform, Sprite("UI_Wand_128"), Color.white); Rect(wand.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(24,-57), new Vector2(58,58));
+        var magazine = Label("[ ●  ●  ●  ● ]", bottom.transform, font, 29, White); magazine.fontStyle = FontStyle.Bold;
+        Rect(magazine.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(92,-57), new Vector2(-235,58));
+        var reload = IconButton("Reload", bottom.transform, Sprite("UI_Reload_128"), solid); Rect(reload.GetComponent<RectTransform>(), new Vector2(1,0), new Vector2(1,0), new Vector2(-18,14), new Vector2(66,66));
         var refreshAdapter = reload.gameObject.AddComponent<OnScreenRefreshButton>(); refreshAdapter.Configure(combat);
-        var status = Label("TYPE A-Z TO LOAD", bottom.transform, font, 16, Light); Rect(status.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(32,-95), new Vector2(-64,34));
+        var status = Label("TYPE A-Z TO LOAD", bottom.transform, font, 14, Light); Rect(status.rectTransform, new Vector2(0,1), new Vector2(1,1), new Vector2(610,-68), new Vector2(-185,34));
         BuildQwerty(bottom.transform, combat, font, solid);
         combat.ConfigureUi(magazine, status);
 
         var topHud = canvasGo.AddComponent<GameplayTopHud>(); topHud.Configure(coordinator, wave, time, target);
-        var currency = Label("BRAIN CELLS  0", top.transform, font, 20, White); Rect(currency.rectTransform, new Vector2(0,1), new Vector2(0,1), new Vector2(28,-72), new Vector2(260,40));
         var economyRoot = ReplaceChild(root, "Brain Cell Pickups");
         var brainPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(BrainPrefabPath).GetComponent<BrainCellPickup>();
         var economy = economyRoot.AddComponent<BrainCellEconomy>(); economy.Configure(combat, player, Sprite("Brain_128"), currency, brainPrefab);
@@ -457,12 +469,12 @@ public static class BuildMilestone6Scene
     private static void BuildQwerty(Transform parent, GameplayCombatController combat, Font font, Sprite solid)
     {
         var rows = new[] { "QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM" };
-        var widths = new[] { 80f, 84f, 88f }; var offsets = new[] { 25f, 65f, 110f };
+        var widths = new[] { 70f, 72f, 74f }; var offsets = new[] { 73f, 102f, 173f };
         for (var row = 0; row < rows.Length; row++) for (var col = 0; col < rows[row].Length; col++)
         {
-            var letter = rows[row][col]; var button = TextButton(letter.ToString(), parent, font, solid, 24);
+            var letter = rows[row][col]; var button = TextButton(letter.ToString(), parent, font, solid, 30);
             Rect(button.GetComponent<RectTransform>(), new Vector2(0,1), new Vector2(0,1),
-                new Vector2(offsets[row] + col * (widths[row] + 6), -145 - row * 92), new Vector2(widths[row],78));
+                new Vector2(offsets[row] + col * (widths[row] + 6), -126 - row * 60), new Vector2(widths[row],50));
             var adapter = button.gameObject.AddComponent<OnScreenLetterButton>(); adapter.Configure(combat, letter);
         }
     }
@@ -571,8 +583,8 @@ public static class BuildMilestone6Scene
     private static void DrawCircleUi(Color32[] p,int s){Fill(p,Transparent);Circle(p,s,64,64,61,new Color32(225,225,225,190));Circle(p,s,64,64,52,new Color32(45,47,53,180));}
     private static void DrawPause(Color32[] p,int s){Fill(p,Transparent);Box(p,s,34,22,20,84,White);Box(p,s,74,22,20,84,White);}
     private static void DrawTime(Color32[] p,int s){Fill(p,Transparent);Circle(p,s,64,62,43,White);Circle(p,s,64,62,35,Charcoal);Line(p,s,64,62,64,84,White,6);Line(p,s,64,62,82,52,White,6);Box(p,s,51,108,26,8,White);}
-    private static void DrawGun(Color32[] p,int s){Fill(p,Transparent);Box(p,s,18,65,76,20,White);Box(p,s,86,70,24,10,Light);Box(p,s,48,34,22,34,Mid);Line(p,s,68,65,88,45,White,8);}
-    private static void DrawReload(Color32[] p,int s){Fill(p,Transparent);for(int i=0;i<28;i++){var a=(35+i*8)*Mathf.Deg2Rad;Circle(p,s,64+(int)(Mathf.Cos(a)*38),64+(int)(Mathf.Sin(a)*38),5,White);}Line(p,s,91,91,108,89,White,7);Line(p,s,91,91,94,108,White,7);Line(p,s,37,37,20,39,White,7);Line(p,s,37,37,34,20,White,7);}
+    private static void DrawWand(Color32[] p,int s){Fill(p,Transparent);Line(p,s,31,25,91,91,Black,15);Line(p,s,31,25,91,91,White,8);Circle(p,s,96,96,15,Light);for(var i=0;i<8;i++){var a=i*Mathf.PI/4f;Line(p,s,96+(int)(Mathf.Cos(a)*20),96+(int)(Mathf.Sin(a)*20),96+(int)(Mathf.Cos(a)*29),96+(int)(Mathf.Sin(a)*29),White,5);}Box(p,s,22,17,17,17,Mid);}
+    private static void DrawReload(Color32[] p,int s){Fill(p,Transparent);for(var deg=28;deg<=164;deg+=3){var a=deg*Mathf.Deg2Rad;Circle(p,s,64+(int)(Mathf.Cos(a)*39),64+(int)(Mathf.Sin(a)*39),4,White);}for(var deg=208;deg<=344;deg+=3){var a=deg*Mathf.Deg2Rad;Circle(p,s,64+(int)(Mathf.Cos(a)*39),64+(int)(Mathf.Sin(a)*39),4,White);}Line(p,s,27,76,18,97,White,7);Line(p,s,27,76,48,82,White,7);Line(p,s,101,52,110,31,White,7);Line(p,s,101,52,80,46,White,7);}
 
     private static void Save(string name,int size,Action<Color32[]> draw)
     {
@@ -597,8 +609,10 @@ public static class BuildMilestone6Scene
     private static Image Panel(string name,Transform parent,Sprite sprite,Color color){var go=new GameObject(name,typeof(RectTransform),typeof(CanvasRenderer),typeof(Image));go.transform.SetParent(parent,false);var image=go.GetComponent<Image>();image.sprite=sprite;image.color=color;return image;}
     private static Image Image(string name,Transform parent,Sprite sprite,Color color){var image=Panel(name,parent,sprite,color);image.preserveAspect=true;return image;}
     private static Text Label(string text,Transform parent,Font font,int size,Color color){var go=new GameObject(string.IsNullOrEmpty(text)?"Label":"Label "+text,typeof(RectTransform),typeof(CanvasRenderer),typeof(Text));go.transform.SetParent(parent,false);var label=go.GetComponent<Text>();label.font=font;label.fontSize=size;label.color=color;label.text=text;label.alignment=TextAnchor.MiddleCenter;label.horizontalOverflow=HorizontalWrapMode.Wrap;label.verticalOverflow=VerticalWrapMode.Overflow;return label;}
-    private static Button TextButton(string text,Transform parent,Font font,Sprite sprite,int fontSize){var panel=Panel("Button "+text,parent,sprite,new Color(.72f,.73f,.76f,1));var button=panel.gameObject.AddComponent<Button>();button.targetGraphic=panel;var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1f,1f,1f,1);colors.pressedColor=new Color(.56f,.58f,.62f,1);colors.selectedColor=new Color(.88f,.89f,.92f,1);colors.fadeDuration=.08f;button.colors=colors;var label=Label(text,panel.transform,font,fontSize,Black);label.fontStyle=FontStyle.Bold;label.raycastTarget=false;Rect(label.rectTransform,Vector2.zero,Vector2.one,new Vector2(4,3),new Vector2(-8,-6));return button;}
-    private static Button IconButton(string name,Transform parent,Sprite icon,Sprite solid){var panel=Panel(name,parent,solid,new Color(.14f,.15f,.17f,1));var button=panel.gameObject.AddComponent<Button>();button.targetGraphic=panel;var colors=button.colors;colors.highlightedColor=Color.white;colors.pressedColor=new Color(.45f,.46f,.49f,1);colors.fadeDuration=.08f;button.colors=colors;var image=Image(name+" Icon",panel.transform,icon,Color.white);image.raycastTarget=false;Rect(image.rectTransform,Vector2.zero,Vector2.one,new Vector2(10,10),new Vector2(-20,-20));return button;}
+    private static Button TextButton(string text,Transform parent,Font font,Sprite sprite,int fontSize){var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(UiTextButtonPrefabPath)??throw new InvalidOperationException("Reusable text-button prefab missing.");var instance=(GameObject)PrefabUtility.InstantiatePrefab(prefab,parent);instance.name="Button "+text;var button=instance.GetComponent<Button>();var label=instance.GetComponentInChildren<Text>(true);label.text=text;label.font=font;label.fontSize=fontSize;return button;}
+    private static Button IconButton(string name,Transform parent,Sprite icon,Sprite solid){var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(UiIconButtonPrefabPath)??throw new InvalidOperationException("Reusable icon-button prefab missing.");var instance=(GameObject)PrefabUtility.InstantiatePrefab(prefab,parent);instance.name=name;var button=instance.GetComponent<Button>();var image=instance.transform.Find("Icon").GetComponent<Image>();image.name=name+" Icon";image.sprite=icon;return button;}
+    private static Button CreateTextButtonSource(string name,Font font,Sprite sprite,int fontSize){var panel=Panel(name,null,sprite,new Color(.72f,.73f,.76f,1));var button=panel.gameObject.AddComponent<Button>();button.targetGraphic=panel;var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1f,1f,1f,1);colors.pressedColor=new Color(.56f,.58f,.62f,1);colors.selectedColor=new Color(.88f,.89f,.92f,1);colors.fadeDuration=.08f;button.colors=colors;var label=Label("BUTTON",panel.transform,font,fontSize,Black);label.gameObject.name="Label";label.fontStyle=FontStyle.Bold;label.raycastTarget=false;Rect(label.rectTransform,Vector2.zero,Vector2.one,new Vector2(4,3),new Vector2(-8,-6));return button;}
+    private static Button CreateIconButtonSource(string name,Sprite icon,Sprite solid){var panel=Panel(name,null,solid,new Color(.14f,.15f,.17f,1));var button=panel.gameObject.AddComponent<Button>();button.targetGraphic=panel;var colors=button.colors;colors.highlightedColor=Color.white;colors.pressedColor=new Color(.45f,.46f,.49f,1);colors.fadeDuration=.08f;button.colors=colors;var image=Image("Icon",panel.transform,icon,Color.white);image.raycastTarget=false;Rect(image.rectTransform,Vector2.zero,Vector2.one,new Vector2(8,8),new Vector2(-16,-16));return button;}
     private static void Rect(RectTransform rect,Vector2 min,Vector2 max,Vector2 position,Vector2 size){rect.anchorMin=min;rect.anchorMax=max;rect.pivot=min==max?min:new Vector2(.5f,.5f);rect.anchoredPosition=position;rect.sizeDelta=size;}
 
     private readonly struct MapData
