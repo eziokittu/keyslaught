@@ -17,6 +17,7 @@ namespace KeySlaught.SceneGameplay
         private float movementMultiplier = 1f;
         private float movementSpeed;
         private SpriteRenderer cardRenderer;
+        private bool pinnedToWorldPosition;
 
         public event Action<EnemyAgent> ArrivedAtLibrary;
 
@@ -47,6 +48,7 @@ namespace KeySlaught.SceneGameplay
             travelledDistance = 0f;
             hasArrived = false;
             initialized = true;
+            pinnedToWorldPosition = false;
             transform.position = path.StartPosition;
             RefreshLabel();
         }
@@ -60,6 +62,7 @@ namespace KeySlaught.SceneGameplay
             travelledDistance = 0f;
             hasArrived = false;
             initialized = true;
+            pinnedToWorldPosition = false;
             transform.position = path.StartPosition;
             RefreshLabel();
         }
@@ -75,6 +78,8 @@ namespace KeySlaught.SceneGameplay
             {
                 throw new ArgumentOutOfRangeException(nameof(deltaSeconds));
             }
+
+            if (pinnedToWorldPosition) return false;
 
             travelledDistance = Mathf.Clamp(
                 travelledDistance + movementSpeed * movementMultiplier * deltaSeconds,
@@ -107,12 +112,27 @@ namespace KeySlaught.SceneGameplay
             if (wordLabel != null && WordState != null)
             {
                 wordLabel.text = WordState.NextLetter?.ToString() ?? string.Empty;
-                var remaining = WordState.RemainingWord.Length;
-                var cardColor = EnemyLengthPalette.Evaluate(remaining);
+                var remainingLength = WordState.RemainingWord.Length;
+                var cardColor = EnemyLengthPalette.Evaluate(remainingLength);
                 if (cardRenderer == null) cardRenderer = GetComponent<SpriteRenderer>();
                 if (cardRenderer != null) cardRenderer.color = cardColor;
-                wordLabel.color = EnemyLengthPalette.UseDarkText(remaining) ? new Color(.12f,.07f,.13f) : new Color(1f,.96f,.88f);
+                wordLabel.color = EnemyLengthPalette.UseDarkText(remainingLength) ? new Color(.12f,.07f,.13f) : new Color(1f,.96f,.88f);
             }
+        }
+
+        public void PlaceAtPathDistance(float distance)
+        {
+            if (path == null) return;
+            travelledDistance = Mathf.Clamp(distance, 0f, path.TotalLength);
+            transform.position = path.EvaluateDistance(travelledDistance);
+        }
+
+        public void PinNearWorldPosition(Vector3 worldPosition)
+        {
+            if (path == null) return;
+            travelledDistance = path.FindClosestDistance(worldPosition);
+            transform.position = worldPosition;
+            pinnedToWorldPosition = true;
         }
 
         private static string NormalizeWord(string word)

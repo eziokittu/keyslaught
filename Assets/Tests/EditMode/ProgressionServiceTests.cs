@@ -1,5 +1,6 @@
 using System.Reflection;
 using KeySlaught.Progression;
+using KeySlaught.SceneGameplay;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -42,6 +43,28 @@ namespace KeySlaught.Tests.EditMode
         }
 
         [Test]
+        public void LoreStars_UseBothLibraryHitsAndCompletionTime()
+        {
+            Assert.That(ProgressionService.CalculateLoreStars(0, 179f), Is.EqualTo(3));
+            Assert.That(ProgressionService.CalculateLoreStars(1, 240f), Is.EqualTo(2));
+            Assert.That(ProgressionService.CalculateLoreStars(0, 301f), Is.EqualTo(1));
+            Assert.That(ProgressionService.CalculateLoreStars(2, 120f), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void LoreCompletion_KeepsBestStarsAndFastestTime()
+        {
+            var go = new GameObject("Rated Progression");
+            var service = go.AddComponent<ProgressionService>(); service.Initialize(new MemoryStore());
+            service.CompleteLoreOneLevelOne(2, 250f);
+            service.CompleteLoreOneLevelOne(1, 280f);
+            service.CompleteLoreOneLevelOne(3, 170f);
+            Assert.That(service.Profile.loreOneLevelOneStars, Is.EqualTo(3));
+            Assert.That(service.Profile.loreOneLevelOneBestSeconds, Is.EqualTo(170f));
+            Object.DestroyImmediate(go);
+        }
+
+        [Test]
         public void ResearchPurchase_RejectsInsufficientPointsAndMaximumLevel()
         {
             var definition = Definition("MAG", ResearchStat.MagazineCapacity, 1, 2, 1, 1f);
@@ -53,6 +76,25 @@ namespace KeySlaught.Tests.EditMode
             service.CreditKnowledge(20);
             Assert.That(service.TryPurchase("MAG"), Is.False);
             Object.DestroyImmediate(go); Object.DestroyImmediate(definition);
+        }
+
+        [Test]
+        public void DedicatedLoreCompletion_PersistsUnlockAndRewardsOnlyOncePerRun()
+        {
+            var progressionObject = new GameObject("Dedicated Progression");
+            var service = progressionObject.AddComponent<ProgressionService>();
+            service.Initialize(new MemoryStore());
+            var flowObject = new GameObject("Dedicated Flow");
+            var flow = flowObject.AddComponent<DedicatedLevelSceneController>();
+            flow.Configure(null, service, null, null);
+
+            flow.RecordCompletion(true);
+            flow.RecordCompletion(true);
+
+            Assert.That(service.Profile.loreOneLevelOneCompleted, Is.True);
+            Assert.That(service.Profile.endlessModeUnlocked, Is.True);
+            Assert.That(service.Profile.knowledgePoints, Is.EqualTo(1));
+            Object.DestroyImmediate(flowObject); Object.DestroyImmediate(progressionObject);
         }
 
         private static ResearchDefinition Definition(string id, ResearchStat stat, int max, int cost, int growth, float value)

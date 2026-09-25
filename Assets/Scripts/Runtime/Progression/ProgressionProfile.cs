@@ -16,6 +16,8 @@ namespace KeySlaught.Progression
         public bool firstLaunch = true;
         public bool tutorialCompleted;
         public bool loreOneLevelOneCompleted;
+        public int loreOneLevelOneStars;
+        public float loreOneLevelOneBestSeconds;
         public bool endlessModeUnlocked;
         public int knowledgePoints;
         public List<ResearchLevelEntry> research = new();

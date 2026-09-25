@@ -1,0 +1,18 @@
+The game looks much better now. But need some changes.
+1. If an enemy is dying outside the map, the brain cells are dropping outside as well which the player cant collect. I want that in that case the brain cells get auto collected by the player if its outside.
+2. In the tutorials, its just text. I want to visually show as well what needs to be done. Rather than just putting the text add another controller and tell the player to drag on screen to move.
+3. foy typing the text shows "TRY IT:TYPE C A T", even after typing cat nothing happens. But if i move the player to the starting point for the enemies, then suddenly it shows WORD defeated. Also the panel text is unaligned again i will attach the image. Fix this text and also before asking to fire, tell the player about the wand buffer and show then that they can refresh it to reset the buffer. Do this in a more interactive way like along with the text highlight the key buttons maybe or add another keyboard in the tutorial itself and ask the player to press them.
+4. in the top it shows next wave and a timer. I want to have a fastdoward icon button clicking which the next wave starts immediately.
+5. currently the range circle is not shown for the player and the turrets. I want the player range circle to always show in a glowing animation so that sometimes it shows and sometimes it goes faded. For the turrets i only want to show the range circle in case the player is in that turret tile.
+6. These were the sub types of the turrets - 
+1. teacher - they can be of 4 types (A-F, G-M, N-T, U-Z) with high shooting speed and high range
+2. engineer - they can be of 2 types (A-M, N-z) - medium shooting speed, medium range
+3. scientist - they shoot all letters (A-Z) - low shooting speed, low range
+4. President - shoots only vowels (AEIOU and S,T), medium shooting and range.
+--- i wanted that on choosing a turret - say teacher, next i have to choose the turret types (for teacher there are 4 types each has same cost). And these shoot only what their type is. Also if three words are coming as enemies - Book, KNOWLEDGE, CAR, then the teacher of type 1 (A-F) are only eligible to shoot C and B from CAT and BOOK respectively, so even if KNOWLEDGE iscoming first they will shoot the next possible target. 
+5. I wanted different shades of colour for the enemies --
+I want fixed shades of colours upto 64 characters max. An enemy cant be more than 64 characters of letters. for the colours I want a very dark purple colour at 64 which will fade to violet around 50s and then pink around 40s then red around 30s, orange around 20s and yellow around 10s and then slowly become white before ending at 0. All the inbetweens will be different shades of the colours i had mentioned. The letter colour will be light initially but after orange the text colour becomes black.  ---
+So from 10 to 0 as length of letters i want to see gradual decreasing shades of colour from yellow to white. So make these shades and when an enemy is hit then their bounding box should change colour as well.
+6. right side of the wand buffer there is a text - type a-z to load .... remove that text its not required.
+7. Doe all the buttons the box height looks really small. fix that so they properly take more than the height of the text in between
+8. Continue with the next phase after this but i want at max 3 levels for lore 1. Currently on selecting lore 1 it starts the level. I want that to show another menu of levels and lores. it should show that lore 1 has 3 levels and lore 2 is locked. I also want a star rating system. The star rating should be based on library hits, total time consumed. Make these.

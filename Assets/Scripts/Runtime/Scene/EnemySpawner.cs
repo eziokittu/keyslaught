@@ -85,6 +85,13 @@ namespace KeySlaught.SceneGameplay
             return enemy;
         }
 
+        public EnemyAgent SpawnWordNear(string word, float movementSpeed, Vector3 worldPosition)
+        {
+            var enemy = SpawnWord(word, movementSpeed);
+            enemy.PinNearWorldPosition(worldPosition + Vector3.up * 2f);
+            return enemy;
+        }
+
         public void SetMovementMultiplier(float multiplier)
         {
             movementMultiplier = Mathf.Clamp(multiplier, -1f, 1f);

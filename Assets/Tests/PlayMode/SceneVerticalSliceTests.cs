@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 namespace KeySlaught.Tests.PlayMode
 {
@@ -26,6 +27,32 @@ namespace KeySlaught.Tests.PlayMode
             Assert.That(playerObject.transform.position.x, Is.EqualTo(1f).Within(0.0001f));
 
             Object.Destroy(playerObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PlayerMovement_CrossesClearableObstaclesButStopsAtWater()
+        {
+            var grid = new GameObject("Collision Grid", typeof(Grid));
+            var mapObject = new GameObject("Blocked Terrain", typeof(Tilemap), typeof(TilemapRenderer));
+            mapObject.transform.SetParent(grid.transform, false);
+            var map = mapObject.GetComponent<Tilemap>();
+            var tree = ScriptableObject.CreateInstance<Tile>(); tree.name = "Obstacle_Tree";
+            var water = ScriptableObject.CreateInstance<Tile>(); water.name = "Obstacle_Water_0";
+            map.SetTile(new Vector3Int(1, 0, 0), tree);
+            map.SetTile(new Vector3Int(2, 0, 0), water);
+
+            var playerObject = new GameObject("Terrain Test Player");
+            playerObject.transform.position = new Vector3(.5f, .5f, 0f);
+            var mover = playerObject.AddComponent<PlayerMover>();
+            mover.Configure(4f, new Vector2(-5f, -5f), new Vector2(5f, 5f));
+            mover.ConfigureBlockedTerrain(map);
+            mover.ApplyMovement(Vector2.right, .25f);
+            Assert.That(playerObject.transform.position.x, Is.EqualTo(1.5f).Within(.001f), "Trees must be traversable.");
+            mover.ApplyMovement(Vector2.right, .25f);
+            Assert.That(playerObject.transform.position.x, Is.EqualTo(1.5f).Within(.001f), "Water must remain blocked.");
+
+            Object.Destroy(playerObject); Object.Destroy(grid); Object.Destroy(tree); Object.Destroy(water);
             yield return null;
         }
 
@@ -294,6 +321,51 @@ namespace KeySlaught.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator TurretPad_ConfiguresRangeIndicatorAndVariant()
+        {
+            var playerObject = new GameObject("Range Player");
+            var player = playerObject.AddComponent<PlayerMover>();
+            var coordinatorObject = new GameObject("Range Coordinator");
+            var coordinator = coordinatorObject.AddComponent<GameplaySceneCoordinator>();
+            coordinator.Configure(player, null, null, 4f);
+            var turretObject = new GameObject("Variant Teacher");
+            var renderer = turretObject.AddComponent<SpriteRenderer>();
+            var turret = turretObject.AddComponent<TurretPadController>();
+            turret.Configure(Vector3Int.zero, renderer, null, null, null, coordinator);
+
+            Assert.That(turret.GetComponent<RangeCircleIndicator>(), Is.Not.Null);
+            Assert.That(turret.Build(TurretKind.Teacher, 3), Is.True);
+            Assert.That(turret.VariantIndex, Is.EqualTo(3));
+
+            Object.Destroy(turretObject); Object.Destroy(coordinatorObject); Object.Destroy(playerObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator BrainCells_DefeatedOutsidePlayableBoundsAreCreditedImmediately()
+        {
+            var playerObject = new GameObject("Bounded Player");
+            var player = playerObject.AddComponent<PlayerMover>();
+            player.Configure(2f, new Vector2(-1f, -1f), new Vector2(1f, 1f));
+            var path = CreatePath(Vector3.zero, Vector3.right * 3f);
+            var enemyObject = new GameObject("Off-map Enemy");
+            var enemy = enemyObject.AddComponent<EnemyAgent>();
+            enemy.InitializeWord("CAT", 1f, path, 0);
+            enemy.PinNearWorldPosition(new Vector3(2f, 0f));
+            var economyObject = new GameObject("Economy");
+            var economy = economyObject.AddComponent<BrainCellEconomy>();
+            economy.Configure(null, player, null, null);
+            var defeated = typeof(BrainCellEconomy).GetMethod("OnTargetDefeated", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            defeated.Invoke(economy, new object[] { enemy });
+
+            Assert.That(economy.Balance, Is.EqualTo(3));
+            Assert.That(economyObject.transform.childCount, Is.Zero);
+            Object.Destroy(economyObject); Object.Destroy(enemyObject); Object.Destroy(path.gameObject); Object.Destroy(playerObject);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator EnemyTraversal_HistoryCanReverseProgressWithoutLeavingPath()
         {
             var path = CreatePath(Vector3.zero, Vector3.right * 4f);
@@ -330,6 +402,37 @@ namespace KeySlaught.Tests.PlayMode
             turret.Tick(0f);
 
             Assert.That(fixture.Enemy.WordState.RemainingWord, Is.EqualTo("OOK"));
+            Object.Destroy(turretObject); Object.Destroy(definition); fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TeacherVariant_SkipsUncoveredFrontEnemyAndHitsNextEligibleWord()
+        {
+            var fixture = CreateCombatFixture("BOOK", 4, spawnEnemy: false);
+            var knowledge = fixture.Spawner.SpawnWord("KNOWLEDGE", 1f);
+            var book = fixture.Spawner.SpawnWord("BOOK", 1f);
+            var car = fixture.Spawner.SpawnWord("CAR", 1f);
+            var variant = new TurretVariantDefinition();
+            SetPrivateField(variant, "displayName", "A-F");
+            SetPrivateField(variant, "coveredLetters", "ABCDEF");
+            var definition = ScriptableObject.CreateInstance<TurretDefinition>();
+            SetPrivateField(definition, "kind", TurretKind.Teacher);
+            SetPrivateField(definition, "variants", new[] { variant });
+            SetPrivateField(definition, "range", 5f);
+            SetPrivateField(definition, "secondsPerShot", 1f);
+            var turretObject = new GameObject("A-F Teacher");
+            var renderer = turretObject.AddComponent<SpriteRenderer>();
+            var turret = turretObject.AddComponent<TurretPadController>();
+            turret.Configure(Vector3Int.zero, renderer, null, null, null,
+                fixture.Combat.SceneCoordinator, fixture.Combat, new[] { definition });
+            turret.Build(TurretKind.Teacher, 0);
+
+            turret.Tick(0f);
+
+            Assert.That(knowledge.WordState.RemainingWord, Is.EqualTo("KNOWLEDGE"));
+            Assert.That(book.WordState.RemainingWord, Is.EqualTo("OOK"));
+            Assert.That(car.WordState.RemainingWord, Is.EqualTo("CAR"));
             Object.Destroy(turretObject); Object.Destroy(definition); fixture.Destroy();
             yield return null;
         }

@@ -25,6 +25,32 @@ namespace KeySlaught.SceneGameplay
             return PathMath.DistanceRemaining(GetPositions(), travelledDistance);
         }
 
+        public float FindClosestDistance(Vector3 worldPosition)
+        {
+            var positions = GetPositions();
+            var bestDistance = 0f;
+            var bestSquared = float.PositiveInfinity;
+            var accumulated = 0f;
+            for (var index = 1; index < positions.Length; index++)
+            {
+                var start = positions[index - 1];
+                var end = positions[index];
+                var segment = end - start;
+                var length = segment.magnitude;
+                if (length <= Mathf.Epsilon) continue;
+                var t = Mathf.Clamp01(Vector3.Dot(worldPosition - start, segment) / (length * length));
+                var point = start + segment * t;
+                var squared = (worldPosition - point).sqrMagnitude;
+                if (squared < bestSquared)
+                {
+                    bestSquared = squared;
+                    bestDistance = accumulated + length * t;
+                }
+                accumulated += length;
+            }
+            return bestDistance;
+        }
+
         public void Configure(Transform[] orderedWaypoints, LineRenderer renderer = null)
         {
             waypoints = orderedWaypoints;

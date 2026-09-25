@@ -10,21 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 279dd23286ecbac4b9ac433fde0d4174, type: 3}
-  m_Name: Teacher
+  m_Name: President
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.TurretDefinition
-  kind: 1
-  coveredLetters: ABCDEF
+  kind: 4
+  coveredLetters: AEIOUST
   variants:
-  - displayName: A-F
-    coveredLetters: ABCDEF
-  - displayName: G-M
-    coveredLetters: GHIJKLM
-  - displayName: N-T
-    coveredLetters: NOPQRST
-  - displayName: U-Z
-    coveredLetters: UVWXYZ
-  range: 5.2
-  secondsPerShot: 0.42
-  buildCost: 6
-  rangePerUpgrade: 0.45
-  cadenceMultiplierPerUpgrade: 0.82
+  - displayName: AEIOU + S,T
+    coveredLetters: AEIOUST
+  range: 3.6
+  secondsPerShot: 0.72
+  buildCost: 9
+  rangePerUpgrade: 0.35
+  cadenceMultiplierPerUpgrade: 0.85

@@ -29,6 +29,8 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Vector3 playerStartPosition;
         private bool menuSuspended;
         private bool guidanceSuspended;
+        private float elapsedSeconds;
+        private int libraryHitCount;
 
         public event Action<int, bool> WaveStarted;
         public event Action<int> WaveCompleted;
@@ -38,6 +40,8 @@ namespace KeySlaught.SceneGameplay
         public bool IsBossWave => waveIndex >= 0 && waves != null && waveIndex < waves.Length && waves[waveIndex] != null && waves[waveIndex].IsBossWave;
         public float IntermissionRemaining => Phase == WaveRunPhase.Intermission ? Mathf.Max(0f, timer) : 0f;
         public LevelDefinition ActiveLevel => activeLevel;
+        public float ElapsedSeconds => elapsedSeconds;
+        public int LibraryHitCount => libraryHitCount;
 
         public void Configure(EnemySpawner enemySpawner, LibraryEndpoint endpoint, BrainCellEconomy runEconomy,
             GameplayCombatController combatController, PlayerMover playerMover, Transform placedTurrets,
@@ -46,6 +50,7 @@ namespace KeySlaught.SceneGameplay
             GameObject runResultRoot = null, Text runResultLabel = null,
             GameplayTopHud gameplayHud = null)
         {
+            if (isActiveAndEnabled && library != null) library.EnemyDamageReceived -= OnLibraryDamaged;
             spawner = enemySpawner;
             library = endpoint;
             economy = runEconomy;
@@ -60,10 +65,13 @@ namespace KeySlaught.SceneGameplay
             topHud = gameplayHud;
             if (player != null) playerStartPosition = player.transform.position;
             spawner?.SetAutomaticSpawning(false);
+            if (isActiveAndEnabled && library != null) library.EnemyDamageReceived += OnLibraryDamaged;
         }
 
         public void StartRun()
         {
+            elapsedSeconds = 0f;
+            libraryHitCount = 0;
             waveIndex = -1;
             BeginNextWave();
         }
@@ -85,6 +93,7 @@ namespace KeySlaught.SceneGameplay
         {
             if (menuSuspended || guidanceSuspended) return;
             if (Phase is WaveRunPhase.Victory or WaveRunPhase.Defeat) return;
+            elapsedSeconds += Mathf.Max(0f, deltaSeconds);
             if (library != null && library.State != null && library.State.IsDestroyed)
             {
                 EndRun(false);
@@ -137,6 +146,21 @@ namespace KeySlaught.SceneGameplay
         }
 
         private void Update() => Tick(Time.deltaTime);
+
+        private void OnEnable()
+        {
+            if (library != null) library.EnemyDamageReceived += OnLibraryDamaged;
+        }
+
+        private void OnDisable()
+        {
+            if (library != null) library.EnemyDamageReceived -= OnLibraryDamaged;
+        }
+
+        private void OnLibraryDamaged(int damage)
+        {
+            if (damage > 0) libraryHitCount++;
+        }
 
         private void BeginNextWave()
         {

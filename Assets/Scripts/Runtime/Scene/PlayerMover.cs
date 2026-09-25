@@ -22,6 +22,16 @@ namespace KeySlaught.SceneGameplay
 
         public Vector2 VirtualMovement => virtualMovement;
 
+        public Vector2 MinimumBounds => minimumBounds;
+
+        public Vector2 MaximumBounds => maximumBounds;
+
+        public bool IsInsidePlayableBounds(Vector2 position)
+        {
+            return position.x >= minimumBounds.x && position.x <= maximumBounds.x &&
+                position.y >= minimumBounds.y && position.y <= maximumBounds.y;
+        }
+
         public void ApplyMovement(Vector2 input, float deltaSeconds)
         {
             var direction = Vector2.ClampMagnitude(input, 1f);
@@ -39,8 +49,13 @@ namespace KeySlaught.SceneGameplay
 
         public void ConfigureBlockedTerrain(Tilemap blocked) => blockedTerrain = blocked;
 
-        private bool IsBlocked(Vector2 position) => blockedTerrain != null &&
-            blockedTerrain.HasTile(blockedTerrain.WorldToCell(position));
+        private bool IsBlocked(Vector2 position)
+        {
+            if (blockedTerrain == null) return false;
+            var tile = blockedTerrain.GetTile(blockedTerrain.WorldToCell(position));
+            if (tile == null) return false;
+            return tile.name.Contains("Water") || tile.name.Contains("Mountain");
+        }
 
         public void Configure(float speed, Vector2 minBounds, Vector2 maxBounds)
         {

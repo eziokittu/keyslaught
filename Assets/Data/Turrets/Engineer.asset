@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.SceneGameplay.TurretDefinition
   kind: 2
   coveredLetters: ABCDEFGHIJKLM
+  variants:
+  - displayName: A-M
+    coveredLetters: ABCDEFGHIJKLM
+  - displayName: N-Z
+    coveredLetters: NOPQRSTUVWXYZ
   range: 4.2
   secondsPerShot: 0.7
   buildCost: 8

@@ -9,6 +9,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private GameObject menuConfirmation;
         [SerializeField] private GameObject controlsPanel;
         [SerializeField] private GameShellController gameShell;
+        [SerializeField] private DedicatedLevelSceneController dedicatedLevel;
         [SerializeField] private GameObject modalDimmer;
 
         public bool IsPaused { get; private set; }
@@ -47,10 +48,13 @@ namespace KeySlaught.SceneGameplay
 
         public void ConfigureShell(GameShellController shell) => gameShell = shell;
 
+        public void ConfigureDedicatedLevel(DedicatedLevelSceneController level) => dedicatedLevel = level;
+
         public void ConfirmBackToMenu()
         {
             SetPaused(false);
-            gameShell?.ReturnToMainFromRun();
+            if (dedicatedLevel != null) dedicatedLevel.ReturnToMainMenu();
+            else gameShell?.ReturnToMainFromRun();
         }
 
         public void ToggleControls()

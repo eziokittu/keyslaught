@@ -52,7 +52,7 @@ namespace KeySlaught.SceneGameplay
 
             if (timeLabel != null)
             {
-                var total = Mathf.FloorToInt(elapsedSeconds);
+                var total = Mathf.FloorToInt(waveRun == null ? elapsedSeconds : waveRun.ElapsedSeconds);
                 timeLabel.text = $"{total / 60:00}:{total % 60:00}";
             }
 

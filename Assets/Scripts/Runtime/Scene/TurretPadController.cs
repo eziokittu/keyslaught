@@ -7,7 +7,8 @@ namespace KeySlaught.SceneGameplay
         None,
         Teacher,
         Engineer,
-        Scientist
+        Scientist,
+        President
     }
 
     public sealed class TurretPadController : MonoBehaviour
@@ -17,6 +18,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Sprite teacherSprite;
         [SerializeField] private Sprite engineerSprite;
         [SerializeField] private Sprite scientistSprite;
+        [SerializeField] private Sprite presidentSprite;
         [SerializeField] private GameplaySceneCoordinator coordinator;
         [SerializeField] private GameplayCombatController combat;
         [SerializeField] private TurretDefinition[] definitions;
@@ -31,6 +33,9 @@ namespace KeySlaught.SceneGameplay
         public TurretKind Kind { get; private set; }
 
         public int Level { get; private set; }
+        public int VariantIndex { get; private set; }
+        public string VariantName => GetDefinition()?.VariantName(VariantIndex) ?? string.Empty;
+        public float CurrentRange => GetDefinition()?.RangeAtLevel(Level) ?? 0f;
         public bool IsPreview => preview;
 
         public void SetPreview(bool value) => preview = value;
@@ -43,20 +48,27 @@ namespace KeySlaught.SceneGameplay
             Sprite scientist,
             GameplaySceneCoordinator runtimeCoordinator = null,
             GameplayCombatController combatController = null,
-            TurretDefinition[] turretDefinitions = null)
+            TurretDefinition[] turretDefinitions = null,
+            Sprite president = null)
         {
             cellPosition = cell;
             turretRenderer = renderer;
             teacherSprite = teacher;
             engineerSprite = engineer;
             scientistSprite = scientist;
+            presidentSprite = president;
             coordinator = runtimeCoordinator;
             combat = combatController;
             definitions = turretDefinitions;
+            var indicator = GetComponent<RangeCircleIndicator>();
+            if (indicator == null) indicator = gameObject.AddComponent<RangeCircleIndicator>();
+            indicator.ConfigureTurret(this, coordinator == null ? null : coordinator.Player);
             RefreshPresentation();
         }
 
-        public bool Build(TurretKind kind)
+        public bool Build(TurretKind kind) => Build(kind, 0);
+
+        public bool Build(TurretKind kind, int variantIndex)
         {
             if (Kind != TurretKind.None || kind == TurretKind.None)
             {
@@ -64,6 +76,7 @@ namespace KeySlaught.SceneGameplay
             }
 
             Kind = kind;
+            VariantIndex = Mathf.Max(0, variantIndex);
             Level = 1;
             attackTimer = 0f;
             RefreshPresentation();
@@ -85,6 +98,7 @@ namespace KeySlaught.SceneGameplay
         public void ResetPad()
         {
             Kind = TurretKind.None;
+            VariantIndex = 0;
             Level = 0;
             RefreshPresentation();
         }
@@ -111,7 +125,7 @@ namespace KeySlaught.SceneGameplay
             foreach (var enemy in coordinator.Spawner.ActiveEnemies)
             {
                 if (enemy == null || enemy.HasArrived || enemy.WordState == null || enemy.WordState.IsDefeated ||
-                    enemy.WordState.NextLetter == null || !definition.Covers(enemy.WordState.NextLetter.Value) ||
+                    enemy.WordState.NextLetter == null || !definition.Covers(VariantIndex, enemy.WordState.NextLetter.Value) ||
                     Vector2.Distance(transform.position, enemy.transform.position) > definition.RangeAtLevel(Level)) continue;
                 if (best == null || enemy.DistanceToLibrary < best.DistanceToLibrary ||
                     (Mathf.Approximately(enemy.DistanceToLibrary, best.DistanceToLibrary) && enemy.TieBreakOrder < best.TieBreakOrder)) best = enemy;
@@ -169,6 +183,9 @@ namespace KeySlaught.SceneGameplay
                     break;
                 case TurretKind.Scientist:
                     turretRenderer.sprite = scientistSprite;
+                    break;
+                case TurretKind.President:
+                    turretRenderer.sprite = presidentSprite;
                     break;
                 default:
                     turretRenderer.sprite = null;

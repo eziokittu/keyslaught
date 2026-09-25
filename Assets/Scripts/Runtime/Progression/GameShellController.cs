@@ -1,5 +1,6 @@
 using KeySlaught.SceneGameplay;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace KeySlaught.Progression
@@ -19,6 +20,8 @@ namespace KeySlaught.Progression
         [SerializeField] private GameObject researchPanel;
         [SerializeField] private GameObject creditsPanel;
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private GameObject loreLevelsPanel;
+        [SerializeField] private Text loreOneLevelOneStarsLabel;
         [SerializeField] private Text tutorialLabel;
         [SerializeField] private Button endlessButton;
         [SerializeField] private Text endlessLabel;
@@ -61,9 +64,14 @@ namespace KeySlaught.Progression
         public void ShowResearch() { ShowOnly(researchPanel); Refresh(); }
         public void ShowCredits() => ShowOnly(creditsPanel);
         public void ShowSettings() { ShowOnly(settingsPanel); Refresh(); }
+        public void ShowLoreLevels() { ShowOnly(loreLevelsPanel); Refresh(); }
         public void ExitGame() => Application.Quit();
         public void StartTutorial() => BeginRun(GameModeSelection.Tutorial);
-        public void StartLoreOneLevelOne() => BeginRun(GameModeSelection.LoreOneLevelOne);
+        public void StartLoreOneLevelOne()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("LoreOneLevelOne");
+        }
         public void StartEndless() { if (progression != null && progression.Profile.endlessModeUnlocked) BeginRun(GameModeSelection.Endless); }
         public void ReturnToMainFromRun()
         {
@@ -81,7 +89,7 @@ namespace KeySlaught.Progression
         }
         public void ToggleMusic() { musicEnabled = !musicEnabled; PlayerPrefs.SetInt("KeySlaught.Music", musicEnabled ? 1 : 0); Refresh(); }
         public void ToggleSfx() { sfxEnabled = !sfxEnabled; PlayerPrefs.SetInt("KeySlaught.Sfx", sfxEnabled ? 1 : 0); Refresh(); }
-        public void ToggleSelectionPause() { TileContextActionPanel.ContinueDuringSelections = !TileContextActionPanel.ContinueDuringSelections; Refresh(); }
+        public void ToggleSelectionPause() { TileContextActionPanel.ConfirmInteractions = !TileContextActionPanel.ConfirmInteractions; Refresh(); }
 
         public void ConfigureLevelContent(LevelDefinition tutorial, LevelDefinition lore, LevelDefinition endless,
             TutorialDirector director, Text selectionSettingLabel)
@@ -93,6 +101,12 @@ namespace KeySlaught.Progression
             selectionPauseLabel = selectionSettingLabel;
         }
 
+        public void ConfigureLoreSelection(GameObject levelsPanel, Text levelOneStarsLabel)
+        {
+            loreLevelsPanel = levelsPanel;
+            loreOneLevelOneStarsLabel = levelOneStarsLabel;
+        }
+
         private void Start()
         {
             musicEnabled = PlayerPrefs.GetInt("KeySlaught.Music", 1) != 0;
@@ -100,7 +114,12 @@ namespace KeySlaught.Progression
             if (run != null) run.RunEnded += OnRunEnded;
             run?.SetMenuSuspended(true);
             if (shellRoot != null) shellRoot.SetActive(true);
-            ShowLaunch();
+            if (PlayerPrefs.GetInt("KeySlaught.ReturnToMainMenu", 0) != 0)
+            {
+                PlayerPrefs.DeleteKey("KeySlaught.ReturnToMainMenu");
+                ShowMain();
+            }
+            else ShowLaunch();
         }
 
         private void OnDestroy() { if (run != null) run.RunEnded -= OnRunEnded; }
@@ -142,7 +161,7 @@ namespace KeySlaught.Progression
 
         private void ShowOnly(GameObject target)
         {
-            foreach (var panel in new[] { launchPanel, mainPanel, modePanel, researchPanel, creditsPanel, settingsPanel })
+            foreach (var panel in new[] { launchPanel, mainPanel, modePanel, researchPanel, creditsPanel, settingsPanel, loreLevelsPanel })
                 if (panel != null) panel.SetActive(panel == target);
         }
 
@@ -166,8 +185,23 @@ namespace KeySlaught.Progression
                 }
             if (musicLabel != null) musicLabel.text = $"MUSIC  {(musicEnabled ? "ON" : "OFF")}";
             if (sfxLabel != null) sfxLabel.text = $"SFX  {(sfxEnabled ? "ON" : "OFF")}";
-            if (selectionPauseLabel != null) selectionPauseLabel.text = TileContextActionPanel.ContinueDuringSelections
-                ? "OPTION MENUS  LIVE" : "OPTION MENUS  PAUSE";
+            if (selectionPauseLabel != null) selectionPauseLabel.text = TileContextActionPanel.ConfirmInteractions
+                ? "ACTION CONFIRMATIONS  ON" : "ACTION CONFIRMATIONS  OFF";
+            if (loreOneLevelOneStarsLabel != null)
+            {
+                var stars = Mathf.Clamp(profile.loreOneLevelOneStars, 0, 3);
+                var rating = new string('★', stars) + new string('☆', 3 - stars);
+                loreOneLevelOneStarsLabel.text = profile.loreOneLevelOneCompleted
+                    ? $"LEVEL 1  {rating}  BEST {FormatTime(profile.loreOneLevelOneBestSeconds)}"
+                    : $"LEVEL 1  {rating}";
+            }
+        }
+
+        private static string FormatTime(float seconds)
+        {
+            if (seconds <= 0f) return "--:--";
+            var total = Mathf.FloorToInt(seconds);
+            return $"{total / 60:00}:{total % 60:00}";
         }
     }
 }

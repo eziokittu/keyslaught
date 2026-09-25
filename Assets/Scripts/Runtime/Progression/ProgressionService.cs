@@ -65,10 +65,25 @@ namespace KeySlaught.Progression
 
         public void CompleteLoreOneLevelOne()
         {
+            CompleteLoreOneLevelOne(1, 0f);
+        }
+
+        public void CompleteLoreOneLevelOne(int stars, float elapsedSeconds)
+        {
             EnsureInitialized();
             Profile.loreOneLevelOneCompleted = true;
             Profile.endlessModeUnlocked = true;
+            Profile.loreOneLevelOneStars = Mathf.Max(Profile.loreOneLevelOneStars, Mathf.Clamp(stars, 1, 3));
+            if (elapsedSeconds > 0f && (Profile.loreOneLevelOneBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelOneBestSeconds))
+                Profile.loreOneLevelOneBestSeconds = elapsedSeconds;
             Save();
+        }
+
+        public static int CalculateLoreStars(int libraryHits, float elapsedSeconds)
+        {
+            if (libraryHits <= 0 && elapsedSeconds <= 180f) return 3;
+            if (libraryHits <= 1 && elapsedSeconds <= 300f) return 2;
+            return 1;
         }
 
         public float BonusFor(ResearchStat stat)

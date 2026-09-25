@@ -1,3 +1,4 @@
+using System;
 using KeySlaught.Gameplay;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private TextMesh healthLabel;
 
         public LibraryState State { get; private set; }
+        public event Action<int> EnemyDamageReceived;
 
         public void Initialize(int health)
         {
@@ -26,6 +28,7 @@ namespace KeySlaught.SceneGameplay
 
             var damage = State.ApplyEnemyArrival(enemy.WordState);
             RefreshLabel();
+            EnemyDamageReceived?.Invoke(damage);
             return damage;
         }
 

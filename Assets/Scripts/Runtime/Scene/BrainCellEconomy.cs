@@ -89,6 +89,11 @@ namespace KeySlaught.SceneGameplay
         {
             if (enemy == null || enemy.WordState == null) return;
             var value = CalculateReward(enemy.WordState);
+            if (player != null && !player.IsInsidePlayableBounds(enemy.transform.position))
+            {
+                Credit(value);
+                return;
+            }
             foreach (var existing in activePickups)
             {
                 if (existing != null && Vector2.Distance(existing.transform.position, enemy.transform.position) <= clumpRadius)

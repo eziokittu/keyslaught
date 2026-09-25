@@ -14,6 +14,10 @@ The prompt requested a coherent professional pixel-art atlas for a portrait typi
 
 `AgentScripts/BuildMilestone10Scene.cs` deterministically authors the production PNGs from pixel primitives and the atlas palette. This keeps the shipped art reproducible, editable through the builder, and consistently imported with point filtering, no mipmaps, 128 pixels per unit, and uncompressed textures.
 
+`AgentScripts/BuildMilestone11Scene.cs` adds the neutral tintable enemy card, President turret, and reusable button surface. The neutral card is intentional: runtime word-length colors now tint a white source so the displayed card matches its authored palette band exactly.
+
+`AgentScripts/BuildMilestone13Changes.cs` replaces the temporary square button texture with a project-owned 256 x 96 bordered surface and applies it through the reusable `UiTextButton.prefab`.
+
 - Gameplay tiles, characters, pickups, enemies, turrets, and icons are 128 x 128.
 - The Divine Library remains 256 x 256 for its authored two-by-two footprint.
 - The user-supplied `_2` road sprites are wired into the existing path Tile assets without modification.
