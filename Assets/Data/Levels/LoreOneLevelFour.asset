@@ -17,145 +17,249 @@ MonoBehaviour:
   - title: WAVE 1
     words:
     - word: COURAGE
-      delayAfterPrevious: 0.25
+      delayAfterPrevious: 0.2
     - word: KINDNESS
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.59999996
     - word: SCIENCE
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.59999996
     - word: PATTERN
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.59999996
     - word: FREEDOM
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.59999996
+    - word: BALANCE
+      delayAfterPrevious: 0.59999996
+    - word: CHAMPION
+      delayAfterPrevious: 0.59999996
+    - word: SAPPHIRE
+      delayAfterPrevious: 0.59999996
+    - word: VOLCANO
+      delayAfterPrevious: 0.59999996
+    - word: ARCHIVE
+      delayAfterPrevious: 0.59999996
+    - word: MIGRATION
+      delayAfterPrevious: 0.59999996
+    - word: LABYRINTH
+      delayAfterPrevious: 0.59999996
+    - word: EQUATION
+      delayAfterPrevious: 0.59999996
+    - word: NAVIGATION
+      delayAfterPrevious: 0.59999996
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 45
-    enemyMovementSpeed: 1.31
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 0.99
   - title: WAVE 2
     words:
-    - word: PATTERN
-      delayAfterPrevious: 0.25
     - word: FREEDOM
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.2
     - word: BALANCE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.53
     - word: CHAMPION
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.53
     - word: SAPPHIRE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.53
     - word: VOLCANO
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.53
     - word: ARCHIVE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.53
+    - word: MIGRATION
+      delayAfterPrevious: 0.53
+    - word: LABYRINTH
+      delayAfterPrevious: 0.53
+    - word: EQUATION
+      delayAfterPrevious: 0.53
+    - word: NAVIGATION
+      delayAfterPrevious: 0.53
+    - word: COMMUNITY
+      delayAfterPrevious: 0.53
+    - word: INSPIRATION
+      delayAfterPrevious: 0.53
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.53
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.53
+    - word: COMMUNICATION
+      delayAfterPrevious: 0.53
+    - word: INTERPRETATION
+      delayAfterPrevious: 0.53
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 51
-    enemyMovementSpeed: 1.39
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 1.0500001
   - title: WAVE 3
     words:
-    - word: CHAMPION
-      delayAfterPrevious: 0.25
-    - word: SAPPHIRE
-      delayAfterPrevious: 0.86999995
     - word: VOLCANO
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.2
     - word: ARCHIVE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
     - word: MIGRATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
     - word: LABYRINTH
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
     - word: EQUATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
     - word: NAVIGATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
     - word: COMMUNITY
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.45999998
+    - word: INSPIRATION
+      delayAfterPrevious: 0.45999998
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.45999998
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.45999998
+    - word: COMMUNICATION
+      delayAfterPrevious: 0.45999998
+    - word: INTERPRETATION
+      delayAfterPrevious: 0.45999998
+    - word: COURAGE
+      delayAfterPrevious: 0.45999998
+    - word: KINDNESS
+      delayAfterPrevious: 0.45999998
+    - word: SCIENCE
+      delayAfterPrevious: 0.45999998
+    - word: PATTERN
+      delayAfterPrevious: 0.45999998
+    - word: FREEDOM
+      delayAfterPrevious: 0.45999998
+    - word: BALANCE
+      delayAfterPrevious: 0.45999998
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 57
-    enemyMovementSpeed: 1.47
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 1.11
   - title: WAVE 4
     words:
-    - word: ARCHIVE
-      delayAfterPrevious: 0.25
-    - word: MIGRATION
-      delayAfterPrevious: 0.78
-    - word: LABYRINTH
-      delayAfterPrevious: 0.78
     - word: EQUATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.2
     - word: NAVIGATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: COMMUNITY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: INSPIRATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: TRANSFORMATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: RESPONSIBILITY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: COMMUNICATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: INTERPRETATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
     - word: COURAGE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.39
+    - word: KINDNESS
+      delayAfterPrevious: 0.39
+    - word: SCIENCE
+      delayAfterPrevious: 0.39
+    - word: PATTERN
+      delayAfterPrevious: 0.39
+    - word: FREEDOM
+      delayAfterPrevious: 0.39
+    - word: BALANCE
+      delayAfterPrevious: 0.39
+    - word: CHAMPION
+      delayAfterPrevious: 0.39
+    - word: SAPPHIRE
+      delayAfterPrevious: 0.39
+    - word: VOLCANO
+      delayAfterPrevious: 0.39
+    - word: ARCHIVE
+      delayAfterPrevious: 0.39
+    - word: MIGRATION
+      delayAfterPrevious: 0.39
+    - word: LABYRINTH
+      delayAfterPrevious: 0.39
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 63
-    enemyMovementSpeed: 1.55
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 1.1700001
   - title: WAVE 5
     words:
-    - word: EQUATION
-      delayAfterPrevious: 0.25
-    - word: NAVIGATION
-      delayAfterPrevious: 0.68999994
-    - word: COMMUNITY
-      delayAfterPrevious: 0.68999994
-    - word: INSPIRATION
-      delayAfterPrevious: 0.68999994
     - word: TRANSFORMATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.2
     - word: RESPONSIBILITY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: COMMUNICATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: INTERPRETATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: COURAGE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: KINDNESS
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: SCIENCE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: PATTERN
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: FREEDOM
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: BALANCE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
     - word: CHAMPION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.31999996
+    - word: SAPPHIRE
+      delayAfterPrevious: 0.31999996
+    - word: VOLCANO
+      delayAfterPrevious: 0.31999996
+    - word: ARCHIVE
+      delayAfterPrevious: 0.31999996
+    - word: MIGRATION
+      delayAfterPrevious: 0.31999996
+    - word: LABYRINTH
+      delayAfterPrevious: 0.31999996
+    - word: EQUATION
+      delayAfterPrevious: 0.31999996
+    - word: NAVIGATION
+      delayAfterPrevious: 0.31999996
+    - word: COMMUNITY
+      delayAfterPrevious: 0.31999996
+    - word: INSPIRATION
+      delayAfterPrevious: 0.31999996
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.31999996
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.31999996
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 69
-    enemyMovementSpeed: 1.63
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 1.23
   - title: BOSS WAVE
     words:
     - word: IMAGINATIONCHAMPION
-      delayAfterPrevious: 0.25
-    - word: LABYRINTH
-      delayAfterPrevious: 0.5999999
-    - word: EQUATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.2
     - word: NAVIGATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.485
     - word: COMMUNITY
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.485
     - word: INSPIRATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.485
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.485
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.485
+    - word: COMMUNICATION
+      delayAfterPrevious: 0.485
+    - word: INTERPRETATION
+      delayAfterPrevious: 0.485
+    - word: COURAGE
+      delayAfterPrevious: 0.485
+    - word: KINDNESS
+      delayAfterPrevious: 0.485
+    - word: SCIENCE
+      delayAfterPrevious: 0.485
+    - word: PATTERN
+      delayAfterPrevious: 0.485
+    - word: FREEDOM
+      delayAfterPrevious: 0.485
+    - word: BALANCE
+      delayAfterPrevious: 0.485
+    - word: CHAMPION
+      delayAfterPrevious: 0.485
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 75
-    enemyMovementSpeed: 1.16
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 0.92
   intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 0

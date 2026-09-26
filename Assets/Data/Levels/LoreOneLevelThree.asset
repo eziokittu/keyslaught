@@ -17,145 +17,225 @@ MonoBehaviour:
   - title: WAVE 1
     words:
     - word: ORACLE
-      delayAfterPrevious: 0.25
+      delayAfterPrevious: 0.2
     - word: POETRY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.65999997
     - word: HISTORY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.65999997
     - word: MEMORY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.65999997
     - word: WISDOM
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.65999997
+    - word: LANGUAGE
+      delayAfterPrevious: 0.65999997
+    - word: HARMONY
+      delayAfterPrevious: 0.65999997
+    - word: MYSTERY
+      delayAfterPrevious: 0.65999997
+    - word: COMPASS
+      delayAfterPrevious: 0.65999997
+    - word: VILLAGE
+      delayAfterPrevious: 0.65999997
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.65999997
+    - word: INVENTOR
+      delayAfterPrevious: 0.65999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 45
-    enemyMovementSpeed: 1.1899999
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 0.90000004
   - title: WAVE 2
     words:
-    - word: MEMORY
-      delayAfterPrevious: 0.25
     - word: WISDOM
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.2
     - word: LANGUAGE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.59
     - word: HARMONY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.59
     - word: MYSTERY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.59
     - word: COMPASS
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.59
     - word: VILLAGE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.59
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.59
+    - word: INVENTOR
+      delayAfterPrevious: 0.59
+    - word: FESTIVAL
+      delayAfterPrevious: 0.59
+    - word: WATERFALL
+      delayAfterPrevious: 0.59
+    - word: CONSTELLATION
+      delayAfterPrevious: 0.59
+    - word: EXPLORATION
+      delayAfterPrevious: 0.59
+    - word: UNDERSTANDING
+      delayAfterPrevious: 0.59
+    - word: ENCYCLOPEDIA
+      delayAfterPrevious: 0.59
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 51
-    enemyMovementSpeed: 1.27
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 0.96000004
   - title: WAVE 3
     words:
-    - word: HARMONY
-      delayAfterPrevious: 0.25
-    - word: MYSTERY
-      delayAfterPrevious: 0.86999995
     - word: COMPASS
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.2
     - word: VILLAGE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
     - word: NOTEBOOK
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
     - word: INVENTOR
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
     - word: FESTIVAL
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
     - word: WATERFALL
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
     - word: CONSTELLATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.52
+    - word: EXPLORATION
+      delayAfterPrevious: 0.52
+    - word: UNDERSTANDING
+      delayAfterPrevious: 0.52
+    - word: ENCYCLOPEDIA
+      delayAfterPrevious: 0.52
+    - word: ASTRONOMY
+      delayAfterPrevious: 0.52
+    - word: KNOWLEDGE
+      delayAfterPrevious: 0.52
+    - word: ORACLE
+      delayAfterPrevious: 0.52
+    - word: POETRY
+      delayAfterPrevious: 0.52
+    - word: HISTORY
+      delayAfterPrevious: 0.52
+    - word: MEMORY
+      delayAfterPrevious: 0.52
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 57
-    enemyMovementSpeed: 1.35
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 1.02
   - title: WAVE 4
     words:
-    - word: VILLAGE
-      delayAfterPrevious: 0.25
-    - word: NOTEBOOK
-      delayAfterPrevious: 0.78
-    - word: INVENTOR
-      delayAfterPrevious: 0.78
     - word: FESTIVAL
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.2
     - word: WATERFALL
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: CONSTELLATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: EXPLORATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: UNDERSTANDING
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: ENCYCLOPEDIA
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: ASTRONOMY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: KNOWLEDGE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
     - word: ORACLE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.45
+    - word: POETRY
+      delayAfterPrevious: 0.45
+    - word: HISTORY
+      delayAfterPrevious: 0.45
+    - word: MEMORY
+      delayAfterPrevious: 0.45
+    - word: WISDOM
+      delayAfterPrevious: 0.45
+    - word: LANGUAGE
+      delayAfterPrevious: 0.45
+    - word: HARMONY
+      delayAfterPrevious: 0.45
+    - word: MYSTERY
+      delayAfterPrevious: 0.45
+    - word: COMPASS
+      delayAfterPrevious: 0.45
+    - word: VILLAGE
+      delayAfterPrevious: 0.45
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 63
-    enemyMovementSpeed: 1.43
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 1.08
   - title: WAVE 5
     words:
-    - word: FESTIVAL
-      delayAfterPrevious: 0.25
-    - word: WATERFALL
-      delayAfterPrevious: 0.68999994
-    - word: CONSTELLATION
-      delayAfterPrevious: 0.68999994
-    - word: EXPLORATION
-      delayAfterPrevious: 0.68999994
     - word: UNDERSTANDING
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.2
     - word: ENCYCLOPEDIA
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: ASTRONOMY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: KNOWLEDGE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: ORACLE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: POETRY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: HISTORY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: MEMORY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: WISDOM
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: LANGUAGE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
     - word: HARMONY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.37999997
+    - word: MYSTERY
+      delayAfterPrevious: 0.37999997
+    - word: COMPASS
+      delayAfterPrevious: 0.37999997
+    - word: VILLAGE
+      delayAfterPrevious: 0.37999997
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.37999997
+    - word: INVENTOR
+      delayAfterPrevious: 0.37999997
+    - word: FESTIVAL
+      delayAfterPrevious: 0.37999997
+    - word: WATERFALL
+      delayAfterPrevious: 0.37999997
+    - word: CONSTELLATION
+      delayAfterPrevious: 0.37999997
+    - word: EXPLORATION
+      delayAfterPrevious: 0.37999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 69
-    enemyMovementSpeed: 1.51
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 1.14
   - title: BOSS WAVE
     words:
     - word: ENCYCLOPEDIAGUARDIAN
-      delayAfterPrevious: 0.25
-    - word: INVENTOR
-      delayAfterPrevious: 0.5999999
-    - word: FESTIVAL
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.2
     - word: WATERFALL
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.53
     - word: CONSTELLATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.53
     - word: EXPLORATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.53
+    - word: UNDERSTANDING
+      delayAfterPrevious: 0.53
+    - word: ENCYCLOPEDIA
+      delayAfterPrevious: 0.53
+    - word: ASTRONOMY
+      delayAfterPrevious: 0.53
+    - word: KNOWLEDGE
+      delayAfterPrevious: 0.53
+    - word: ORACLE
+      delayAfterPrevious: 0.53
+    - word: POETRY
+      delayAfterPrevious: 0.53
+    - word: HISTORY
+      delayAfterPrevious: 0.53
+    - word: MEMORY
+      delayAfterPrevious: 0.53
+    - word: WISDOM
+      delayAfterPrevious: 0.53
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 75
-    enemyMovementSpeed: 1.0600001
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 0.84000003
   intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 0

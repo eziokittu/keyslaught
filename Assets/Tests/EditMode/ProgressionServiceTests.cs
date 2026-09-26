@@ -132,20 +132,19 @@ namespace KeySlaught.Tests.EditMode
         }
 
         [Test]
-        public void BrainCells_ArePersistentAndSpendableAcrossServiceInstances()
+        public void BrainCells_AreRunScopedAndResetBetweenLevels()
         {
-            var store = new MemoryStore();
-            var firstObject = new GameObject("Brain Wallet One");
-            var first = firstObject.AddComponent<ProgressionService>(); first.Initialize(store);
-            first.CreditBrainCells(14);
-            Assert.That(first.TrySpendBrainCells(5), Is.True);
-            Assert.That(first.Profile.brainCells, Is.EqualTo(9));
+            var economyObject = new GameObject("Run Brain Wallet");
+            var economy = economyObject.AddComponent<BrainCellEconomy>();
+            economy.Credit(14);
+            Assert.That(economy.TrySpend(5), Is.True);
+            Assert.That(economy.Balance, Is.EqualTo(9));
 
-            var secondObject = new GameObject("Brain Wallet Two");
-            var second = secondObject.AddComponent<ProgressionService>(); second.Initialize(store);
-            Assert.That(second.Profile.brainCells, Is.EqualTo(9));
-            Assert.That(second.TrySpendBrainCells(10), Is.False);
-            Object.DestroyImmediate(secondObject); Object.DestroyImmediate(firstObject);
+            economy.ResetState();
+
+            Assert.That(economy.Balance, Is.Zero);
+            Assert.That(economy.TrySpend(1), Is.False);
+            Object.DestroyImmediate(economyObject);
         }
 
         [Test]

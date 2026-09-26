@@ -524,6 +524,82 @@ namespace KeySlaught.Tests.PlayMode
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator WaveRun_AuthoredLevelStartsWithSkippableThirtySecondPreparation()
+        {
+            var fixture = CreateCombatFixture("A", 4, spawnEnemy: false);
+            var level = CreateAuthoredLevel(30f, false, ("WAVE 1", "A"));
+            var runObject = new GameObject("Prepared Run");
+            var run = runObject.AddComponent<WaveRunController>();
+            run.Configure(fixture.Spawner, fixture.Combat.SceneCoordinator.Library, null, fixture.Combat,
+                fixture.Combat.SceneCoordinator.Player, null, null, null);
+            run.SetLevel(level);
+
+            run.StartRun();
+            Assert.That(run.Phase, Is.EqualTo(WaveRunPhase.Intermission));
+            Assert.That(run.IsPreparingFirstWave, Is.True);
+            Assert.That(run.IntermissionRemaining, Is.EqualTo(30f).Within(.001f));
+            Assert.That(fixture.Spawner.ActiveEnemies, Is.Empty);
+
+            run.SkipIntermission();
+            run.Tick(0f);
+            Assert.That(run.CurrentWaveNumber, Is.EqualTo(1));
+            Assert.That(fixture.Spawner.ActiveEnemies.Count, Is.EqualTo(1));
+
+            Object.Destroy(runObject); Object.Destroy(level); fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator WaveRun_EndlessBossPausesForContinueChoice()
+        {
+            var fixture = CreateCombatFixture("A", 4, spawnEnemy: false);
+            var level = CreateAuthoredLevel(0f, true, ("BOSS WAVE 5", "A"), ("WAVE 6", "B"));
+            var runObject = new GameObject("Boss Checkpoint Run");
+            var run = runObject.AddComponent<WaveRunController>();
+            run.Configure(fixture.Spawner, fixture.Combat.SceneCoordinator.Library, null, fixture.Combat,
+                fixture.Combat.SceneCoordinator.Player, null, null, null);
+            run.SetLevel(level);
+            var checkpointWave = 0;
+            run.BossCheckpointReached += number => checkpointWave = number;
+
+            run.StartRun(); run.Tick(0f);
+            var enemy = fixture.Spawner.ActiveEnemies[0];
+            enemy.WordState.ConsumePrefix(1);
+            fixture.Combat.ResolveExternalDamage(enemy);
+            run.Tick(0f);
+
+            Assert.That(run.Phase, Is.EqualTo(WaveRunPhase.BossCheckpoint));
+            Assert.That(checkpointWave, Is.EqualTo(1));
+            Assert.That(run.BossesDefeated, Is.EqualTo(1));
+            run.ContinueAfterBoss();
+            Assert.That(run.Phase, Is.EqualTo(WaveRunPhase.Intermission));
+
+            Object.Destroy(runObject); Object.Destroy(level); fixture.Destroy();
+            yield return null;
+        }
+
+        private static LevelDefinition CreateAuthoredLevel(float preparation, bool checkpoints, params (string title, string word)[] waves)
+        {
+            var level = ScriptableObject.CreateInstance<LevelDefinition>();
+            var entries = new LevelWaveEntry[waves.Length];
+            for (var index = 0; index < waves.Length; index++)
+            {
+                var word = new LevelWordEntry();
+                SetPrivateField(word, "word", waves[index].word);
+                SetPrivateField(word, "delayAfterPrevious", 0f);
+                entries[index] = new LevelWaveEntry();
+                SetPrivateField(entries[index], "title", waves[index].title);
+                SetPrivateField(entries[index], "words", new[] { word });
+                SetPrivateField(entries[index], "enemyMovementSpeed", 1f);
+            }
+            SetPrivateField(level, "waves", entries);
+            SetPrivateField(level, "initialPreparationSeconds", preparation);
+            SetPrivateField(level, "pauseAfterBossWave", checkpoints);
+            SetPrivateField(level, "intermissionSeconds", 8f);
+            return level;
+        }
+
         private static WaypointPath CreatePath(params Vector3[] positions)
         {
             var pathObject = new GameObject("Test Path");

@@ -6,7 +6,7 @@ using KeySlaught.Progression;
 
 namespace KeySlaught.SceneGameplay
 {
-    public enum WaveRunPhase { Waiting, Spawning, Fighting, Intermission, Victory, Defeat }
+    public enum WaveRunPhase { Waiting, Spawning, Fighting, Intermission, BossCheckpoint, Victory, Defeat }
 
     public sealed class WaveRunController : MonoBehaviour
     {
@@ -34,9 +34,11 @@ namespace KeySlaught.SceneGameplay
         private float elapsedSeconds;
         private int libraryHitCount;
         private int bossesDefeated;
+        private bool preparingFirstWave;
 
         public event Action<int, bool> WaveStarted;
         public event Action<int> WaveCompleted;
+        public event Action<int> BossCheckpointReached;
         public event Action<bool> RunEnded;
         public WaveRunPhase Phase { get; private set; } = WaveRunPhase.Waiting;
         public int CurrentWaveNumber => Mathf.Max(0, waveIndex + 1);
@@ -44,6 +46,7 @@ namespace KeySlaught.SceneGameplay
             ? activeLevel.Waves[waveIndex] != null && activeLevel.Waves[waveIndex].Title.ToUpperInvariant().Contains("BOSS")
             : waveIndex >= 0 && waves != null && waveIndex < waves.Length && waves[waveIndex] != null && waves[waveIndex].IsBossWave;
         public float IntermissionRemaining => Phase == WaveRunPhase.Intermission ? Mathf.Max(0f, timer) : 0f;
+        public bool IsPreparingFirstWave => Phase == WaveRunPhase.Intermission && preparingFirstWave;
         public LevelDefinition ActiveLevel => activeLevel;
         public float ElapsedSeconds => elapsedSeconds;
         public int LibraryHitCount => libraryHitCount;
@@ -80,7 +83,14 @@ namespace KeySlaught.SceneGameplay
             libraryHitCount = 0;
             bossesDefeated = 0;
             waveIndex = -1;
-            BeginNextWave();
+            var preparation = activeLevel == null ? 0f : activeLevel.InitialPreparationSeconds;
+            if (preparation > 0f)
+            {
+                preparingFirstWave = true;
+                timer = preparation;
+                Phase = WaveRunPhase.Intermission;
+            }
+            else BeginNextWave();
         }
 
         public void SetLevel(LevelDefinition level)
@@ -94,6 +104,14 @@ namespace KeySlaught.SceneGameplay
             if (Phase != WaveRunPhase.Intermission) return;
             timer = 0f;
             BeginNextWave();
+        }
+
+        public void ContinueAfterBoss()
+        {
+            if (Phase != WaveRunPhase.BossCheckpoint) return;
+            spawner?.SetMovementMultiplier(1f);
+            Phase = WaveRunPhase.Intermission;
+            timer = intermissionSeconds;
         }
 
         public void Tick(float deltaSeconds)
@@ -173,6 +191,7 @@ namespace KeySlaught.SceneGameplay
 
         private void BeginNextWave()
         {
+            preparingFirstWave = false;
             waveIndex++;
             if (waveIndex >= WaveCount)
             {
@@ -220,11 +239,23 @@ namespace KeySlaught.SceneGameplay
         private void CompleteWave()
         {
             economy?.CollectAll();
-            if (IsBossWave) bossesDefeated++;
+            var completedBoss = IsBossWave;
+            if (completedBoss) bossesDefeated++;
             WaveCompleted?.Invoke(CurrentWaveNumber);
-            if (waveIndex >= WaveCount - 1) EndRun(true);
+            if (waveIndex >= WaveCount - 1)
+            {
+                if (completedBoss) BossCheckpointReached?.Invoke(CurrentWaveNumber);
+                EndRun(true);
+            }
+            else if (completedBoss && activeLevel != null && activeLevel.PauseAfterBossWave)
+            {
+                Phase = WaveRunPhase.BossCheckpoint;
+                spawner?.SetMovementMultiplier(0f);
+                BossCheckpointReached?.Invoke(CurrentWaveNumber);
+            }
             else
             {
+                if (completedBoss) BossCheckpointReached?.Invoke(CurrentWaveNumber);
                 Phase = WaveRunPhase.Intermission;
                 timer = intermissionSeconds;
             }

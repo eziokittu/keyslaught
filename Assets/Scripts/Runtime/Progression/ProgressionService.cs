@@ -50,22 +50,6 @@ namespace KeySlaught.Progression
             Save();
         }
 
-        public bool TrySpendBrainCells(int amount)
-        {
-            EnsureInitialized();
-            if (amount < 0 || Profile.brainCells < amount) return false;
-            Profile.brainCells -= amount;
-            Save();
-            return true;
-        }
-
-        public void CreditBrainCells(int amount)
-        {
-            EnsureInitialized();
-            Profile.brainCells += Mathf.Max(0, amount);
-            Save();
-        }
-
         public bool IsTurretUnlocked(TurretKind kind)
         {
             EnsureInitialized();

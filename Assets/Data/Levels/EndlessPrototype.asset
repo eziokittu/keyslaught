@@ -16,16 +16,1006 @@ MonoBehaviour:
   waves:
   - title: WAVE 1
     words:
-    - word: BOOK
-      delayAfterPrevious: 1.5
-    - word: HISTORY
-      delayAfterPrevious: 1.5
-    - word: IDEA
-      delayAfterPrevious: 1.5
-    - word: MEMORY
-      delayAfterPrevious: 1.5
+    - word: SMILE
+      delayAfterPrevious: 0.2
+    - word: APPLE
+      delayAfterPrevious: 0.802
+    - word: RIVER
+      delayAfterPrevious: 0.802
+    - word: MUSIC
+      delayAfterPrevious: 0.802
+    - word: HAPPY
+      delayAfterPrevious: 0.802
+    - word: FRIEND
+      delayAfterPrevious: 0.802
     normalizeDelays: 0
     averageTypingWordsPerMinute: 24
-    targetWaveEndSeconds: 30
-    enemyMovementSpeed: 0.8625
-  intermissionSeconds: 30
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 0.758
+  - title: WAVE 2
+    words:
+    - word: FRIEND
+      delayAfterPrevious: 0.2
+    - word: PLANET
+      delayAfterPrevious: 0.784
+    - word: PUZZLE
+      delayAfterPrevious: 0.784
+    - word: GARDEN
+      delayAfterPrevious: 0.784
+    - word: CASTLE
+      delayAfterPrevious: 0.784
+    - word: RAINBOW
+      delayAfterPrevious: 0.784
+    - word: JOURNEY
+      delayAfterPrevious: 0.784
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 0.776
+  - title: WAVE 3
+    words:
+    - word: RAINBOW
+      delayAfterPrevious: 0.2
+    - word: JOURNEY
+      delayAfterPrevious: 0.766
+    - word: LIBRARY
+      delayAfterPrevious: 0.766
+    - word: ADVENTURE
+      delayAfterPrevious: 0.766
+    - word: IMAGINATION
+      delayAfterPrevious: 0.766
+    - word: CLOUD
+      delayAfterPrevious: 0.766
+    - word: BRAVE
+      delayAfterPrevious: 0.766
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 0.794
+  - title: WAVE 4
+    words:
+    - word: CLOUD
+      delayAfterPrevious: 0.2
+    - word: BRAVE
+      delayAfterPrevious: 0.748
+    - word: STORY
+      delayAfterPrevious: 0.748
+    - word: PAINT
+      delayAfterPrevious: 0.748
+    - word: DREAM
+      delayAfterPrevious: 0.748
+    - word: ROCKET
+      delayAfterPrevious: 0.748
+    - word: ANIMAL
+      delayAfterPrevious: 0.748
+    - word: FOREST
+      delayAfterPrevious: 0.748
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 0.81200004
+  - title: BOSS WAVE 5
+    words:
+    - word: GRANDLIBRARYKEEPER
+      delayAfterPrevious: 0.2
+    - word: ROCKET
+      delayAfterPrevious: 0.73
+    - word: ANIMAL
+      delayAfterPrevious: 0.73
+    - word: FOREST
+      delayAfterPrevious: 0.73
+    - word: PENCIL
+      delayAfterPrevious: 0.73
+    - word: SCHOOL
+      delayAfterPrevious: 0.73
+    - word: BICYCLE
+      delayAfterPrevious: 0.73
+    - word: DOLPHIN
+      delayAfterPrevious: 0.73
+    - word: TREASURE
+      delayAfterPrevious: 0.73
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 0.83
+  - title: WAVE 6
+    words:
+    - word: BICYCLE
+      delayAfterPrevious: 0.2
+    - word: DOLPHIN
+      delayAfterPrevious: 0.712
+    - word: TREASURE
+      delayAfterPrevious: 0.712
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.712
+    - word: DINOSAUR
+      delayAfterPrevious: 0.712
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.712
+    - word: TELESCOPE
+      delayAfterPrevious: 0.712
+    - word: CELEBRATE
+      delayAfterPrevious: 0.712
+    - word: DISCOVERY
+      delayAfterPrevious: 0.712
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 0.848
+  - title: WAVE 7
+    words:
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.2
+    - word: TELESCOPE
+      delayAfterPrevious: 0.694
+    - word: CELEBRATE
+      delayAfterPrevious: 0.694
+    - word: DISCOVERY
+      delayAfterPrevious: 0.694
+    - word: CREATIVITY
+      delayAfterPrevious: 0.694
+    - word: ORACLE
+      delayAfterPrevious: 0.694
+    - word: POETRY
+      delayAfterPrevious: 0.694
+    - word: HISTORY
+      delayAfterPrevious: 0.694
+    - word: MEMORY
+      delayAfterPrevious: 0.694
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 68
+    enemyMovementSpeed: 0.866
+  - title: WAVE 8
+    words:
+    - word: ORACLE
+      delayAfterPrevious: 0.2
+    - word: POETRY
+      delayAfterPrevious: 0.676
+    - word: HISTORY
+      delayAfterPrevious: 0.676
+    - word: MEMORY
+      delayAfterPrevious: 0.676
+    - word: WISDOM
+      delayAfterPrevious: 0.676
+    - word: LANGUAGE
+      delayAfterPrevious: 0.676
+    - word: HARMONY
+      delayAfterPrevious: 0.676
+    - word: MYSTERY
+      delayAfterPrevious: 0.676
+    - word: COMPASS
+      delayAfterPrevious: 0.676
+    - word: VILLAGE
+      delayAfterPrevious: 0.676
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 71
+    enemyMovementSpeed: 0.884
+  - title: WAVE 9
+    words:
+    - word: LANGUAGE
+      delayAfterPrevious: 0.2
+    - word: HARMONY
+      delayAfterPrevious: 0.658
+    - word: MYSTERY
+      delayAfterPrevious: 0.658
+    - word: COMPASS
+      delayAfterPrevious: 0.658
+    - word: VILLAGE
+      delayAfterPrevious: 0.658
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.658
+    - word: INVENTOR
+      delayAfterPrevious: 0.658
+    - word: FESTIVAL
+      delayAfterPrevious: 0.658
+    - word: WATERFALL
+      delayAfterPrevious: 0.658
+    - word: CONSTELLATION
+      delayAfterPrevious: 0.658
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 74
+    enemyMovementSpeed: 0.902
+  - title: BOSS WAVE 10
+    words:
+    - word: RAINBOWCONSTELLATION
+      delayAfterPrevious: 0.2
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.64
+    - word: INVENTOR
+      delayAfterPrevious: 0.64
+    - word: FESTIVAL
+      delayAfterPrevious: 0.64
+    - word: WATERFALL
+      delayAfterPrevious: 0.64
+    - word: CONSTELLATION
+      delayAfterPrevious: 0.64
+    - word: EXPLORATION
+      delayAfterPrevious: 0.64
+    - word: UNDERSTANDING
+      delayAfterPrevious: 0.64
+    - word: ENCYCLOPEDIA
+      delayAfterPrevious: 0.64
+    - word: ASTRONOMY
+      delayAfterPrevious: 0.64
+    - word: KNOWLEDGE
+      delayAfterPrevious: 0.64
+    - word: COURAGE
+      delayAfterPrevious: 0.64
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 77
+    enemyMovementSpeed: 0.92
+  - title: WAVE 11
+    words:
+    - word: EXPLORATION
+      delayAfterPrevious: 0.2
+    - word: UNDERSTANDING
+      delayAfterPrevious: 0.622
+    - word: ENCYCLOPEDIA
+      delayAfterPrevious: 0.622
+    - word: ASTRONOMY
+      delayAfterPrevious: 0.622
+    - word: KNOWLEDGE
+      delayAfterPrevious: 0.622
+    - word: COURAGE
+      delayAfterPrevious: 0.622
+    - word: KINDNESS
+      delayAfterPrevious: 0.622
+    - word: SCIENCE
+      delayAfterPrevious: 0.622
+    - word: PATTERN
+      delayAfterPrevious: 0.622
+    - word: FREEDOM
+      delayAfterPrevious: 0.622
+    - word: BALANCE
+      delayAfterPrevious: 0.622
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 80
+    enemyMovementSpeed: 0.938
+  - title: WAVE 12
+    words:
+    - word: COURAGE
+      delayAfterPrevious: 0.2
+    - word: KINDNESS
+      delayAfterPrevious: 0.604
+    - word: SCIENCE
+      delayAfterPrevious: 0.604
+    - word: PATTERN
+      delayAfterPrevious: 0.604
+    - word: FREEDOM
+      delayAfterPrevious: 0.604
+    - word: BALANCE
+      delayAfterPrevious: 0.604
+    - word: CHAMPION
+      delayAfterPrevious: 0.604
+    - word: SAPPHIRE
+      delayAfterPrevious: 0.604
+    - word: VOLCANO
+      delayAfterPrevious: 0.604
+    - word: ARCHIVE
+      delayAfterPrevious: 0.604
+    - word: MIGRATION
+      delayAfterPrevious: 0.604
+    - word: LABYRINTH
+      delayAfterPrevious: 0.604
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 83
+    enemyMovementSpeed: 0.956
+  - title: WAVE 13
+    words:
+    - word: BALANCE
+      delayAfterPrevious: 0.2
+    - word: CHAMPION
+      delayAfterPrevious: 0.586
+    - word: SAPPHIRE
+      delayAfterPrevious: 0.586
+    - word: VOLCANO
+      delayAfterPrevious: 0.586
+    - word: ARCHIVE
+      delayAfterPrevious: 0.586
+    - word: MIGRATION
+      delayAfterPrevious: 0.586
+    - word: LABYRINTH
+      delayAfterPrevious: 0.586
+    - word: EQUATION
+      delayAfterPrevious: 0.586
+    - word: NAVIGATION
+      delayAfterPrevious: 0.586
+    - word: COMMUNITY
+      delayAfterPrevious: 0.586
+    - word: INSPIRATION
+      delayAfterPrevious: 0.586
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.586
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 86
+    enemyMovementSpeed: 0.974
+  - title: WAVE 14
+    words:
+    - word: MIGRATION
+      delayAfterPrevious: 0.2
+    - word: LABYRINTH
+      delayAfterPrevious: 0.568
+    - word: EQUATION
+      delayAfterPrevious: 0.568
+    - word: NAVIGATION
+      delayAfterPrevious: 0.568
+    - word: COMMUNITY
+      delayAfterPrevious: 0.568
+    - word: INSPIRATION
+      delayAfterPrevious: 0.568
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.568
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.568
+    - word: COMMUNICATION
+      delayAfterPrevious: 0.568
+    - word: INTERPRETATION
+      delayAfterPrevious: 0.568
+    - word: CURIOUS
+      delayAfterPrevious: 0.568
+    - word: ENERGY
+      delayAfterPrevious: 0.568
+    - word: THEOREM
+      delayAfterPrevious: 0.568
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 89
+    enemyMovementSpeed: 0.992
+  - title: BOSS WAVE 15
+    words:
+    - word: ENCYCLOPEDIAGUARDIAN
+      delayAfterPrevious: 0.2
+    - word: INSPIRATION
+      delayAfterPrevious: 0.55
+    - word: TRANSFORMATION
+      delayAfterPrevious: 0.55
+    - word: RESPONSIBILITY
+      delayAfterPrevious: 0.55
+    - word: COMMUNICATION
+      delayAfterPrevious: 0.55
+    - word: INTERPRETATION
+      delayAfterPrevious: 0.55
+    - word: CURIOUS
+      delayAfterPrevious: 0.55
+    - word: ENERGY
+      delayAfterPrevious: 0.55
+    - word: THEOREM
+      delayAfterPrevious: 0.55
+    - word: PARADOX
+      delayAfterPrevious: 0.55
+    - word: CRYSTAL
+      delayAfterPrevious: 0.55
+    - word: SYMPHONY
+      delayAfterPrevious: 0.55
+    - word: ENGINEER
+      delayAfterPrevious: 0.55
+    - word: SCIENTIST
+      delayAfterPrevious: 0.55
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 92
+    enemyMovementSpeed: 1.01
+  - title: WAVE 16
+    words:
+    - word: CURIOUS
+      delayAfterPrevious: 0.2
+    - word: ENERGY
+      delayAfterPrevious: 0.532
+    - word: THEOREM
+      delayAfterPrevious: 0.532
+    - word: PARADOX
+      delayAfterPrevious: 0.532
+    - word: CRYSTAL
+      delayAfterPrevious: 0.532
+    - word: SYMPHONY
+      delayAfterPrevious: 0.532
+    - word: ENGINEER
+      delayAfterPrevious: 0.532
+    - word: SCIENTIST
+      delayAfterPrevious: 0.532
+    - word: PRESIDENT
+      delayAfterPrevious: 0.532
+    - word: TEACHER
+      delayAfterPrevious: 0.532
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.532
+    - word: CHRONICLE
+      delayAfterPrevious: 0.532
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.532
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.532
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 95
+    enemyMovementSpeed: 1.028
+  - title: WAVE 17
+    words:
+    - word: SYMPHONY
+      delayAfterPrevious: 0.2
+    - word: ENGINEER
+      delayAfterPrevious: 0.514
+    - word: SCIENTIST
+      delayAfterPrevious: 0.514
+    - word: PRESIDENT
+      delayAfterPrevious: 0.514
+    - word: TEACHER
+      delayAfterPrevious: 0.514
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.514
+    - word: CHRONICLE
+      delayAfterPrevious: 0.514
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.514
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.514
+    - word: LINGUISTICS
+      delayAfterPrevious: 0.514
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.514
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.514
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.514
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.514
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 98
+    enemyMovementSpeed: 1.046
+  - title: WAVE 18
+    words:
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.2
+    - word: CHRONICLE
+      delayAfterPrevious: 0.496
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.496
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.496
+    - word: LINGUISTICS
+      delayAfterPrevious: 0.496
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.496
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.496
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.496
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.496
+    - word: COLLABORATION
+      delayAfterPrevious: 0.496
+    - word: EVIDENCE
+      delayAfterPrevious: 0.496
+    - word: REASONING
+      delayAfterPrevious: 0.496
+    - word: DIALECTIC
+      delayAfterPrevious: 0.496
+    - word: ALGORITHM
+      delayAfterPrevious: 0.496
+    - word: GEOMETRY
+      delayAfterPrevious: 0.496
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 101
+    enemyMovementSpeed: 1.064
+  - title: WAVE 19
+    words:
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.2
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.47800002
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.47800002
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.47800002
+    - word: COLLABORATION
+      delayAfterPrevious: 0.47800002
+    - word: EVIDENCE
+      delayAfterPrevious: 0.47800002
+    - word: REASONING
+      delayAfterPrevious: 0.47800002
+    - word: DIALECTIC
+      delayAfterPrevious: 0.47800002
+    - word: ALGORITHM
+      delayAfterPrevious: 0.47800002
+    - word: GEOMETRY
+      delayAfterPrevious: 0.47800002
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.47800002
+    - word: TRANSLATION
+      delayAfterPrevious: 0.47800002
+    - word: INHERITANCE
+      delayAfterPrevious: 0.47800002
+    - word: REVOLUTION
+      delayAfterPrevious: 0.47800002
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.47800002
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 104
+    enemyMovementSpeed: 1.082
+  - title: BOSS WAVE 20
+    words:
+    - word: IMAGINATIONCHAMPION
+      delayAfterPrevious: 0.2
+    - word: EVIDENCE
+      delayAfterPrevious: 0.46
+    - word: REASONING
+      delayAfterPrevious: 0.46
+    - word: DIALECTIC
+      delayAfterPrevious: 0.46
+    - word: ALGORITHM
+      delayAfterPrevious: 0.46
+    - word: GEOMETRY
+      delayAfterPrevious: 0.46
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.46
+    - word: TRANSLATION
+      delayAfterPrevious: 0.46
+    - word: INHERITANCE
+      delayAfterPrevious: 0.46
+    - word: REVOLUTION
+      delayAfterPrevious: 0.46
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.46
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.46
+    - word: DETERMINATION
+      delayAfterPrevious: 0.46
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.46
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.46
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.46
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.46
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 107
+    enemyMovementSpeed: 1.1
+  - title: WAVE 21
+    words:
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.2
+    - word: TRANSLATION
+      delayAfterPrevious: 0.442
+    - word: INHERITANCE
+      delayAfterPrevious: 0.442
+    - word: REVOLUTION
+      delayAfterPrevious: 0.442
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.442
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.442
+    - word: DETERMINATION
+      delayAfterPrevious: 0.442
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.442
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.442
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.442
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.442
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.442
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.442
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.442
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.442
+    - word: CAT
+      delayAfterPrevious: 0.442
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 110
+    enemyMovementSpeed: 1.118
+  - title: WAVE 22
+    words:
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.2
+    - word: DETERMINATION
+      delayAfterPrevious: 0.42400002
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.42400002
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.42400002
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.42400002
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.42400002
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.42400002
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.42400002
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.42400002
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.42400002
+    - word: CAT
+      delayAfterPrevious: 0.42400002
+    - word: BOOK
+      delayAfterPrevious: 0.42400002
+    - word: MOON
+      delayAfterPrevious: 0.42400002
+    - word: TREE
+      delayAfterPrevious: 0.42400002
+    - word: STAR
+      delayAfterPrevious: 0.42400002
+    - word: SMILE
+      delayAfterPrevious: 0.42400002
+    - word: APPLE
+      delayAfterPrevious: 0.42400002
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 113
+    enemyMovementSpeed: 1.136
+  - title: WAVE 23
+    words:
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.2
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.40600002
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.40600002
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.40600002
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.40600002
+    - word: CAT
+      delayAfterPrevious: 0.40600002
+    - word: BOOK
+      delayAfterPrevious: 0.40600002
+    - word: MOON
+      delayAfterPrevious: 0.40600002
+    - word: TREE
+      delayAfterPrevious: 0.40600002
+    - word: STAR
+      delayAfterPrevious: 0.40600002
+    - word: SMILE
+      delayAfterPrevious: 0.40600002
+    - word: APPLE
+      delayAfterPrevious: 0.40600002
+    - word: RIVER
+      delayAfterPrevious: 0.40600002
+    - word: MUSIC
+      delayAfterPrevious: 0.40600002
+    - word: HAPPY
+      delayAfterPrevious: 0.40600002
+    - word: FRIEND
+      delayAfterPrevious: 0.40600002
+    - word: PLANET
+      delayAfterPrevious: 0.40600002
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 116
+    enemyMovementSpeed: 1.154
+  - title: WAVE 24
+    words:
+    - word: CAT
+      delayAfterPrevious: 0.2
+    - word: BOOK
+      delayAfterPrevious: 0.388
+    - word: MOON
+      delayAfterPrevious: 0.388
+    - word: TREE
+      delayAfterPrevious: 0.388
+    - word: STAR
+      delayAfterPrevious: 0.388
+    - word: SMILE
+      delayAfterPrevious: 0.388
+    - word: APPLE
+      delayAfterPrevious: 0.388
+    - word: RIVER
+      delayAfterPrevious: 0.388
+    - word: MUSIC
+      delayAfterPrevious: 0.388
+    - word: HAPPY
+      delayAfterPrevious: 0.388
+    - word: FRIEND
+      delayAfterPrevious: 0.388
+    - word: PLANET
+      delayAfterPrevious: 0.388
+    - word: PUZZLE
+      delayAfterPrevious: 0.388
+    - word: GARDEN
+      delayAfterPrevious: 0.388
+    - word: CASTLE
+      delayAfterPrevious: 0.388
+    - word: RAINBOW
+      delayAfterPrevious: 0.388
+    - word: JOURNEY
+      delayAfterPrevious: 0.388
+    - word: LIBRARY
+      delayAfterPrevious: 0.388
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 119
+    enemyMovementSpeed: 1.1719999
+  - title: BOSS WAVE 25
+    words:
+    - word: INTERDEPENDENTCIVILIZATION
+      delayAfterPrevious: 0.2
+    - word: SMILE
+      delayAfterPrevious: 0.37
+    - word: APPLE
+      delayAfterPrevious: 0.37
+    - word: RIVER
+      delayAfterPrevious: 0.37
+    - word: MUSIC
+      delayAfterPrevious: 0.37
+    - word: HAPPY
+      delayAfterPrevious: 0.37
+    - word: FRIEND
+      delayAfterPrevious: 0.37
+    - word: PLANET
+      delayAfterPrevious: 0.37
+    - word: PUZZLE
+      delayAfterPrevious: 0.37
+    - word: GARDEN
+      delayAfterPrevious: 0.37
+    - word: CASTLE
+      delayAfterPrevious: 0.37
+    - word: RAINBOW
+      delayAfterPrevious: 0.37
+    - word: JOURNEY
+      delayAfterPrevious: 0.37
+    - word: LIBRARY
+      delayAfterPrevious: 0.37
+    - word: ADVENTURE
+      delayAfterPrevious: 0.37
+    - word: IMAGINATION
+      delayAfterPrevious: 0.37
+    - word: CLOUD
+      delayAfterPrevious: 0.37
+    - word: BRAVE
+      delayAfterPrevious: 0.37
+    - word: STORY
+      delayAfterPrevious: 0.37
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 122
+    enemyMovementSpeed: 1.1899999
+  - title: WAVE 26
+    words:
+    - word: FRIEND
+      delayAfterPrevious: 0.2
+    - word: PLANET
+      delayAfterPrevious: 0.352
+    - word: PUZZLE
+      delayAfterPrevious: 0.352
+    - word: GARDEN
+      delayAfterPrevious: 0.352
+    - word: CASTLE
+      delayAfterPrevious: 0.352
+    - word: RAINBOW
+      delayAfterPrevious: 0.352
+    - word: JOURNEY
+      delayAfterPrevious: 0.352
+    - word: LIBRARY
+      delayAfterPrevious: 0.352
+    - word: ADVENTURE
+      delayAfterPrevious: 0.352
+    - word: IMAGINATION
+      delayAfterPrevious: 0.352
+    - word: CLOUD
+      delayAfterPrevious: 0.352
+    - word: BRAVE
+      delayAfterPrevious: 0.352
+    - word: STORY
+      delayAfterPrevious: 0.352
+    - word: PAINT
+      delayAfterPrevious: 0.352
+    - word: DREAM
+      delayAfterPrevious: 0.352
+    - word: ROCKET
+      delayAfterPrevious: 0.352
+    - word: ANIMAL
+      delayAfterPrevious: 0.352
+    - word: FOREST
+      delayAfterPrevious: 0.352
+    - word: PENCIL
+      delayAfterPrevious: 0.352
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 125
+    enemyMovementSpeed: 1.208
+  - title: WAVE 27
+    words:
+    - word: RAINBOW
+      delayAfterPrevious: 0.2
+    - word: JOURNEY
+      delayAfterPrevious: 0.33400002
+    - word: LIBRARY
+      delayAfterPrevious: 0.33400002
+    - word: ADVENTURE
+      delayAfterPrevious: 0.33400002
+    - word: IMAGINATION
+      delayAfterPrevious: 0.33400002
+    - word: CLOUD
+      delayAfterPrevious: 0.33400002
+    - word: BRAVE
+      delayAfterPrevious: 0.33400002
+    - word: STORY
+      delayAfterPrevious: 0.33400002
+    - word: PAINT
+      delayAfterPrevious: 0.33400002
+    - word: DREAM
+      delayAfterPrevious: 0.33400002
+    - word: ROCKET
+      delayAfterPrevious: 0.33400002
+    - word: ANIMAL
+      delayAfterPrevious: 0.33400002
+    - word: FOREST
+      delayAfterPrevious: 0.33400002
+    - word: PENCIL
+      delayAfterPrevious: 0.33400002
+    - word: SCHOOL
+      delayAfterPrevious: 0.33400002
+    - word: BICYCLE
+      delayAfterPrevious: 0.33400002
+    - word: DOLPHIN
+      delayAfterPrevious: 0.33400002
+    - word: TREASURE
+      delayAfterPrevious: 0.33400002
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.33400002
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 128
+    enemyMovementSpeed: 1.226
+  - title: WAVE 28
+    words:
+    - word: CLOUD
+      delayAfterPrevious: 0.2
+    - word: BRAVE
+      delayAfterPrevious: 0.316
+    - word: STORY
+      delayAfterPrevious: 0.316
+    - word: PAINT
+      delayAfterPrevious: 0.316
+    - word: DREAM
+      delayAfterPrevious: 0.316
+    - word: ROCKET
+      delayAfterPrevious: 0.316
+    - word: ANIMAL
+      delayAfterPrevious: 0.316
+    - word: FOREST
+      delayAfterPrevious: 0.316
+    - word: PENCIL
+      delayAfterPrevious: 0.316
+    - word: SCHOOL
+      delayAfterPrevious: 0.316
+    - word: BICYCLE
+      delayAfterPrevious: 0.316
+    - word: DOLPHIN
+      delayAfterPrevious: 0.316
+    - word: TREASURE
+      delayAfterPrevious: 0.316
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.316
+    - word: DINOSAUR
+      delayAfterPrevious: 0.316
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.316
+    - word: TELESCOPE
+      delayAfterPrevious: 0.316
+    - word: CELEBRATE
+      delayAfterPrevious: 0.316
+    - word: DISCOVERY
+      delayAfterPrevious: 0.316
+    - word: CREATIVITY
+      delayAfterPrevious: 0.316
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 131
+    enemyMovementSpeed: 1.244
+  - title: WAVE 29
+    words:
+    - word: ROCKET
+      delayAfterPrevious: 0.2
+    - word: ANIMAL
+      delayAfterPrevious: 0.298
+    - word: FOREST
+      delayAfterPrevious: 0.298
+    - word: PENCIL
+      delayAfterPrevious: 0.298
+    - word: SCHOOL
+      delayAfterPrevious: 0.298
+    - word: BICYCLE
+      delayAfterPrevious: 0.298
+    - word: DOLPHIN
+      delayAfterPrevious: 0.298
+    - word: TREASURE
+      delayAfterPrevious: 0.298
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.298
+    - word: DINOSAUR
+      delayAfterPrevious: 0.298
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.298
+    - word: TELESCOPE
+      delayAfterPrevious: 0.298
+    - word: CELEBRATE
+      delayAfterPrevious: 0.298
+    - word: DISCOVERY
+      delayAfterPrevious: 0.298
+    - word: CREATIVITY
+      delayAfterPrevious: 0.298
+    - word: ORACLE
+      delayAfterPrevious: 0.298
+    - word: POETRY
+      delayAfterPrevious: 0.298
+    - word: HISTORY
+      delayAfterPrevious: 0.298
+    - word: MEMORY
+      delayAfterPrevious: 0.298
+    - word: WISDOM
+      delayAfterPrevious: 0.298
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 134
+    enemyMovementSpeed: 1.262
+  - title: BOSS WAVE 30
+    words:
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.2
+    - word: BICYCLE
+      delayAfterPrevious: 0.28000003
+    - word: DOLPHIN
+      delayAfterPrevious: 0.28000003
+    - word: TREASURE
+      delayAfterPrevious: 0.28000003
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.28000003
+    - word: DINOSAUR
+      delayAfterPrevious: 0.28000003
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.28000003
+    - word: TELESCOPE
+      delayAfterPrevious: 0.28000003
+    - word: CELEBRATE
+      delayAfterPrevious: 0.28000003
+    - word: DISCOVERY
+      delayAfterPrevious: 0.28000003
+    - word: CREATIVITY
+      delayAfterPrevious: 0.28000003
+    - word: ORACLE
+      delayAfterPrevious: 0.28000003
+    - word: POETRY
+      delayAfterPrevious: 0.28000003
+    - word: HISTORY
+      delayAfterPrevious: 0.28000003
+    - word: MEMORY
+      delayAfterPrevious: 0.28000003
+    - word: WISDOM
+      delayAfterPrevious: 0.28000003
+    - word: LANGUAGE
+      delayAfterPrevious: 0.28000003
+    - word: HARMONY
+      delayAfterPrevious: 0.28000003
+    - word: MYSTERY
+      delayAfterPrevious: 0.28000003
+    - word: COMPASS
+      delayAfterPrevious: 0.28000003
+    - word: VILLAGE
+      delayAfterPrevious: 0.28000003
+    - word: NOTEBOOK
+      delayAfterPrevious: 0.28000003
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 137
+    enemyMovementSpeed: 1.28
+  intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 1

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62d0449cc24a71d4b9282799539e6388, type: 3}
-  m_Name: LibraryHealth
+  m_Name: TeacherRange
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.Progression.ResearchDefinition
-  id: LIBRARY_HEALTH
-  displayName: LIBRARY HP
-  stat: 2
-  maxLevel: 20
-  baseCost: 2
-  costIncreasePerLevel: 1
-  valuePerLevel: 5
+  id: TEACHER_RANGE
+  displayName: TEACHER RANGE
+  stat: 4
+  maxLevel: 10
+  baseCost: 3
+  costIncreasePerLevel: 2
+  valuePerLevel: 0.12

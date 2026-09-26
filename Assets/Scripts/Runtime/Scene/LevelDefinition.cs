@@ -60,10 +60,14 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private string displayName = "LORE LEVEL";
         [SerializeField] private LevelWaveEntry[] waves = Array.Empty<LevelWaveEntry>();
         [SerializeField, Min(0f)] private float intermissionSeconds = 30f;
+        [SerializeField, Min(0f)] private float initialPreparationSeconds = 30f;
+        [SerializeField] private bool pauseAfterBossWave;
 
         public string DisplayName => displayName;
         public LevelWaveEntry[] Waves => waves;
         public float IntermissionSeconds => intermissionSeconds;
+        public float InitialPreparationSeconds => initialPreparationSeconds;
+        public bool PauseAfterBossWave => pauseAfterBossWave;
 
         private void OnValidate()
         {

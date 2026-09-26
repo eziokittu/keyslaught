@@ -32,6 +32,10 @@ namespace KeySlaught.Progression
         [SerializeField] private Text loreOneLevelThreeStarsLabel;
         [SerializeField] private Button[] loreLevelButtons;
         [SerializeField] private Text[] loreLevelLabels;
+        [SerializeField] private Text[] loreLevelBestTimeLabels;
+        [SerializeField] private GameObject loreOneContent;
+        [SerializeField] private GameObject loreTwoInDevelopment;
+        [SerializeField] private Text lorePageTitle;
         [SerializeField] private Text tutorialLabel;
         [SerializeField] private Button endlessButton;
         [SerializeField] private Text endlessLabel;
@@ -49,6 +53,9 @@ namespace KeySlaught.Progression
         [SerializeField] private TutorialDirector tutorialDirector;
         [SerializeField] private RunResultPresenter resultPresenter;
         [SerializeField] private Text[] gameSpeedLabels;
+        [SerializeField] private GameObject tutorialReplayConfirmation;
+        [SerializeField] private GameObject endlessBossCheckpointPanel;
+        [SerializeField] private Text endlessBossCheckpointLabel;
         [SerializeField, Min(0f)] private float launchDelay = 2f;
         [SerializeField, Min(.05f)] private float launchFadeDuration = .5f;
 
@@ -56,6 +63,7 @@ namespace KeySlaught.Progression
         private float launchFadeTimer;
         private bool musicEnabled = true;
         private bool sfxEnabled = true;
+        private int lorePage = 1;
 
         public GameModeSelection ActiveMode { get; private set; }
 
@@ -94,7 +102,7 @@ namespace KeySlaught.Progression
         public void ShowResearch() { ShowOnly(researchPanel); Refresh(); }
         public void ShowCredits() => ShowOnly(creditsPanel);
         public void ShowSettings() { ShowOnly(settingsPanel); Refresh(); }
-        public void ShowLoreLevels() { ShowOnly(loreLevelsPanel); Refresh(); }
+        public void ShowLoreLevels() { lorePage = 1; ShowOnly(loreLevelsPanel); Refresh(); }
         public void ExitGame()
         {
             if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(true);
@@ -102,7 +110,23 @@ namespace KeySlaught.Progression
         }
         public void HideExitConfirmation() { if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(false); }
         public void ConfirmExitGame() => Application.Quit();
-        public void StartTutorial() => BeginRun(GameModeSelection.Tutorial);
+        public void StartTutorial()
+        {
+            if (progression != null && progression.Profile != null && progression.Profile.tutorialCompleted)
+            {
+                if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(true);
+                return;
+            }
+            BeginRun(GameModeSelection.Tutorial);
+        }
+        public void ConfirmTutorialReplay()
+        {
+            if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false);
+            BeginRun(GameModeSelection.Tutorial);
+        }
+        public void CancelTutorialReplay() { if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false); }
+        public void NextLore() { lorePage = lorePage == 1 ? 2 : 1; RefreshLorePage(); }
+        public void PreviousLore() { lorePage = lorePage == 1 ? 2 : 1; RefreshLorePage(); }
         public void StartLoreOneLevelOne()
         {
             ShowLoreLevels();
@@ -118,6 +142,16 @@ namespace KeySlaught.Progression
         public void StartLoreOneLevelFive() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelFive"); }
         public void StartLoreOneLevelSix() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelSix"); }
         public void StartEndless() { if (progression != null && progression.Profile.endlessModeUnlocked) BeginRun(GameModeSelection.Endless); }
+        public void ContinueEndlessAfterBoss()
+        {
+            if (endlessBossCheckpointPanel != null) endlessBossCheckpointPanel.SetActive(false);
+            run?.ContinueAfterBoss();
+        }
+        public void EndEndlessAfterBoss()
+        {
+            if (endlessBossCheckpointPanel != null) endlessBossCheckpointPanel.SetActive(false);
+            ReturnToMainFromRun();
+        }
         public void ReturnToMainFromRun()
         {
             run?.RestartRun();
@@ -178,6 +212,19 @@ namespace KeySlaught.Progression
             loreLevelLabels = labels;
         }
 
+        public void ConfigureLoreCarousel(GameObject loreOne, GameObject loreTwo, Text title, Text[] bestTimes)
+        {
+            loreOneContent = loreOne;
+            loreTwoInDevelopment = loreTwo;
+            lorePageTitle = title;
+            loreLevelBestTimeLabels = bestTimes;
+        }
+
+        public void ConfigureTutorialReplayConfirmation(GameObject panel) => tutorialReplayConfirmation = panel;
+
+        public void ConfigureEndlessCheckpoint(GameObject panel, Text label)
+        { endlessBossCheckpointPanel = panel; endlessBossCheckpointLabel = label; }
+
         public void ConfigureResearchUi(Button[] buttons, Text[] labels)
         {
             researchButtons = buttons;
@@ -188,7 +235,11 @@ namespace KeySlaught.Progression
         {
             musicEnabled = PlayerPrefs.GetInt("KeySlaught.Music", 1) != 0;
             sfxEnabled = PlayerPrefs.GetInt("KeySlaught.Sfx", 1) != 0;
-            if (run != null) run.RunEnded += OnRunEnded;
+            if (run != null)
+            {
+                run.RunEnded += OnRunEnded;
+                run.BossCheckpointReached += OnBossCheckpointReached;
+            }
             run?.SetMenuSuspended(true);
             if (shellRoot != null) shellRoot.SetActive(true);
             if (PlayerPrefs.GetInt("KeySlaught.ReturnToMainMenu", 0) != 0)
@@ -199,7 +250,12 @@ namespace KeySlaught.Progression
             else ShowLaunch();
         }
 
-        private void OnDestroy() { if (run != null) run.RunEnded -= OnRunEnded; }
+        private void OnDestroy()
+        {
+            if (run == null) return;
+            run.RunEnded -= OnRunEnded;
+            run.BossCheckpointReached -= OnBossCheckpointReached;
+        }
 
         private void Update()
         {
@@ -217,6 +273,8 @@ namespace KeySlaught.Progression
         private void BeginRun(GameModeSelection mode)
         {
             ActiveMode = mode;
+            if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false);
+            if (endlessBossCheckpointPanel != null) endlessBossCheckpointPanel.SetActive(false);
             upgrades?.Apply();
             run?.SetLevel(mode switch
             {
@@ -242,12 +300,22 @@ namespace KeySlaught.Progression
             var previousUnlockCount = progression.UnlockedTurretCount;
             if (ActiveMode == GameModeSelection.Tutorial) progression.CompleteTutorial();
             if (ActiveMode == GameModeSelection.LoreOneLevelOne) progression.CompleteLoreOneLevelOne();
-            var reward = 1 + (run == null ? 0 : run.BossesDefeated);
-            progression.CreditKnowledge(reward);
+            var reward = ActiveMode == GameModeSelection.Endless ? 0 : 1 + (run == null ? 0 : run.BossesDefeated);
+            if (reward > 0) progression.CreditKnowledge(reward);
             var unlocked = progression.UnlockedTurretCount > previousUnlockCount
                 ? ActiveMode == GameModeSelection.Tutorial ? "Teacher" : "Engineer"
                 : null;
             resultPresenter?.Present(true, reward, unlocked, ActiveMode == GameModeSelection.Tutorial);
+        }
+
+        private void OnBossCheckpointReached(int waveNumber)
+        {
+            if (ActiveMode != GameModeSelection.Endless || progression == null) return;
+            progression.CreditKnowledge(1);
+            if (run == null || run.Phase != WaveRunPhase.BossCheckpoint || endlessBossCheckpointPanel == null) return;
+            if (endlessBossCheckpointLabel != null)
+                endlessBossCheckpointLabel.text = $"BOSS WAVE {waveNumber} CLEARED\n\n+1 KNOWLEDGE POINT\n\nCONTINUE THE RUN?";
+            endlessBossCheckpointPanel.SetActive(true);
         }
 
         public void ContinueFromResult()
@@ -275,12 +343,11 @@ namespace KeySlaught.Progression
         {
             if (progression == null || progression.Profile == null) return;
             var profile = progression.Profile;
-            if (tutorialLabel != null) tutorialLabel.text = profile.tutorialCompleted ? "TUTORIAL" : "TUTORIAL  •  RECOMMENDED";
+            if (tutorialLabel != null) tutorialLabel.text = "TUTORIAL";
             if (endlessButton != null) endlessButton.interactable = profile.endlessModeUnlocked;
-            if (endlessLabel != null) endlessLabel.text = profile.endlessModeUnlocked ? "ENDLESS  •  IN DEVELOPMENT" : "ENDLESS  •  LOCKED";
+            if (endlessLabel != null) endlessLabel.text = profile.endlessModeUnlocked ? "ENDLESS" : "ENDLESS  •  LOCKED";
             if (knowledgeLabel != null) knowledgeLabel.text = $"KNOWLEDGE POINTS  {profile.knowledgePoints}";
             if (researchKnowledgeLabel != null) researchKnowledgeLabel.text = $"KNOWLEDGE POINTS  {profile.knowledgePoints}";
-            if (brainCellsLabel != null) brainCellsLabel.text = profile.brainCells.ToString();
             if (gameSpeedLabels != null)
                 for (var index = 0; index < gameSpeedLabels.Length; index++)
                     if (gameSpeedLabels[index] != null)
@@ -319,7 +386,14 @@ namespace KeySlaught.Progression
                 RefreshLoreButton(loreLevelButtons[3], loreLevelLabels[3], 4, true, profile.loreOneLevelFourCompleted, profile.loreOneLevelFourStars, profile.loreOneLevelFourBestSeconds);
                 RefreshLoreButton(loreLevelButtons[4], loreLevelLabels[4], 5, true, profile.loreOneLevelFiveCompleted, profile.loreOneLevelFiveStars, profile.loreOneLevelFiveBestSeconds);
                 RefreshLoreButton(loreLevelButtons[5], loreLevelLabels[5], 6, true, profile.loreOneLevelSixCompleted, profile.loreOneLevelSixStars, profile.loreOneLevelSixBestSeconds);
+                RefreshBestTime(0, profile.loreOneLevelOneCompleted, profile.loreOneLevelOneBestSeconds);
+                RefreshBestTime(1, profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoBestSeconds);
+                RefreshBestTime(2, profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeBestSeconds);
+                RefreshBestTime(3, profile.loreOneLevelFourCompleted, profile.loreOneLevelFourBestSeconds);
+                RefreshBestTime(4, profile.loreOneLevelFiveCompleted, profile.loreOneLevelFiveBestSeconds);
+                RefreshBestTime(5, profile.loreOneLevelSixCompleted, profile.loreOneLevelSixBestSeconds);
             }
+            RefreshLorePage();
         }
 
         private static void RefreshLoreButton(Button button, Text label, int level, bool unlocked, bool completed, int stars, float best)
@@ -328,7 +402,23 @@ namespace KeySlaught.Progression
             if (label == null) return;
             if (!unlocked) { label.text = $"LEVEL {level}  •  LOCKED"; return; }
             var rating = new string('★', Mathf.Clamp(stars, 0, 3)) + new string('☆', 3 - Mathf.Clamp(stars, 0, 3));
-            label.text = completed ? $"LEVEL {level}  {rating}  BEST {FormatTime(best)}" : $"LEVEL {level}  {rating}";
+            label.text = $"LEVEL {level}  {rating}";
+        }
+
+        private void RefreshBestTime(int index, bool completed, float best)
+        {
+            if (loreLevelBestTimeLabels == null || index < 0 || index >= loreLevelBestTimeLabels.Length || loreLevelBestTimeLabels[index] == null) return;
+            var label = loreLevelBestTimeLabels[index];
+            var tag = label.transform.parent == null ? label.gameObject : label.transform.parent.gameObject;
+            tag.SetActive(completed);
+            label.text = $"BEST {FormatTime(best)}";
+        }
+
+        private void RefreshLorePage()
+        {
+            if (loreOneContent != null) loreOneContent.SetActive(lorePage == 1);
+            if (loreTwoInDevelopment != null) loreTwoInDevelopment.SetActive(lorePage == 2);
+            if (lorePageTitle != null) lorePageTitle.text = lorePage == 1 ? "LORE I" : "LORE II";
         }
 
         private static string FormatTime(float seconds)

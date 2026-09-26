@@ -17,145 +17,297 @@ MonoBehaviour:
   - title: WAVE 1
     words:
     - word: EVIDENCE
-      delayAfterPrevious: 0.25
+      delayAfterPrevious: 0.2
     - word: REASONING
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.48
     - word: DIALECTIC
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.48
     - word: ALGORITHM
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.48
     - word: GEOMETRY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.48
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.48
+    - word: TRANSLATION
+      delayAfterPrevious: 0.48
+    - word: INHERITANCE
+      delayAfterPrevious: 0.48
+    - word: REVOLUTION
+      delayAfterPrevious: 0.48
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.48
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.48
+    - word: DETERMINATION
+      delayAfterPrevious: 0.48
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.48
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.48
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.48
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.48
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.48
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.48
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 45
-    enemyMovementSpeed: 1.55
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 1.1700001
   - title: WAVE 2
     words:
-    - word: ALGORITHM
-      delayAfterPrevious: 0.25
     - word: GEOMETRY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.2
     - word: PHILOSOPHY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.40999997
     - word: TRANSLATION
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.40999997
     - word: INHERITANCE
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.40999997
     - word: REVOLUTION
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.40999997
     - word: POSSIBILITY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.40999997
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.40999997
+    - word: DETERMINATION
+      delayAfterPrevious: 0.40999997
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.40999997
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.40999997
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.40999997
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.40999997
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.40999997
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.40999997
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.40999997
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.40999997
+    - word: EVIDENCE
+      delayAfterPrevious: 0.40999997
+    - word: REASONING
+      delayAfterPrevious: 0.40999997
+    - word: DIALECTIC
+      delayAfterPrevious: 0.40999997
+    - word: ALGORITHM
+      delayAfterPrevious: 0.40999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 51
-    enemyMovementSpeed: 1.63
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 1.23
   - title: WAVE 3
     words:
-    - word: TRANSLATION
-      delayAfterPrevious: 0.25
-    - word: INHERITANCE
-      delayAfterPrevious: 0.86999995
     - word: REVOLUTION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.2
     - word: POSSIBILITY
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
     - word: INVESTIGATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
     - word: DETERMINATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
     - word: ELECTROMAGNETIC
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
     - word: CHARACTERISTIC
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
     - word: INTERDEPENDENCE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.33999997
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.33999997
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.33999997
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.33999997
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.33999997
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.33999997
+    - word: EVIDENCE
+      delayAfterPrevious: 0.33999997
+    - word: REASONING
+      delayAfterPrevious: 0.33999997
+    - word: DIALECTIC
+      delayAfterPrevious: 0.33999997
+    - word: ALGORITHM
+      delayAfterPrevious: 0.33999997
+    - word: GEOMETRY
+      delayAfterPrevious: 0.33999997
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.33999997
+    - word: TRANSLATION
+      delayAfterPrevious: 0.33999997
+    - word: INHERITANCE
+      delayAfterPrevious: 0.33999997
+    - word: REVOLUTION
+      delayAfterPrevious: 0.33999997
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.33999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 57
-    enemyMovementSpeed: 1.7099999
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 1.2900001
   - title: WAVE 4
     words:
-    - word: POSSIBILITY
-      delayAfterPrevious: 0.25
-    - word: INVESTIGATION
-      delayAfterPrevious: 0.78
-    - word: DETERMINATION
-      delayAfterPrevious: 0.78
     - word: ELECTROMAGNETIC
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.2
     - word: CHARACTERISTIC
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: INTERDEPENDENCE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: MISUNDERSTANDING
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: REPRESENTATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: INTERNATIONAL
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: COUNTERBALANCE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: ELECTROENCEPHALOGRAPHIC
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
     - word: EVIDENCE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.3
+    - word: REASONING
+      delayAfterPrevious: 0.3
+    - word: DIALECTIC
+      delayAfterPrevious: 0.3
+    - word: ALGORITHM
+      delayAfterPrevious: 0.3
+    - word: GEOMETRY
+      delayAfterPrevious: 0.3
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.3
+    - word: TRANSLATION
+      delayAfterPrevious: 0.3
+    - word: INHERITANCE
+      delayAfterPrevious: 0.3
+    - word: REVOLUTION
+      delayAfterPrevious: 0.3
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.3
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.3
+    - word: DETERMINATION
+      delayAfterPrevious: 0.3
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.3
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.3
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.3
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.3
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 63
-    enemyMovementSpeed: 1.79
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 1.35
   - title: WAVE 5
     words:
-    - word: ELECTROMAGNETIC
-      delayAfterPrevious: 0.25
-    - word: CHARACTERISTIC
-      delayAfterPrevious: 0.68999994
-    - word: INTERDEPENDENCE
-      delayAfterPrevious: 0.68999994
-    - word: MISUNDERSTANDING
-      delayAfterPrevious: 0.68999994
     - word: REPRESENTATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.2
     - word: INTERNATIONAL
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: COUNTERBALANCE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: ELECTROENCEPHALOGRAPHIC
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: EVIDENCE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: REASONING
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: DIALECTIC
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: ALGORITHM
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: GEOMETRY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: PHILOSOPHY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: TRANSLATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
+    - word: INHERITANCE
+      delayAfterPrevious: 0.3
+    - word: REVOLUTION
+      delayAfterPrevious: 0.3
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.3
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.3
+    - word: DETERMINATION
+      delayAfterPrevious: 0.3
+    - word: ELECTROMAGNETIC
+      delayAfterPrevious: 0.3
+    - word: CHARACTERISTIC
+      delayAfterPrevious: 0.3
+    - word: INTERDEPENDENCE
+      delayAfterPrevious: 0.3
+    - word: MISUNDERSTANDING
+      delayAfterPrevious: 0.3
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.3
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.3
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.3
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.3
+    - word: EVIDENCE
+      delayAfterPrevious: 0.3
+    - word: REASONING
+      delayAfterPrevious: 0.3
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 69
-    enemyMovementSpeed: 1.87
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 1.4100001
   - title: BOSS WAVE
     words:
     - word: ELECTROENCEPHALOGRAPHIC
-      delayAfterPrevious: 0.25
-    - word: DETERMINATION
-      delayAfterPrevious: 0.5999999
-    - word: ELECTROMAGNETIC
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.2
     - word: CHARACTERISTIC
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.39499998
     - word: INTERDEPENDENCE
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.39499998
     - word: MISUNDERSTANDING
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.39499998
+    - word: REPRESENTATION
+      delayAfterPrevious: 0.39499998
+    - word: INTERNATIONAL
+      delayAfterPrevious: 0.39499998
+    - word: COUNTERBALANCE
+      delayAfterPrevious: 0.39499998
+    - word: ELECTROENCEPHALOGRAPHIC
+      delayAfterPrevious: 0.39499998
+    - word: EVIDENCE
+      delayAfterPrevious: 0.39499998
+    - word: REASONING
+      delayAfterPrevious: 0.39499998
+    - word: DIALECTIC
+      delayAfterPrevious: 0.39499998
+    - word: ALGORITHM
+      delayAfterPrevious: 0.39499998
+    - word: GEOMETRY
+      delayAfterPrevious: 0.39499998
+    - word: PHILOSOPHY
+      delayAfterPrevious: 0.39499998
+    - word: TRANSLATION
+      delayAfterPrevious: 0.39499998
+    - word: INHERITANCE
+      delayAfterPrevious: 0.39499998
+    - word: REVOLUTION
+      delayAfterPrevious: 0.39499998
+    - word: POSSIBILITY
+      delayAfterPrevious: 0.39499998
+    - word: INVESTIGATION
+      delayAfterPrevious: 0.39499998
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 75
-    enemyMovementSpeed: 1.36
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 1.08
   intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 0

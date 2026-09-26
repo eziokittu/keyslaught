@@ -46,7 +46,9 @@ namespace KeySlaught.SceneGameplay
             {
                 var number = waveRun == null ? waveNumber : waveRun.CurrentWaveNumber;
                 waveLabel.text = waveRun != null && waveRun.Phase == WaveRunPhase.Intermission
-                    ? $"NEXT WAVE  {Mathf.CeilToInt(waveRun.IntermissionRemaining)}s"
+                    ? $"{(waveRun.IsPreparingFirstWave ? "FIRST WAVE" : "NEXT WAVE")}  {Mathf.CeilToInt(waveRun.IntermissionRemaining)}s"
+                    : waveRun != null && waveRun.Phase == WaveRunPhase.BossCheckpoint
+                        ? $"BOSS {number} CLEARED"
                     : waveRun != null && waveRun.IsBossWave ? $"BOSS {number}" : $"WAVE {number}";
             }
 

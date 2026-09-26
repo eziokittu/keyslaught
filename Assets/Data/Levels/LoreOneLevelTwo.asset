@@ -17,145 +17,201 @@ MonoBehaviour:
   - title: WAVE 1
     words:
     - word: CLOUD
-      delayAfterPrevious: 0.25
+      delayAfterPrevious: 0.2
     - word: BRAVE
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.71999997
     - word: STORY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.71999997
     - word: PAINT
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.71999997
     - word: DREAM
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.71999997
+    - word: ROCKET
+      delayAfterPrevious: 0.71999997
+    - word: ANIMAL
+      delayAfterPrevious: 0.71999997
+    - word: FOREST
+      delayAfterPrevious: 0.71999997
+    - word: PENCIL
+      delayAfterPrevious: 0.71999997
+    - word: SCHOOL
+      delayAfterPrevious: 0.71999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 45
-    enemyMovementSpeed: 1.0699999
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 0.81000006
   - title: WAVE 2
     words:
-    - word: PAINT
-      delayAfterPrevious: 0.25
     - word: DREAM
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.2
     - word: ROCKET
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.65
     - word: ANIMAL
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.65
     - word: FOREST
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.65
     - word: PENCIL
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.65
     - word: SCHOOL
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.65
+    - word: BICYCLE
+      delayAfterPrevious: 0.65
+    - word: DOLPHIN
+      delayAfterPrevious: 0.65
+    - word: TREASURE
+      delayAfterPrevious: 0.65
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.65
+    - word: DINOSAUR
+      delayAfterPrevious: 0.65
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.65
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 51
-    enemyMovementSpeed: 1.15
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 0.87
   - title: WAVE 3
     words:
-    - word: ANIMAL
-      delayAfterPrevious: 0.25
-    - word: FOREST
-      delayAfterPrevious: 0.86999995
     - word: PENCIL
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.2
     - word: SCHOOL
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
     - word: BICYCLE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
     - word: DOLPHIN
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
     - word: TREASURE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
     - word: MOUNTAIN
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
     - word: DINOSAUR
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.58
+    - word: BUTTERFLY
+      delayAfterPrevious: 0.58
+    - word: TELESCOPE
+      delayAfterPrevious: 0.58
+    - word: CELEBRATE
+      delayAfterPrevious: 0.58
+    - word: DISCOVERY
+      delayAfterPrevious: 0.58
+    - word: CREATIVITY
+      delayAfterPrevious: 0.58
+    - word: CLOUD
+      delayAfterPrevious: 0.58
+    - word: BRAVE
+      delayAfterPrevious: 0.58
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 57
-    enemyMovementSpeed: 1.23
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 0.93
   - title: WAVE 4
     words:
-    - word: SCHOOL
-      delayAfterPrevious: 0.25
-    - word: BICYCLE
-      delayAfterPrevious: 0.78
-    - word: DOLPHIN
-      delayAfterPrevious: 0.78
     - word: TREASURE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.2
     - word: MOUNTAIN
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: DINOSAUR
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: BUTTERFLY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: TELESCOPE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: CELEBRATE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: DISCOVERY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: CREATIVITY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
     - word: CLOUD
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.51
+    - word: BRAVE
+      delayAfterPrevious: 0.51
+    - word: STORY
+      delayAfterPrevious: 0.51
+    - word: PAINT
+      delayAfterPrevious: 0.51
+    - word: DREAM
+      delayAfterPrevious: 0.51
+    - word: ROCKET
+      delayAfterPrevious: 0.51
+    - word: ANIMAL
+      delayAfterPrevious: 0.51
+    - word: FOREST
+      delayAfterPrevious: 0.51
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 63
-    enemyMovementSpeed: 1.31
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 0.99
   - title: WAVE 5
     words:
-    - word: TREASURE
-      delayAfterPrevious: 0.25
-    - word: MOUNTAIN
-      delayAfterPrevious: 0.68999994
-    - word: DINOSAUR
-      delayAfterPrevious: 0.68999994
-    - word: BUTTERFLY
-      delayAfterPrevious: 0.68999994
     - word: TELESCOPE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.2
     - word: CELEBRATE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: DISCOVERY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: CREATIVITY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: CLOUD
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: BRAVE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: STORY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: PAINT
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: DREAM
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: ROCKET
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
     - word: ANIMAL
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.43999997
+    - word: FOREST
+      delayAfterPrevious: 0.43999997
+    - word: PENCIL
+      delayAfterPrevious: 0.43999997
+    - word: SCHOOL
+      delayAfterPrevious: 0.43999997
+    - word: BICYCLE
+      delayAfterPrevious: 0.43999997
+    - word: DOLPHIN
+      delayAfterPrevious: 0.43999997
+    - word: TREASURE
+      delayAfterPrevious: 0.43999997
+    - word: MOUNTAIN
+      delayAfterPrevious: 0.43999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 69
-    enemyMovementSpeed: 1.39
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 1.0500001
   - title: BOSS WAVE
     words:
     - word: RAINBOWCONSTELLATION
-      delayAfterPrevious: 0.25
-    - word: DOLPHIN
-      delayAfterPrevious: 0.5999999
-    - word: TREASURE
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.2
     - word: MOUNTAIN
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.575
     - word: DINOSAUR
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.575
     - word: BUTTERFLY
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.575
+    - word: TELESCOPE
+      delayAfterPrevious: 0.575
+    - word: CELEBRATE
+      delayAfterPrevious: 0.575
+    - word: DISCOVERY
+      delayAfterPrevious: 0.575
+    - word: CREATIVITY
+      delayAfterPrevious: 0.575
+    - word: CLOUD
+      delayAfterPrevious: 0.575
+    - word: BRAVE
+      delayAfterPrevious: 0.575
+    - word: STORY
+      delayAfterPrevious: 0.575
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 75
-    enemyMovementSpeed: 0.96000004
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 0.76
   intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 0

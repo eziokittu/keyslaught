@@ -34,7 +34,6 @@ namespace KeySlaught.Progression
         public int loreOneLevelSixStars;
         public float loreOneLevelSixBestSeconds;
         public bool endlessModeUnlocked;
-        public int brainCells;
         public int knowledgePoints;
         public List<ResearchLevelEntry> research = new();
 

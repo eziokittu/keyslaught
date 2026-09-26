@@ -11,7 +11,11 @@ namespace KeySlaught.Progression
         TeacherRange,
         EngineerRange,
         ScientistRange,
-        PresidentRange
+        PresidentRange,
+        TeacherAttackSpeed,
+        EngineerAttackSpeed,
+        ScientistAttackSpeed,
+        PresidentAttackSpeed
     }
 
     [CreateAssetMenu(menuName = "KeySlaught/Research Definition", fileName = "ResearchDefinition")]

@@ -12,7 +12,7 @@ namespace KeySlaught.Progression
         [SerializeField] private float basePlayerRange = 4f;
         [SerializeField] private int baseMagazineCapacity = 4;
         [SerializeField] private float baseReloadSecondsPerSlot = 0.5f;
-        [SerializeField] private int baseLibraryHealth = 30;
+        [SerializeField] private int baseLibraryHealth = 15;
 
         public void Configure(ProgressionService service, GameplaySceneCoordinator sceneCoordinator,
             GameplayCombatController combatController, LibraryEndpoint endpoint)

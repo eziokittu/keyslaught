@@ -137,7 +137,7 @@ namespace KeySlaught.SceneGameplay
             ShowShot(best);
             PersistentAudioDirector.Play(KeySlaughtSound.TurretFired);
             combat.ResolveExternalDamage(best);
-            attackTimer = definition.SecondsPerShotAtLevel(Level) * Mathf.Clamp(1f - PermanentRangeBonus() * .06f, .72f, 1f);
+            attackTimer = definition.SecondsPerShotAtLevel(Level) / (1f + PermanentAttackSpeedBonus());
         }
 
         private void Update() => Tick(Time.deltaTime);
@@ -162,6 +162,20 @@ namespace KeySlaught.SceneGameplay
                 TurretKind.President => ResearchStat.PresidentRange,
                 _ => ResearchStat.PlayerRange
             });
+        }
+
+        private float PermanentAttackSpeedBonus()
+        {
+            var progression = FindFirstObjectByType<ProgressionService>(FindObjectsInactive.Include);
+            if (progression == null) return 0f;
+            return Mathf.Max(0f, progression.BonusFor(Kind switch
+            {
+                TurretKind.Teacher => ResearchStat.TeacherAttackSpeed,
+                TurretKind.Engineer => ResearchStat.EngineerAttackSpeed,
+                TurretKind.Scientist => ResearchStat.ScientistAttackSpeed,
+                TurretKind.President => ResearchStat.PresidentAttackSpeed,
+                _ => ResearchStat.TeacherAttackSpeed
+            }));
         }
 
         private void ShowShot(EnemyAgent enemy)

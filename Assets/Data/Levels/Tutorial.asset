@@ -39,3 +39,5 @@ MonoBehaviour:
     targetWaveEndSeconds: 30
     enemyMovementSpeed: 0.54
   intermissionSeconds: 30
+  initialPreparationSeconds: 0
+  pauseAfterBossWave: 0

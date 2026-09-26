@@ -17,145 +17,273 @@ MonoBehaviour:
   - title: WAVE 1
     words:
     - word: CURIOUS
-      delayAfterPrevious: 0.25
+      delayAfterPrevious: 0.2
     - word: ENERGY
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.53999996
     - word: THEOREM
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.53999996
     - word: PARADOX
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.53999996
     - word: CRYSTAL
-      delayAfterPrevious: 1.05
+      delayAfterPrevious: 0.53999996
+    - word: SYMPHONY
+      delayAfterPrevious: 0.53999996
+    - word: ENGINEER
+      delayAfterPrevious: 0.53999996
+    - word: SCIENTIST
+      delayAfterPrevious: 0.53999996
+    - word: PRESIDENT
+      delayAfterPrevious: 0.53999996
+    - word: TEACHER
+      delayAfterPrevious: 0.53999996
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.53999996
+    - word: CHRONICLE
+      delayAfterPrevious: 0.53999996
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.53999996
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.53999996
+    - word: LINGUISTICS
+      delayAfterPrevious: 0.53999996
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.53999996
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 45
-    enemyMovementSpeed: 1.43
+    targetWaveEndSeconds: 50
+    enemyMovementSpeed: 1.08
   - title: WAVE 2
     words:
-    - word: PARADOX
-      delayAfterPrevious: 0.25
     - word: CRYSTAL
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.2
     - word: SYMPHONY
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.46999997
     - word: ENGINEER
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.46999997
     - word: SCIENTIST
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.46999997
     - word: PRESIDENT
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.46999997
     - word: TEACHER
-      delayAfterPrevious: 0.9599999
+      delayAfterPrevious: 0.46999997
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.46999997
+    - word: CHRONICLE
+      delayAfterPrevious: 0.46999997
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.46999997
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.46999997
+    - word: LINGUISTICS
+      delayAfterPrevious: 0.46999997
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.46999997
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.46999997
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.46999997
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.46999997
+    - word: COLLABORATION
+      delayAfterPrevious: 0.46999997
+    - word: CURIOUS
+      delayAfterPrevious: 0.46999997
+    - word: ENERGY
+      delayAfterPrevious: 0.46999997
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 51
-    enemyMovementSpeed: 1.51
+    targetWaveEndSeconds: 53
+    enemyMovementSpeed: 1.14
   - title: WAVE 3
     words:
-    - word: ENGINEER
-      delayAfterPrevious: 0.25
-    - word: SCIENTIST
-      delayAfterPrevious: 0.86999995
     - word: PRESIDENT
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.2
     - word: TEACHER
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
     - word: MANUSCRIPT
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
     - word: CHRONICLE
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
     - word: CIVILIZATION
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
     - word: ARCHAEOLOGY
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
     - word: LINGUISTICS
-      delayAfterPrevious: 0.86999995
+      delayAfterPrevious: 0.39999998
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.39999998
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.39999998
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.39999998
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.39999998
+    - word: COLLABORATION
+      delayAfterPrevious: 0.39999998
+    - word: CURIOUS
+      delayAfterPrevious: 0.39999998
+    - word: ENERGY
+      delayAfterPrevious: 0.39999998
+    - word: THEOREM
+      delayAfterPrevious: 0.39999998
+    - word: PARADOX
+      delayAfterPrevious: 0.39999998
+    - word: CRYSTAL
+      delayAfterPrevious: 0.39999998
+    - word: SYMPHONY
+      delayAfterPrevious: 0.39999998
+    - word: ENGINEER
+      delayAfterPrevious: 0.39999998
+    - word: SCIENTIST
+      delayAfterPrevious: 0.39999998
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 57
-    enemyMovementSpeed: 1.5899999
+    targetWaveEndSeconds: 56
+    enemyMovementSpeed: 1.2
   - title: WAVE 4
     words:
-    - word: TEACHER
-      delayAfterPrevious: 0.25
-    - word: MANUSCRIPT
-      delayAfterPrevious: 0.78
-    - word: CHRONICLE
-      delayAfterPrevious: 0.78
     - word: CIVILIZATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.2
     - word: ARCHAEOLOGY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: LINGUISTICS
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: METAMORPHOSIS
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: CONSCIOUSNESS
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: PERSEVERANCE
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: EXTRAORDINARY
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: COLLABORATION
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
     - word: CURIOUS
-      delayAfterPrevious: 0.78
+      delayAfterPrevious: 0.32999998
+    - word: ENERGY
+      delayAfterPrevious: 0.32999998
+    - word: THEOREM
+      delayAfterPrevious: 0.32999998
+    - word: PARADOX
+      delayAfterPrevious: 0.32999998
+    - word: CRYSTAL
+      delayAfterPrevious: 0.32999998
+    - word: SYMPHONY
+      delayAfterPrevious: 0.32999998
+    - word: ENGINEER
+      delayAfterPrevious: 0.32999998
+    - word: SCIENTIST
+      delayAfterPrevious: 0.32999998
+    - word: PRESIDENT
+      delayAfterPrevious: 0.32999998
+    - word: TEACHER
+      delayAfterPrevious: 0.32999998
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.32999998
+    - word: CHRONICLE
+      delayAfterPrevious: 0.32999998
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.32999998
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.32999998
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 63
-    enemyMovementSpeed: 1.67
+    targetWaveEndSeconds: 59
+    enemyMovementSpeed: 1.26
   - title: WAVE 5
     words:
-    - word: CIVILIZATION
-      delayAfterPrevious: 0.25
-    - word: ARCHAEOLOGY
-      delayAfterPrevious: 0.68999994
-    - word: LINGUISTICS
-      delayAfterPrevious: 0.68999994
-    - word: METAMORPHOSIS
-      delayAfterPrevious: 0.68999994
     - word: CONSCIOUSNESS
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.2
     - word: PERSEVERANCE
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: EXTRAORDINARY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: COLLABORATION
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: CURIOUS
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: ENERGY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: THEOREM
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: PARADOX
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: CRYSTAL
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: SYMPHONY
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
     - word: ENGINEER
-      delayAfterPrevious: 0.68999994
+      delayAfterPrevious: 0.3
+    - word: SCIENTIST
+      delayAfterPrevious: 0.3
+    - word: PRESIDENT
+      delayAfterPrevious: 0.3
+    - word: TEACHER
+      delayAfterPrevious: 0.3
+    - word: MANUSCRIPT
+      delayAfterPrevious: 0.3
+    - word: CHRONICLE
+      delayAfterPrevious: 0.3
+    - word: CIVILIZATION
+      delayAfterPrevious: 0.3
+    - word: ARCHAEOLOGY
+      delayAfterPrevious: 0.3
+    - word: LINGUISTICS
+      delayAfterPrevious: 0.3
+    - word: METAMORPHOSIS
+      delayAfterPrevious: 0.3
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.3
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.3
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.3
+    - word: COLLABORATION
+      delayAfterPrevious: 0.3
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 69
-    enemyMovementSpeed: 1.75
+    targetWaveEndSeconds: 62
+    enemyMovementSpeed: 1.32
   - title: BOSS WAVE
     words:
     - word: INTERDEPENDENTCIVILIZATION
-      delayAfterPrevious: 0.25
-    - word: CHRONICLE
-      delayAfterPrevious: 0.5999999
-    - word: CIVILIZATION
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.2
     - word: ARCHAEOLOGY
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.44
     - word: LINGUISTICS
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.44
     - word: METAMORPHOSIS
-      delayAfterPrevious: 0.5999999
+      delayAfterPrevious: 0.44
+    - word: CONSCIOUSNESS
+      delayAfterPrevious: 0.44
+    - word: PERSEVERANCE
+      delayAfterPrevious: 0.44
+    - word: EXTRAORDINARY
+      delayAfterPrevious: 0.44
+    - word: COLLABORATION
+      delayAfterPrevious: 0.44
+    - word: CURIOUS
+      delayAfterPrevious: 0.44
+    - word: ENERGY
+      delayAfterPrevious: 0.44
+    - word: THEOREM
+      delayAfterPrevious: 0.44
+    - word: PARADOX
+      delayAfterPrevious: 0.44
+    - word: CRYSTAL
+      delayAfterPrevious: 0.44
+    - word: SYMPHONY
+      delayAfterPrevious: 0.44
+    - word: ENGINEER
+      delayAfterPrevious: 0.44
+    - word: SCIENTIST
+      delayAfterPrevious: 0.44
+    - word: PRESIDENT
+      delayAfterPrevious: 0.44
     normalizeDelays: 0
     averageTypingWordsPerMinute: 0
-    targetWaveEndSeconds: 75
-    enemyMovementSpeed: 1.26
+    targetWaveEndSeconds: 65
+    enemyMovementSpeed: 1
   intermissionSeconds: 8
+  initialPreparationSeconds: 30
+  pauseAfterBossWave: 0
