@@ -8,6 +8,7 @@ namespace KeySlaught.SceneGameplay
     {
         [SerializeField] private EnemyAgent enemyPrefab;
         [SerializeField] private WaypointPath path;
+        [SerializeField] private WaypointPath[] alternatePaths;
         [SerializeField] private EnemyDefinition[] definitions;
         [SerializeField] private Transform spawnRoot;
         [SerializeField] private bool spawnOnStart = true;
@@ -22,6 +23,7 @@ namespace KeySlaught.SceneGameplay
         public event Action<EnemyAgent> EnemySpawned;
 
         public IReadOnlyList<EnemyAgent> ActiveEnemies => activeEnemies;
+        public int RouteCount => alternatePaths != null && alternatePaths.Length > 0 ? alternatePaths.Length : path == null ? 0 : 1;
 
         public void Configure(
             EnemyAgent prefab,
@@ -35,6 +37,12 @@ namespace KeySlaught.SceneGameplay
             spawnRoot = parent;
         }
 
+        public void ConfigureRoutes(WaypointPath[] routes)
+        {
+            alternatePaths = routes;
+            if (routes != null && routes.Length > 0) path = routes[0];
+        }
+
         public void SetAutomaticSpawning(bool enabled)
         {
             spawnOnStart = enabled;
@@ -43,7 +51,7 @@ namespace KeySlaught.SceneGameplay
 
         public EnemyAgent SpawnNext()
         {
-            if (enemyPrefab == null || path == null || definitions == null || definitions.Length == 0)
+            if (enemyPrefab == null || ResolvePath(nextSpawnOrder) == null || definitions == null || definitions.Length == 0)
             {
                 throw new InvalidOperationException($"{name} is missing its prefab, path, or definitions.");
             }
@@ -56,14 +64,15 @@ namespace KeySlaught.SceneGameplay
 
         public EnemyAgent Spawn(EnemyDefinition definition)
         {
-            if (enemyPrefab == null || path == null || definition == null)
+            var selectedPath = ResolvePath(nextSpawnOrder);
+            if (enemyPrefab == null || selectedPath == null || definition == null)
             {
                 throw new InvalidOperationException($"{name} is missing its prefab, path, or enemy definition.");
             }
 
-            var enemy = Instantiate(enemyPrefab, path.StartPosition, Quaternion.identity, spawnRoot);
+            var enemy = Instantiate(enemyPrefab, selectedPath.StartPosition, Quaternion.identity, spawnRoot);
             enemy.name = $"Enemy_{nextSpawnOrder:000}_{definition.Word}";
-            enemy.Initialize(definition, path, nextSpawnOrder++);
+            enemy.Initialize(definition, selectedPath, nextSpawnOrder++);
             enemy.SetMovementMultiplier(movementMultiplier);
             enemy.ArrivedAtLibrary += OnEnemyArrived;
             activeEnemies.Add(enemy);
@@ -73,11 +82,12 @@ namespace KeySlaught.SceneGameplay
 
         public EnemyAgent SpawnWord(string word, float movementSpeed)
         {
-            if (enemyPrefab == null || path == null)
+            var selectedPath = ResolvePath(nextSpawnOrder);
+            if (enemyPrefab == null || selectedPath == null)
                 throw new InvalidOperationException($"{name} is missing its prefab or path.");
-            var enemy = Instantiate(enemyPrefab, path.StartPosition, Quaternion.identity, spawnRoot);
+            var enemy = Instantiate(enemyPrefab, selectedPath.StartPosition, Quaternion.identity, spawnRoot);
             enemy.name = $"Enemy_{nextSpawnOrder:000}_{word}";
-            enemy.InitializeWord(word, movementSpeed, path, nextSpawnOrder++);
+            enemy.InitializeWord(word, movementSpeed, selectedPath, nextSpawnOrder++);
             enemy.SetMovementMultiplier(movementMultiplier);
             enemy.ArrivedAtLibrary += OnEnemyArrived;
             activeEnemies.Add(enemy);
@@ -157,6 +167,17 @@ namespace KeySlaught.SceneGameplay
         {
             enemy.ArrivedAtLibrary -= OnEnemyArrived;
             activeEnemies.Remove(enemy);
+        }
+
+        private WaypointPath ResolvePath(long order)
+        {
+            if (alternatePaths == null || alternatePaths.Length == 0) return path;
+            for (var offset = 0; offset < alternatePaths.Length; offset++)
+            {
+                var candidate = alternatePaths[(int)((order + offset) % alternatePaths.Length)];
+                if (candidate != null) return candidate;
+            }
+            return path;
         }
     }
 }

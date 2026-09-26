@@ -16,38 +16,146 @@ MonoBehaviour:
   waves:
   - title: WAVE 1
     words:
-    - word: HISTORY
-      delayAfterPrevious: 1.8
+    - word: CAT
+      delayAfterPrevious: 0.25
     - word: BOOK
-      delayAfterPrevious: 2.2
-    - word: ARCHIVE
-      delayAfterPrevious: 2.4
+      delayAfterPrevious: 1.05
+    - word: MOON
+      delayAfterPrevious: 1.05
+    - word: TREE
+      delayAfterPrevious: 1.05
+    - word: STAR
+      delayAfterPrevious: 1.05
     normalizeDelays: 0
     averageTypingWordsPerMinute: 24
-    targetWaveEndSeconds: 30
-    enemyMovementSpeed: 0.8625
+    targetWaveEndSeconds: 45
+    enemyMovementSpeed: 0.95
   - title: WAVE 2
     words:
-    - word: KNOWLEDGE
-      delayAfterPrevious: 2
-    - word: MEMORY
-      delayAfterPrevious: 2
-    - word: LIBRARY
-      delayAfterPrevious: 2.3
+    - word: TREE
+      delayAfterPrevious: 0.25
+    - word: STAR
+      delayAfterPrevious: 0.9599999
+    - word: SMILE
+      delayAfterPrevious: 0.9599999
+    - word: APPLE
+      delayAfterPrevious: 0.9599999
+    - word: RIVER
+      delayAfterPrevious: 0.9599999
+    - word: MUSIC
+      delayAfterPrevious: 0.9599999
+    - word: HAPPY
+      delayAfterPrevious: 0.9599999
     normalizeDelays: 0
     averageTypingWordsPerMinute: 24
-    targetWaveEndSeconds: 30
-    enemyMovementSpeed: 0.8625
+    targetWaveEndSeconds: 51
+    enemyMovementSpeed: 1.03
   - title: WAVE 3
     words:
-    - word: PRESERVE
-      delayAfterPrevious: 1.8
-    - word: CULTURE
-      delayAfterPrevious: 1.8
-    - word: WISDOM
-      delayAfterPrevious: 2
+    - word: APPLE
+      delayAfterPrevious: 0.25
+    - word: RIVER
+      delayAfterPrevious: 0.86999995
+    - word: MUSIC
+      delayAfterPrevious: 0.86999995
+    - word: HAPPY
+      delayAfterPrevious: 0.86999995
+    - word: FRIEND
+      delayAfterPrevious: 0.86999995
+    - word: PLANET
+      delayAfterPrevious: 0.86999995
+    - word: PUZZLE
+      delayAfterPrevious: 0.86999995
+    - word: GARDEN
+      delayAfterPrevious: 0.86999995
+    - word: CASTLE
+      delayAfterPrevious: 0.86999995
     normalizeDelays: 0
     averageTypingWordsPerMinute: 24
-    targetWaveEndSeconds: 30
-    enemyMovementSpeed: 0.8625
-  intermissionSeconds: 30
+    targetWaveEndSeconds: 57
+    enemyMovementSpeed: 1.11
+  - title: WAVE 4
+    words:
+    - word: HAPPY
+      delayAfterPrevious: 0.25
+    - word: FRIEND
+      delayAfterPrevious: 0.78
+    - word: PLANET
+      delayAfterPrevious: 0.78
+    - word: PUZZLE
+      delayAfterPrevious: 0.78
+    - word: GARDEN
+      delayAfterPrevious: 0.78
+    - word: CASTLE
+      delayAfterPrevious: 0.78
+    - word: RAINBOW
+      delayAfterPrevious: 0.78
+    - word: JOURNEY
+      delayAfterPrevious: 0.78
+    - word: LIBRARY
+      delayAfterPrevious: 0.78
+    - word: ADVENTURE
+      delayAfterPrevious: 0.78
+    - word: IMAGINATION
+      delayAfterPrevious: 0.78
+    - word: CAT
+      delayAfterPrevious: 0.78
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 63
+    enemyMovementSpeed: 1.1899999
+  - title: WAVE 5
+    words:
+    - word: PUZZLE
+      delayAfterPrevious: 0.25
+    - word: GARDEN
+      delayAfterPrevious: 0.68999994
+    - word: CASTLE
+      delayAfterPrevious: 0.68999994
+    - word: RAINBOW
+      delayAfterPrevious: 0.68999994
+    - word: JOURNEY
+      delayAfterPrevious: 0.68999994
+    - word: LIBRARY
+      delayAfterPrevious: 0.68999994
+    - word: ADVENTURE
+      delayAfterPrevious: 0.68999994
+    - word: IMAGINATION
+      delayAfterPrevious: 0.68999994
+    - word: CAT
+      delayAfterPrevious: 0.68999994
+    - word: BOOK
+      delayAfterPrevious: 0.68999994
+    - word: MOON
+      delayAfterPrevious: 0.68999994
+    - word: TREE
+      delayAfterPrevious: 0.68999994
+    - word: STAR
+      delayAfterPrevious: 0.68999994
+    - word: SMILE
+      delayAfterPrevious: 0.68999994
+    - word: APPLE
+      delayAfterPrevious: 0.68999994
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 69
+    enemyMovementSpeed: 1.27
+  - title: BOSS WAVE
+    words:
+    - word: GRANDLIBRARYKEEPER
+      delayAfterPrevious: 0.25
+    - word: PLANET
+      delayAfterPrevious: 0.5999999
+    - word: PUZZLE
+      delayAfterPrevious: 0.5999999
+    - word: GARDEN
+      delayAfterPrevious: 0.5999999
+    - word: CASTLE
+      delayAfterPrevious: 0.5999999
+    - word: RAINBOW
+      delayAfterPrevious: 0.5999999
+    normalizeDelays: 0
+    averageTypingWordsPerMinute: 24
+    targetWaveEndSeconds: 75
+    enemyMovementSpeed: 0.86
+  intermissionSeconds: 8

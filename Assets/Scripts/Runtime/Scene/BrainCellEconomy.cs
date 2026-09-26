@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using KeySlaught.Progression;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Sprite pickupSprite;
         [SerializeField] private BrainCellPickup pickupPrefab;
         [SerializeField] private Text currencyLabel;
+        [SerializeField] private ProgressionService progression;
         [SerializeField, Min(0.1f)] private float collectRadius = 0.55f;
         [SerializeField, Min(0.1f)] private float clumpRadius = 0.65f;
         [SerializeField, Min(0f)] private float scatterRadius = 0.48f;
@@ -32,6 +34,8 @@ namespace KeySlaught.SceneGameplay
             pickupSprite = sprite;
             pickupPrefab = prefab;
             currencyLabel = label;
+            progression = FindFirstObjectByType<ProgressionService>(FindObjectsInactive.Include);
+            if (progression != null && progression.Profile != null) Balance = progression.Profile.brainCells;
             if (isActiveAndEnabled && combat != null) combat.TargetDefeated += OnTargetDefeated;
             RefreshLabel();
         }
@@ -39,6 +43,7 @@ namespace KeySlaught.SceneGameplay
         public bool TrySpend(int amount)
         {
             if (amount < 0 || Balance < amount) return false;
+            if (progression != null && !progression.TrySpendBrainCells(amount)) return false;
             Balance -= amount;
             RefreshLabel();
             return true;
@@ -46,7 +51,9 @@ namespace KeySlaught.SceneGameplay
 
         public void Credit(int amount)
         {
-            Balance += Mathf.Max(0, amount);
+            var credited = Mathf.Max(0, amount);
+            Balance += credited;
+            progression?.CreditBrainCells(credited);
             RefreshLabel();
         }
 
@@ -66,7 +73,8 @@ namespace KeySlaught.SceneGameplay
             for (var index = activePickups.Count - 1; index >= 0; index--)
                 if (activePickups[index] != null) Destroy(activePickups[index].gameObject);
             activePickups.Clear();
-            Balance = 0;
+            if (progression != null && progression.Profile != null) Balance = progression.Profile.brainCells;
+            else Balance = 0;
             RefreshLabel();
         }
 
@@ -130,15 +138,15 @@ namespace KeySlaught.SceneGameplay
         private void Collect(BrainCellPickup pickup)
         {
             if (pickup == null) return;
-            Balance += pickup.Value;
+            var value = pickup.Value;
             activePickups.Remove(pickup);
             Destroy(pickup.gameObject);
-            RefreshLabel();
+            Credit(value);
         }
 
         private void RefreshLabel()
         {
-            if (currencyLabel != null) currencyLabel.text = $"BRAIN CELLS  {Balance}";
+            if (currencyLabel != null) currencyLabel.text = $"{Balance}";
         }
 
         private static void TryAddPointLight(GameObject target)

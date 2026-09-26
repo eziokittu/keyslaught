@@ -1,4 +1,6 @@
 using UnityEngine;
+using KeySlaught.Audio;
+using KeySlaught.Progression;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -35,7 +37,7 @@ namespace KeySlaught.SceneGameplay
         public int Level { get; private set; }
         public int VariantIndex { get; private set; }
         public string VariantName => GetDefinition()?.VariantName(VariantIndex) ?? string.Empty;
-        public float CurrentRange => GetDefinition()?.RangeAtLevel(Level) ?? 0f;
+        public float CurrentRange => (GetDefinition()?.RangeAtLevel(Level) ?? 0f) + PermanentRangeBonus();
         public bool IsPreview => preview;
 
         public void SetPreview(bool value) => preview = value;
@@ -126,15 +128,16 @@ namespace KeySlaught.SceneGameplay
             {
                 if (enemy == null || enemy.HasArrived || enemy.WordState == null || enemy.WordState.IsDefeated ||
                     enemy.WordState.NextLetter == null || !definition.Covers(VariantIndex, enemy.WordState.NextLetter.Value) ||
-                    Vector2.Distance(transform.position, enemy.transform.position) > definition.RangeAtLevel(Level)) continue;
+                    Vector2.Distance(transform.position, enemy.transform.position) > CurrentRange) continue;
                 if (best == null || enemy.DistanceToLibrary < best.DistanceToLibrary ||
                     (Mathf.Approximately(enemy.DistanceToLibrary, best.DistanceToLibrary) && enemy.TieBreakOrder < best.TieBreakOrder)) best = enemy;
             }
             if (best == null) return;
             best.WordState.TryConsume(best.WordState.NextLetter.Value);
             ShowShot(best);
+            PersistentAudioDirector.Play(KeySlaughtSound.TurretFired);
             combat.ResolveExternalDamage(best);
-            attackTimer = definition.SecondsPerShotAtLevel(Level);
+            attackTimer = definition.SecondsPerShotAtLevel(Level) * Mathf.Clamp(1f - PermanentRangeBonus() * .06f, .72f, 1f);
         }
 
         private void Update() => Tick(Time.deltaTime);
@@ -145,6 +148,20 @@ namespace KeySlaught.SceneGameplay
             foreach (var definition in definitions)
                 if (definition != null && definition.Kind == Kind) return definition;
             return null;
+        }
+
+        private float PermanentRangeBonus()
+        {
+            var progression = FindFirstObjectByType<ProgressionService>(FindObjectsInactive.Include);
+            if (progression == null) return 0f;
+            return progression.BonusFor(Kind switch
+            {
+                TurretKind.Teacher => ResearchStat.TeacherRange,
+                TurretKind.Engineer => ResearchStat.EngineerRange,
+                TurretKind.Scientist => ResearchStat.ScientistRange,
+                TurretKind.President => ResearchStat.PresidentRange,
+                _ => ResearchStat.PlayerRange
+            });
         }
 
         private void ShowShot(EnemyAgent enemy)

@@ -135,6 +135,18 @@ namespace KeySlaught.SceneGameplay
             pinnedToWorldPosition = true;
         }
 
+        public void SetBossPresentation()
+        {
+            transform.localScale = Vector3.one * 1.55f;
+            if (cardRenderer == null) cardRenderer = GetComponent<SpriteRenderer>();
+            if (cardRenderer != null) cardRenderer.color = new Color(1f, .33f, .42f, 1f);
+            if (wordLabel != null)
+            {
+                wordLabel.fontSize = Mathf.Max(wordLabel.fontSize, 110);
+                wordLabel.fontStyle = FontStyle.Bold;
+            }
+        }
+
         private static string NormalizeWord(string word)
         {
             var normalized = string.IsNullOrWhiteSpace(word) ? "BOOK" : word.Trim().ToUpperInvariant();

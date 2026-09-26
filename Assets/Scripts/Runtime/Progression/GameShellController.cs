@@ -2,6 +2,8 @@ using KeySlaught.SceneGameplay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using KeySlaught.Audio;
+using KeySlaught.UI;
 
 namespace KeySlaught.Progression
 {
@@ -15,6 +17,8 @@ namespace KeySlaught.Progression
         [SerializeField] private GameObject shellRoot;
         [SerializeField] private GameObject launchPanel;
         [SerializeField] private GameObject launchActions;
+        [SerializeField] private CanvasGroup launchActionsCanvasGroup;
+        [SerializeField] private GameObject exitConfirmationPanel;
         [SerializeField] private GameObject mainPanel;
         [SerializeField] private GameObject modePanel;
         [SerializeField] private GameObject researchPanel;
@@ -22,10 +26,18 @@ namespace KeySlaught.Progression
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject loreLevelsPanel;
         [SerializeField] private Text loreOneLevelOneStarsLabel;
+        [SerializeField] private Button loreOneLevelTwoButton;
+        [SerializeField] private Text loreOneLevelTwoStarsLabel;
+        [SerializeField] private Button loreOneLevelThreeButton;
+        [SerializeField] private Text loreOneLevelThreeStarsLabel;
+        [SerializeField] private Button[] loreLevelButtons;
+        [SerializeField] private Text[] loreLevelLabels;
         [SerializeField] private Text tutorialLabel;
         [SerializeField] private Button endlessButton;
         [SerializeField] private Text endlessLabel;
         [SerializeField] private Text knowledgeLabel;
+        [SerializeField] private Text researchKnowledgeLabel;
+        [SerializeField] private Text brainCellsLabel;
         [SerializeField] private Button[] researchButtons;
         [SerializeField] private Text[] researchLabels;
         [SerializeField] private Text musicLabel;
@@ -35,9 +47,13 @@ namespace KeySlaught.Progression
         [SerializeField] private LevelDefinition loreOneLevelOne;
         [SerializeField] private LevelDefinition endlessLevel;
         [SerializeField] private TutorialDirector tutorialDirector;
+        [SerializeField] private RunResultPresenter resultPresenter;
+        [SerializeField] private Text[] gameSpeedLabels;
         [SerializeField, Min(0f)] private float launchDelay = 2f;
+        [SerializeField, Min(.05f)] private float launchFadeDuration = .5f;
 
         private float launchTimer;
+        private float launchFadeTimer;
         private bool musicEnabled = true;
         private bool sfxEnabled = true;
 
@@ -57,7 +73,21 @@ namespace KeySlaught.Progression
             musicLabel = music; sfxLabel = sfx;
         }
 
-        public void ShowLaunch() { ShowOnly(launchPanel); launchTimer = launchDelay; if (launchActions != null) launchActions.SetActive(false); }
+        public void ShowLaunch()
+        {
+            GameSpeedSettings.ApplyMenuSpeed();
+            ShowOnly(launchPanel);
+            launchTimer = launchDelay;
+            launchFadeTimer = 0f;
+            if (launchActions != null) launchActions.SetActive(true);
+            if (launchActionsCanvasGroup != null)
+            {
+                launchActionsCanvasGroup.alpha = 0f;
+                launchActionsCanvasGroup.interactable = false;
+                launchActionsCanvasGroup.blocksRaycasts = false;
+            }
+            if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(false);
+        }
         public void ContinueFromLaunch() { progression?.MarkLaunchSeen(); ShowMain(); }
         public void ShowMain() { ShowOnly(mainPanel); Refresh(); }
         public void ShowModes() { ShowOnly(modePanel); Refresh(); }
@@ -65,13 +95,28 @@ namespace KeySlaught.Progression
         public void ShowCredits() => ShowOnly(creditsPanel);
         public void ShowSettings() { ShowOnly(settingsPanel); Refresh(); }
         public void ShowLoreLevels() { ShowOnly(loreLevelsPanel); Refresh(); }
-        public void ExitGame() => Application.Quit();
+        public void ExitGame()
+        {
+            if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(true);
+            else ConfirmExitGame();
+        }
+        public void HideExitConfirmation() { if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(false); }
+        public void ConfirmExitGame() => Application.Quit();
         public void StartTutorial() => BeginRun(GameModeSelection.Tutorial);
         public void StartLoreOneLevelOne()
+        {
+            ShowLoreLevels();
+        }
+        public void LoadLoreOneLevelOne()
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene("LoreOneLevelOne");
         }
+        public void StartLoreOneLevelTwo() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelTwo"); }
+        public void StartLoreOneLevelThree() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelThree"); }
+        public void StartLoreOneLevelFour() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelFour"); }
+        public void StartLoreOneLevelFive() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelFive"); }
+        public void StartLoreOneLevelSix() { Time.timeScale = 1f; SceneManager.LoadScene("LoreOneLevelSix"); }
         public void StartEndless() { if (progression != null && progression.Profile.endlessModeUnlocked) BeginRun(GameModeSelection.Endless); }
         public void ReturnToMainFromRun()
         {
@@ -87,9 +132,26 @@ namespace KeySlaught.Progression
             progression.TryPurchase(progression.Definitions[index].Id);
             Refresh();
         }
-        public void ToggleMusic() { musicEnabled = !musicEnabled; PlayerPrefs.SetInt("KeySlaught.Music", musicEnabled ? 1 : 0); Refresh(); }
-        public void ToggleSfx() { sfxEnabled = !sfxEnabled; PlayerPrefs.SetInt("KeySlaught.Sfx", sfxEnabled ? 1 : 0); Refresh(); }
+        public void ToggleMusic() { musicEnabled = !musicEnabled; PlayerPrefs.SetInt("KeySlaught.Music", musicEnabled ? 1 : 0); PersistentAudioDirector.Instance?.SetMusicEnabled(musicEnabled); Refresh(); }
+        public void ToggleSfx() { sfxEnabled = !sfxEnabled; PlayerPrefs.SetInt("KeySlaught.Sfx", sfxEnabled ? 1 : 0); PersistentAudioDirector.Instance?.SetSfxEnabled(sfxEnabled); Refresh(); }
         public void ToggleSelectionPause() { TileContextActionPanel.ConfirmInteractions = !TileContextActionPanel.ConfirmInteractions; Refresh(); }
+        public void SetGameSpeed(int multiplier) { GameSpeedSettings.SetMultiplier(multiplier); Refresh(); }
+        public void SetGameSpeed1() => SetGameSpeed(1);
+        public void SetGameSpeed2() => SetGameSpeed(2);
+        public void SetGameSpeed3() => SetGameSpeed(3);
+
+        public void ConfigureLaunchPresentation(CanvasGroup actionsGroup, GameObject confirmationPanel)
+        { launchActionsCanvasGroup = actionsGroup; exitConfirmationPanel = confirmationPanel; }
+
+        public void ConfigureProgressionHeader(Text brainCells, Text knowledge)
+        { brainCellsLabel = brainCells; knowledgeLabel = knowledge; }
+
+        public void ConfigureResearchKnowledgeLabel(Text knowledge) => researchKnowledgeLabel = knowledge;
+
+        public void ConfigureSpeedLabels(Text one, Text two, Text three)
+        { gameSpeedLabels = new[] { one, two, three }; }
+
+        public void ConfigureResultPresenter(RunResultPresenter presenter) => resultPresenter = presenter;
 
         public void ConfigureLevelContent(LevelDefinition tutorial, LevelDefinition lore, LevelDefinition endless,
             TutorialDirector director, Text selectionSettingLabel)
@@ -105,6 +167,21 @@ namespace KeySlaught.Progression
         {
             loreLevelsPanel = levelsPanel;
             loreOneLevelOneStarsLabel = levelOneStarsLabel;
+        }
+
+        public void ConfigureLoreSequence(Button levelTwo, Text levelTwoLabel, Button levelThree, Text levelThreeLabel)
+        { loreOneLevelTwoButton = levelTwo; loreOneLevelTwoStarsLabel = levelTwoLabel; loreOneLevelThreeButton = levelThree; loreOneLevelThreeStarsLabel = levelThreeLabel; }
+
+        public void ConfigureLoreLevels(Button[] buttons, Text[] labels)
+        {
+            loreLevelButtons = buttons;
+            loreLevelLabels = labels;
+        }
+
+        public void ConfigureResearchUi(Button[] buttons, Text[] labels)
+        {
+            researchButtons = buttons;
+            researchLabels = labels;
         }
 
         private void Start()
@@ -126,9 +203,15 @@ namespace KeySlaught.Progression
 
         private void Update()
         {
-            if (launchActions == null || launchActions.activeSelf) return;
+            if (launchActionsCanvasGroup == null || launchActionsCanvasGroup.alpha >= 1f) return;
+            if (launchPanel == null || !launchPanel.activeInHierarchy) return;
             launchTimer -= Time.unscaledDeltaTime;
-            if (launchTimer <= 0f) launchActions.SetActive(true);
+            if (launchTimer > 0f) return;
+            launchFadeTimer += Time.unscaledDeltaTime;
+            launchActionsCanvasGroup.alpha = Mathf.Clamp01(launchFadeTimer / launchFadeDuration);
+            var ready = launchActionsCanvasGroup.alpha >= 1f;
+            launchActionsCanvasGroup.interactable = ready;
+            launchActionsCanvasGroup.blocksRaycasts = ready;
         }
 
         private void BeginRun(GameModeSelection mode)
@@ -150,13 +233,36 @@ namespace KeySlaught.Progression
 
         private void OnRunEnded(bool victory)
         {
-            if (!victory || progression == null) return;
-            if (ActiveMode == GameModeSelection.Tutorial) progression.CompleteTutorial();
-            if (ActiveMode == GameModeSelection.LoreOneLevelOne)
+            if (progression == null) return;
+            if (!victory)
             {
-                progression.CompleteLoreOneLevelOne();
-                progression.CreditKnowledge(1);
+                resultPresenter?.Present(false, 0, null, false);
+                return;
             }
+            var previousUnlockCount = progression.UnlockedTurretCount;
+            if (ActiveMode == GameModeSelection.Tutorial) progression.CompleteTutorial();
+            if (ActiveMode == GameModeSelection.LoreOneLevelOne) progression.CompleteLoreOneLevelOne();
+            var reward = 1 + (run == null ? 0 : run.BossesDefeated);
+            progression.CreditKnowledge(reward);
+            var unlocked = progression.UnlockedTurretCount > previousUnlockCount
+                ? ActiveMode == GameModeSelection.Tutorial ? "Teacher" : "Engineer"
+                : null;
+            resultPresenter?.Present(true, reward, unlocked, ActiveMode == GameModeSelection.Tutorial);
+        }
+
+        public void ContinueFromResult()
+        {
+            if (run != null && run.Phase == WaveRunPhase.Defeat)
+            {
+                run.RestartRun();
+                return;
+            }
+            if (ActiveMode == GameModeSelection.Tutorial)
+            {
+                ShowLoreLevels();
+                return;
+            }
+            ReturnToMainFromRun();
         }
 
         private void ShowOnly(GameObject target)
@@ -173,6 +279,12 @@ namespace KeySlaught.Progression
             if (endlessButton != null) endlessButton.interactable = profile.endlessModeUnlocked;
             if (endlessLabel != null) endlessLabel.text = profile.endlessModeUnlocked ? "ENDLESS  •  IN DEVELOPMENT" : "ENDLESS  •  LOCKED";
             if (knowledgeLabel != null) knowledgeLabel.text = $"KNOWLEDGE POINTS  {profile.knowledgePoints}";
+            if (researchKnowledgeLabel != null) researchKnowledgeLabel.text = $"KNOWLEDGE POINTS  {profile.knowledgePoints}";
+            if (brainCellsLabel != null) brainCellsLabel.text = profile.brainCells.ToString();
+            if (gameSpeedLabels != null)
+                for (var index = 0; index < gameSpeedLabels.Length; index++)
+                    if (gameSpeedLabels[index] != null)
+                        gameSpeedLabels[index].text = GameSpeedSettings.Multiplier == index + 1 ? $"{index + 1}X  SELECTED" : $"{index + 1}X";
             if (progression.Definitions != null)
                 for (var index = 0; index < progression.Definitions.Length && index < researchLabels.Length; index++)
                 {
@@ -195,6 +307,28 @@ namespace KeySlaught.Progression
                     ? $"LEVEL 1  {rating}  BEST {FormatTime(profile.loreOneLevelOneBestSeconds)}"
                     : $"LEVEL 1  {rating}";
             }
+            RefreshLoreButton(loreOneLevelTwoButton, loreOneLevelTwoStarsLabel, 2, true,
+                profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoStars, profile.loreOneLevelTwoBestSeconds);
+            RefreshLoreButton(loreOneLevelThreeButton, loreOneLevelThreeStarsLabel, 3, true,
+                profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeStars, profile.loreOneLevelThreeBestSeconds);
+            if (loreLevelButtons != null && loreLevelLabels != null && loreLevelButtons.Length >= 6 && loreLevelLabels.Length >= 6)
+            {
+                RefreshLoreButton(loreLevelButtons[0], loreLevelLabels[0], 1, true, profile.loreOneLevelOneCompleted, profile.loreOneLevelOneStars, profile.loreOneLevelOneBestSeconds);
+                RefreshLoreButton(loreLevelButtons[1], loreLevelLabels[1], 2, true, profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoStars, profile.loreOneLevelTwoBestSeconds);
+                RefreshLoreButton(loreLevelButtons[2], loreLevelLabels[2], 3, true, profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeStars, profile.loreOneLevelThreeBestSeconds);
+                RefreshLoreButton(loreLevelButtons[3], loreLevelLabels[3], 4, true, profile.loreOneLevelFourCompleted, profile.loreOneLevelFourStars, profile.loreOneLevelFourBestSeconds);
+                RefreshLoreButton(loreLevelButtons[4], loreLevelLabels[4], 5, true, profile.loreOneLevelFiveCompleted, profile.loreOneLevelFiveStars, profile.loreOneLevelFiveBestSeconds);
+                RefreshLoreButton(loreLevelButtons[5], loreLevelLabels[5], 6, true, profile.loreOneLevelSixCompleted, profile.loreOneLevelSixStars, profile.loreOneLevelSixBestSeconds);
+            }
+        }
+
+        private static void RefreshLoreButton(Button button, Text label, int level, bool unlocked, bool completed, int stars, float best)
+        {
+            if (button != null) button.interactable = unlocked;
+            if (label == null) return;
+            if (!unlocked) { label.text = $"LEVEL {level}  •  LOCKED"; return; }
+            var rating = new string('★', Mathf.Clamp(stars, 0, 3)) + new string('☆', 3 - Mathf.Clamp(stars, 0, 3));
+            label.text = completed ? $"LEVEL {level}  {rating}  BEST {FormatTime(best)}" : $"LEVEL {level}  {rating}";
         }
 
         private static string FormatTime(float seconds)

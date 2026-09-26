@@ -1,4 +1,5 @@
 using System;
+using KeySlaught.SceneGameplay;
 using UnityEngine;
 
 namespace KeySlaught.Progression
@@ -49,6 +50,47 @@ namespace KeySlaught.Progression
             Save();
         }
 
+        public bool TrySpendBrainCells(int amount)
+        {
+            EnsureInitialized();
+            if (amount < 0 || Profile.brainCells < amount) return false;
+            Profile.brainCells -= amount;
+            Save();
+            return true;
+        }
+
+        public void CreditBrainCells(int amount)
+        {
+            EnsureInitialized();
+            Profile.brainCells += Mathf.Max(0, amount);
+            Save();
+        }
+
+        public bool IsTurretUnlocked(TurretKind kind)
+        {
+            EnsureInitialized();
+            return kind switch
+            {
+                TurretKind.Teacher => Profile.tutorialCompleted,
+                TurretKind.Engineer => Profile.loreOneLevelOneCompleted,
+                TurretKind.Scientist => Profile.loreOneLevelTwoCompleted,
+                TurretKind.President => Profile.loreOneLevelThreeCompleted,
+                _ => false
+            };
+        }
+
+        public int UnlockedTurretCount
+        {
+            get
+            {
+                EnsureInitialized();
+                var count = 0;
+                foreach (var kind in new[] { TurretKind.Teacher, TurretKind.Engineer, TurretKind.Scientist, TurretKind.President })
+                    if (IsTurretUnlocked(kind)) count++;
+                return count;
+            }
+        }
+
         public void MarkLaunchSeen()
         {
             EnsureInitialized();
@@ -76,6 +118,43 @@ namespace KeySlaught.Progression
             Profile.loreOneLevelOneStars = Mathf.Max(Profile.loreOneLevelOneStars, Mathf.Clamp(stars, 1, 3));
             if (elapsedSeconds > 0f && (Profile.loreOneLevelOneBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelOneBestSeconds))
                 Profile.loreOneLevelOneBestSeconds = elapsedSeconds;
+            Save();
+        }
+
+        public void CompleteLoreLevel(int level, int stars, float elapsedSeconds)
+        {
+            if (level <= 1) { CompleteLoreOneLevelOne(stars, elapsedSeconds); return; }
+            EnsureInitialized(); stars = Mathf.Clamp(stars, 1, 3);
+            if (level == 2)
+            {
+                Profile.loreOneLevelTwoCompleted = true;
+                Profile.loreOneLevelTwoStars = Mathf.Max(Profile.loreOneLevelTwoStars, stars);
+                if (elapsedSeconds > 0f && (Profile.loreOneLevelTwoBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelTwoBestSeconds)) Profile.loreOneLevelTwoBestSeconds = elapsedSeconds;
+            }
+            else if (level == 3)
+            {
+                Profile.loreOneLevelThreeCompleted = true;
+                Profile.loreOneLevelThreeStars = Mathf.Max(Profile.loreOneLevelThreeStars, stars);
+                if (elapsedSeconds > 0f && (Profile.loreOneLevelThreeBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelThreeBestSeconds)) Profile.loreOneLevelThreeBestSeconds = elapsedSeconds;
+            }
+            else if (level == 4)
+            {
+                Profile.loreOneLevelFourCompleted = true;
+                Profile.loreOneLevelFourStars = Mathf.Max(Profile.loreOneLevelFourStars, stars);
+                if (elapsedSeconds > 0f && (Profile.loreOneLevelFourBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelFourBestSeconds)) Profile.loreOneLevelFourBestSeconds = elapsedSeconds;
+            }
+            else if (level == 5)
+            {
+                Profile.loreOneLevelFiveCompleted = true;
+                Profile.loreOneLevelFiveStars = Mathf.Max(Profile.loreOneLevelFiveStars, stars);
+                if (elapsedSeconds > 0f && (Profile.loreOneLevelFiveBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelFiveBestSeconds)) Profile.loreOneLevelFiveBestSeconds = elapsedSeconds;
+            }
+            else
+            {
+                Profile.loreOneLevelSixCompleted = true;
+                Profile.loreOneLevelSixStars = Mathf.Max(Profile.loreOneLevelSixStars, stars);
+                if (elapsedSeconds > 0f && (Profile.loreOneLevelSixBestSeconds <= 0f || elapsedSeconds < Profile.loreOneLevelSixBestSeconds)) Profile.loreOneLevelSixBestSeconds = elapsedSeconds;
+            }
             Save();
         }
 

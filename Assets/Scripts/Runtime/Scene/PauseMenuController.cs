@@ -11,6 +11,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private GameShellController gameShell;
         [SerializeField] private DedicatedLevelSceneController dedicatedLevel;
         [SerializeField] private GameObject modalDimmer;
+        [SerializeField] private GameObject settingsPanel;
 
         public bool IsPaused { get; private set; }
 
@@ -23,6 +24,7 @@ namespace KeySlaught.SceneGameplay
         }
 
         public void ConfigureModalDimmer(GameObject dimmer) => modalDimmer = dimmer;
+        public void ConfigureSettings(GameObject settings) => settingsPanel = settings;
 
         public void TogglePause() => SetPaused(!IsPaused);
 
@@ -72,10 +74,24 @@ namespace KeySlaught.SceneGameplay
             SetModalDimmed(menuConfirmation != null && menuConfirmation.activeSelf);
         }
 
+        public void ToggleSettings()
+        {
+            if (settingsPanel == null) return;
+            settingsPanel.SetActive(!settingsPanel.activeSelf);
+            SetModalDimmed(settingsPanel.activeSelf);
+        }
+
+        public void HideSettings()
+        {
+            if (settingsPanel != null) settingsPanel.SetActive(false);
+            SetModalDimmed(menuConfirmation != null && menuConfirmation.activeSelf);
+        }
+
         private void SetPaused(bool paused)
         {
             IsPaused = paused;
-            Time.timeScale = paused ? 0f : 1f;
+            if (paused) Time.timeScale = 0f;
+            else GameSpeedSettings.ApplyGameplaySpeed();
             if (pauseOverlay != null)
             {
                 pauseOverlay.SetActive(paused);
@@ -88,6 +104,7 @@ namespace KeySlaught.SceneGameplay
                 {
                     controlsPanel.SetActive(false);
                 }
+                if (settingsPanel != null) settingsPanel.SetActive(false);
                 SetModalDimmed(false);
             }
         }
@@ -101,7 +118,7 @@ namespace KeySlaught.SceneGameplay
         {
             if (IsPaused)
             {
-                Time.timeScale = 1f;
+                GameSpeedSettings.ApplyGameplaySpeed();
                 IsPaused = false;
             }
         }

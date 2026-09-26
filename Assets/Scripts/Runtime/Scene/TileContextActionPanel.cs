@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using KeySlaught.Audio;
+using KeySlaught.Progression;
+using KeySlaught.UI;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -41,6 +44,7 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private Button[] actionButtons;
         [SerializeField] private Text[] actionLabels;
         [SerializeField] private InteractionConfirmationPanel confirmationPanel;
+        [SerializeField] private ProgressionService progression;
 
         private readonly Dictionary<Vector3Int, TurretPadController> turrets = new();
         private readonly Dictionary<Vector3Int, TileBase> clearedObstacles = new();
@@ -62,6 +66,7 @@ namespace KeySlaught.SceneGameplay
         public Vector3Int HighlightedCell => lastCell;
 
         public void ConfigureEconomy(BrainCellEconomy runEconomy) { economy = runEconomy; RefreshLabels(); }
+        public void ConfigureProgression(ProgressionService service) { progression = service; RefreshLabels(); }
 
         public void ConfigureRuntimeSystems(GameplaySceneCoordinator sceneCoordinator,
             GameplayCombatController combatController, TurretDefinition[] dataDefinitions,
@@ -197,6 +202,11 @@ namespace KeySlaught.SceneGameplay
                     4 => TurretKind.President, _ => TurretKind.None
                 };
                 if (selectedFamily == TurretKind.None) return false;
+                if (!IsTurretUnlocked(selectedFamily))
+                {
+                    SetStatus($"{selectedFamily.ToString().ToUpperInvariant()} UNLOCKS THROUGH PROGRESSION");
+                    return false;
+                }
                 menuDepth = MenuDepth.TurretVariantChoice;
                 return true;
             }
@@ -231,7 +241,7 @@ namespace KeySlaught.SceneGameplay
             if (index != 2) return false;
             economy?.Credit(3 + activePad.Level * 2); turrets.Remove(lastCell);
             Destroy(activePad.gameObject); activePad = null; CurrentContext = TileContextKind.BuildableGround;
-            SetStatus("TURRET SOLD"); return true;
+            SetStatus("TURRET SOLD"); PersistentAudioDirector.Play(KeySlaughtSound.TurretSold); return true;
         }
 
         private TurretPadController CreatePreview(TurretKind kind, int variantIndex)
@@ -258,6 +268,7 @@ namespace KeySlaught.SceneGameplay
             activePad.GetComponent<SpriteRenderer>().color = Color.white; activePad.SetPreview(false);
             turrets[lastCell] = activePad; previewKind = TurretKind.None; selectedFamily = TurretKind.None; menuDepth = MenuDepth.Root;
             CurrentContext = TileContextKind.OccupiedGround; SetStatus("TURRET PLACED"); RefreshLabels();
+            PersistentAudioDirector.Play(KeySlaughtSound.TurretPlaced);
         }
 
         private void CancelTurretPlacement()
@@ -271,6 +282,7 @@ namespace KeySlaught.SceneGameplay
             var cost = UpgradeCost();
             if (economy == null || !economy.TrySpend(cost)) { SetStatus($"NEED {cost} BRAIN CELLS"); return false; }
             var upgraded = activePad.Upgrade(); SetStatus(upgraded ? $"UPGRADED TO LEVEL {activePad.Level}" : "MAX LEVEL");
+            if (upgraded) PersistentAudioDirector.Play(KeySlaughtSound.TurretUpgraded);
             RefreshLabels(); return upgraded;
         }
 
@@ -312,11 +324,11 @@ namespace KeySlaught.SceneGameplay
                     {
                         SetTitle("LIBRARY");
                         var canRepair = economy != null && economy.Balance >= 5 && library != null && library.State != null && library.State.CurrentHealth < library.State.MaximumHealth;
-                        SetAction(1, "1  REPAIR +5  -  5 BRAIN CELLS", canRepair); SetAction(2, "2  ABILITIES");
+                        SetAction(1, "REPAIR +5     5", canRepair); SetAction(2, "ABILITIES");
                     }
                     break;
                 case TileContextKind.BuildableGround:
-                    if (menuDepth == MenuDepth.Root) { SetTitle("EMPTY GROUND"); SetAction(1, "1  TURRETS"); }
+                    if (menuDepth == MenuDepth.Root) { SetTitle("EMPTY GROUND"); SetAction(1, "TURRETS"); }
                     else if (menuDepth == MenuDepth.TurretChoice)
                     {
                         SetTitle("CHOOSE TURRET FAMILY");
@@ -329,17 +341,17 @@ namespace KeySlaught.SceneGameplay
                         SetTitle($"{selectedFamily.ToString().ToUpperInvariant()} LETTER TYPE");
                         if (definition != null)
                             for (var index = 0; index < definition.VariantCount; index++)
-                                SetAction(index + 1, $"{index + 1}  {definition.VariantName(index)}", CanAfford(selectedFamily));
+                                SetAction(index + 1, definition.VariantName(index), CanAfford(selectedFamily));
                     }
                     break;
                 case TileContextKind.OccupiedGround:
                     SetTitle($"{activePad.Kind.ToString().ToUpperInvariant()} {activePad.VariantName}  LV {activePad.Level}");
-                    SetAction(1, activePad.Level >= 3 ? "1  MAX LEVEL" : $"1  UPGRADE  -  {UpgradeCost()} BRAIN CELLS",
+                    SetAction(1, activePad.Level >= 3 ? "MAX LEVEL" : $"UPGRADE     {UpgradeCost()}",
                         activePad.Level < 3 && economy != null && economy.Balance >= UpgradeCost());
-                    SetAction(2, "2  SELL"); break;
+                    SetAction(2, "SELL"); break;
                 case TileContextKind.ClearableObstacle:
                     SetTitle("CLEAR BEFORE BUILDING"); var clearCost = ObstacleClearCost();
-                    SetAction(1, $"1  CLEAR  -  {clearCost} BRAIN CELLS", economy != null && economy.Balance >= clearCost); break;
+                    SetAction(1, $"CLEAR     {clearCost}", economy != null && economy.Balance >= clearCost); break;
                 default: SetTitle(string.Empty); SetStatus(string.Empty); break;
             }
         }
@@ -359,11 +371,19 @@ namespace KeySlaught.SceneGameplay
             var index = oneBasedIndex - 1;
             if (index < 0 || actionButtons == null || index >= actionButtons.Length) return;
             actionButtons[index].gameObject.SetActive(true); actionButtons[index].interactable = interactable;
+            actionButtons[index].GetComponent<ContextActionIconPresenter>()?.SetCost(null, false);
             if (actionLabels != null && index < actionLabels.Length && actionLabels[index] != null) actionLabels[index].text = label;
         }
 
-        private void SetTurretAction(int index, TurretKind kind) => SetAction(index,
-            $"{index}  {kind.ToString().ToUpperInvariant()}  -  {CostFor(kind)} BRAIN CELLS", CanAfford(kind));
+        private void SetTurretAction(int index, TurretKind kind)
+        {
+            var unlocked = IsTurretUnlocked(kind);
+            SetAction(index, kind.ToString(), unlocked && CanAfford(kind));
+            var buttonIndex = index - 1;
+            if (actionButtons != null && buttonIndex >= 0 && buttonIndex < actionButtons.Length)
+                actionButtons[buttonIndex].GetComponent<ContextActionIconPresenter>()?.SetCost(
+                    unlocked ? CostFor(kind).ToString() : "LOCKED", unlocked);
+        }
         private void SetTitle(string text) { if (titleLabel != null) titleLabel.text = text; }
         private void SetStatus(string text) { if (statusLabel != null) statusLabel.text = text; }
         private int UpgradeCost() => activePad == null ? 0 : 5 + activePad.Level * 3;
@@ -380,7 +400,12 @@ namespace KeySlaught.SceneGameplay
                     if (definition != null && definition.Kind == kind) return definition;
             return null;
         }
-        private bool CanAfford(TurretKind kind) => economy != null && economy.Balance >= CostFor(kind);
+        private bool CanAfford(TurretKind kind) => IsTurretUnlocked(kind) && economy != null && economy.Balance >= CostFor(kind);
+        private bool IsTurretUnlocked(TurretKind kind)
+        {
+            progression ??= FindFirstObjectByType<ProgressionService>(FindObjectsInactive.Include);
+            return progression == null || progression.IsTurretUnlocked(kind);
+        }
 
         public void ResetState()
         {
@@ -410,7 +435,7 @@ namespace KeySlaught.SceneGameplay
         {
             var definition = abilityController == null ? null : abilityController.GetDefinition(kind);
             var cost = definition == null ? 0 : definition.Cost;
-            SetAction(index, $"{index}  {label}  -  {cost} BRAIN CELLS",
+            SetAction(index, $"{label}     {cost}",
                 definition != null && economy != null && economy.Balance >= cost && abilityController.ActiveAbility == null);
         }
 

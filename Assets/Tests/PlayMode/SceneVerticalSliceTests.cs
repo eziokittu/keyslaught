@@ -129,6 +129,31 @@ namespace KeySlaught.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator Spawner_AlternatesBetweenTwoRoutesWithOneSharedLibraryEnd()
+        {
+            var firstPath = CreatePath(new Vector3(-4f, 0f), Vector3.zero);
+            var secondPath = CreatePath(new Vector3(4f, 0f), Vector3.zero);
+            var prefabObject = new GameObject("Dual Route Enemy Template");
+            var prefab = prefabObject.AddComponent<EnemyAgent>();
+            var spawnerObject = new GameObject("Dual Route Spawner");
+            var spawner = spawnerObject.AddComponent<EnemySpawner>();
+            spawner.Configure(prefab, firstPath, new EnemyDefinition[0]);
+            spawner.ConfigureRoutes(new[] { firstPath, secondPath });
+            spawner.SetAutomaticSpawning(false);
+
+            var first = spawner.SpawnWord("CAT", 1f);
+            var second = spawner.SpawnWord("BOOK", 1f);
+            Assert.That(first.transform.position, Is.EqualTo(firstPath.StartPosition));
+            Assert.That(second.transform.position, Is.EqualTo(secondPath.StartPosition));
+            Assert.That(firstPath.EndPosition, Is.EqualTo(secondPath.EndPosition));
+            Assert.That(spawner.RouteCount, Is.EqualTo(2));
+
+            spawner.ClearAll(); Object.Destroy(spawnerObject); Object.Destroy(prefabObject);
+            Object.Destroy(firstPath.gameObject); Object.Destroy(secondPath.gameObject);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator Spawner_InstantiatesConfiguredEnemyAtPathStart()
         {
             var path = CreatePath(new Vector3(-2f, 1f, 0f), Vector3.zero);
@@ -276,6 +301,23 @@ namespace KeySlaught.Tests.PlayMode
                 Is.EqualTo(TypedAttackOutcome.TargetHit));
             Assert.That(fixture.Enemy.WordState.RemainingWord, Is.EqualTo("OOK"));
 
+            fixture.Destroy();
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator CombatController_CorruptionImmediatelyClearsLoadedMagazine()
+        {
+            var fixture = CreateCombatFixture("BOOK", 4, spawnEnemy: false);
+            Assert.That(fixture.Combat.TryTypeLetter('X').Outcome, Is.EqualTo(TypedAttackOutcome.AddedToErrorBuffer));
+            Assert.That(fixture.Combat.ErrorBuffer.OccupiedSlotCount, Is.EqualTo(1));
+            var signalled = false;
+            fixture.Combat.Corrupted += _ => signalled = true;
+
+            fixture.Combat.CorruptFor(1f);
+
+            Assert.That(signalled, Is.True);
+            Assert.That(fixture.Combat.ErrorBuffer.OccupiedSlotCount, Is.Zero);
             fixture.Destroy();
             yield return null;
         }

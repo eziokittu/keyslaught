@@ -92,6 +92,8 @@ namespace KeySlaught.Gameplay
             return true;
         }
 
+        public void Clear() => CompleteRefresh();
+
         /// <summary>
         /// Advances an active refresh and returns true only on the tick that completes it.
         /// </summary>

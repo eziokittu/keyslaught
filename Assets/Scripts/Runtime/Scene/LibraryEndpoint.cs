@@ -1,6 +1,8 @@
 using System;
 using KeySlaught.Gameplay;
 using UnityEngine;
+using KeySlaught.Audio;
+using UnityEngine.UI;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -8,6 +10,7 @@ namespace KeySlaught.SceneGameplay
     {
         [SerializeField, Min(1)] private int maximumHealth = 30;
         [SerializeField] private TextMesh healthLabel;
+        [SerializeField] private Text healthUiLabel;
 
         public LibraryState State { get; private set; }
         public event Action<int> EnemyDamageReceived;
@@ -29,6 +32,7 @@ namespace KeySlaught.SceneGameplay
             var damage = State.ApplyEnemyArrival(enemy.WordState);
             RefreshLabel();
             EnemyDamageReceived?.Invoke(damage);
+            if (damage > 0) PersistentAudioDirector.Play(KeySlaughtSound.LibraryHit);
             return damage;
         }
 
@@ -55,6 +59,12 @@ namespace KeySlaught.SceneGameplay
             Initialize(maximumHealth);
         }
 
+        public void ConfigureUi(Text label)
+        {
+            healthUiLabel = label;
+            RefreshLabel();
+        }
+
         private void Awake()
         {
             Initialize(maximumHealth);
@@ -68,6 +78,8 @@ namespace KeySlaught.SceneGameplay
                     ? "HP"
                     : $"HP  {State.CurrentHealth}/{State.MaximumHealth}";
             }
+            if (healthUiLabel != null)
+                healthUiLabel.text = State == null ? "LIBRARY HP" : $"LIBRARY HP  {State.CurrentHealth}/{State.MaximumHealth}";
         }
     }
 }

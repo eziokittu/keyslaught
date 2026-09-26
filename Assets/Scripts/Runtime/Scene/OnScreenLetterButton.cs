@@ -32,7 +32,7 @@ namespace KeySlaught.SceneGameplay
 
         private void SubmitLetter()
         {
-            combatController?.TryTypeLetter(letter);
+            if (TutorialInputGate.TryAllowLetter(letter)) combatController?.TryTypeLetter(letter);
         }
     }
 }

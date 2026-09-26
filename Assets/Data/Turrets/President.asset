@@ -18,7 +18,7 @@ MonoBehaviour:
   - displayName: AEIOU + S,T
     coveredLetters: AEIOUST
   range: 3.6
-  secondsPerShot: 0.72
-  buildCost: 9
+  secondsPerShot: 2.5
+  buildCost: 20
   rangePerUpgrade: 0.35
-  cadenceMultiplierPerUpgrade: 0.85
+  cadenceMultiplierPerUpgrade: 0.86

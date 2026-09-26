@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using KeySlaught.Audio;
+using KeySlaught.Progression;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -31,17 +33,21 @@ namespace KeySlaught.SceneGameplay
         private bool guidanceSuspended;
         private float elapsedSeconds;
         private int libraryHitCount;
+        private int bossesDefeated;
 
         public event Action<int, bool> WaveStarted;
         public event Action<int> WaveCompleted;
         public event Action<bool> RunEnded;
         public WaveRunPhase Phase { get; private set; } = WaveRunPhase.Waiting;
         public int CurrentWaveNumber => Mathf.Max(0, waveIndex + 1);
-        public bool IsBossWave => waveIndex >= 0 && waves != null && waveIndex < waves.Length && waves[waveIndex] != null && waves[waveIndex].IsBossWave;
+        public bool IsBossWave => activeLevel != null && activeLevel.Waves != null && waveIndex >= 0 && waveIndex < activeLevel.Waves.Length
+            ? activeLevel.Waves[waveIndex] != null && activeLevel.Waves[waveIndex].Title.ToUpperInvariant().Contains("BOSS")
+            : waveIndex >= 0 && waves != null && waveIndex < waves.Length && waves[waveIndex] != null && waves[waveIndex].IsBossWave;
         public float IntermissionRemaining => Phase == WaveRunPhase.Intermission ? Mathf.Max(0f, timer) : 0f;
         public LevelDefinition ActiveLevel => activeLevel;
         public float ElapsedSeconds => elapsedSeconds;
         public int LibraryHitCount => libraryHitCount;
+        public int BossesDefeated => bossesDefeated;
 
         public void Configure(EnemySpawner enemySpawner, LibraryEndpoint endpoint, BrainCellEconomy runEconomy,
             GameplayCombatController combatController, PlayerMover playerMover, Transform placedTurrets,
@@ -72,6 +78,7 @@ namespace KeySlaught.SceneGameplay
         {
             elapsedSeconds = 0f;
             libraryHitCount = 0;
+            bossesDefeated = 0;
             waveIndex = -1;
             BeginNextWave();
         }
@@ -108,7 +115,7 @@ namespace KeySlaught.SceneGameplay
 
         public void RestartRun()
         {
-            Time.timeScale = 1f;
+            GameSpeedSettings.ApplyGameplaySpeed();
             spawner?.ClearAll();
             library?.ResetState();
             economy?.ResetState();
@@ -129,6 +136,8 @@ namespace KeySlaught.SceneGameplay
         public void SetMenuSuspended(bool suspended)
         {
             menuSuspended = suspended;
+            if (suspended) GameSpeedSettings.ApplyMenuSpeed();
+            else GameSpeedSettings.ApplyGameplaySpeed();
             if (player != null) player.enabled = !suspended;
             if (combat != null) combat.enabled = !suspended;
             spawner?.SetMovementMultiplier(suspended ? 0f : 1f);
@@ -174,6 +183,7 @@ namespace KeySlaught.SceneGameplay
             timer = 0f;
             Phase = WaveRunPhase.Spawning;
             WaveStarted?.Invoke(CurrentWaveNumber, IsBossWave);
+            PersistentAudioDirector.Play(KeySlaughtSound.RoundStart);
         }
 
         private void SpawnNextEnemy()
@@ -187,7 +197,11 @@ namespace KeySlaught.SceneGameplay
                     return;
                 }
                 var entry = authoredWave.Words[nextEnemyIndex++];
-                if (entry != null) spawner.SpawnWord(entry.Word, authoredWave.EnemyMovementSpeed);
+                if (entry != null)
+                {
+                    var enemy = spawner.SpawnWord(entry.Word, authoredWave.EnemyMovementSpeed);
+                    if (IsBossWave && nextEnemyIndex == 1) enemy?.SetBossPresentation();
+                }
                 timer = entry == null ? 0f : entry.DelayAfterPrevious;
                 if (nextEnemyIndex >= authoredWave.Words.Length) Phase = WaveRunPhase.Fighting;
                 return;
@@ -206,6 +220,7 @@ namespace KeySlaught.SceneGameplay
         private void CompleteWave()
         {
             economy?.CollectAll();
+            if (IsBossWave) bossesDefeated++;
             WaveCompleted?.Invoke(CurrentWaveNumber);
             if (waveIndex >= WaveCount - 1) EndRun(true);
             else
@@ -227,6 +242,7 @@ namespace KeySlaught.SceneGameplay
             if (resultLabel != null) resultLabel.text = victory ? "LIBRARY DEFENDED" : "LIBRARY LOST";
             if (resultRoot != null) resultRoot.SetActive(true);
             RunEnded?.Invoke(victory);
+            PersistentAudioDirector.Play(victory ? KeySlaughtSound.GameWin : KeySlaughtSound.GameLost);
         }
     }
 }

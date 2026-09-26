@@ -87,6 +87,11 @@ namespace KeySlaught.SceneGameplay
 
         private void Update()
         {
+            if (!TutorialInputGate.AllowMovement)
+            {
+                LastMovementInput = Vector2.zero;
+                return;
+            }
             var movement = ReadArrowAndControllerMovement();
             LastMovementInput = Vector2.ClampMagnitude(movement + virtualMovement, 1f);
             ApplyMovement(LastMovementInput, Time.deltaTime);

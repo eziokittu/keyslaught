@@ -38,6 +38,7 @@ namespace KeySlaught.SceneGameplay
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (!TutorialInputGate.AllowMovement) return;
             if (activePointerId == int.MinValue)
             {
                 activePointerId = eventData.pointerId;
@@ -57,6 +58,7 @@ namespace KeySlaught.SceneGameplay
 
         public void OnDrag(PointerEventData eventData)
         {
+            if (!TutorialInputGate.AllowMovement) return;
             if (eventData.pointerId == activePointerId)
             {
                 UpdateValue(eventData);

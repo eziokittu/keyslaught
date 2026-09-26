@@ -16,6 +16,6 @@ MonoBehaviour:
   displayName: RELOAD SPEED
   stat: 3
   maxLevel: 5
-  baseCost: 1
-  costIncreasePerLevel: 1
+  baseCost: 2
+  costIncreasePerLevel: 2
   valuePerLevel: 0.05

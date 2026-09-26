@@ -18,7 +18,7 @@ namespace KeySlaught.SceneGameplay
             coordinator = sceneCoordinator;
             player = sceneCoordinator == null ? null : sceneCoordinator.Player;
             turret = null;
-            alwaysVisible = true;
+            alwaysVisible = false;
             EnsureCircle();
             RefreshGeometry();
         }
@@ -39,7 +39,8 @@ namespace KeySlaught.SceneGameplay
         {
             EnsureCircle();
             if (circle == null) return;
-            var visible = alwaysVisible || (turret != null && !turret.IsPreview && player != null &&
+            var playerRangeVisible = coordinator != null && player != null && player.LastMovementInput.sqrMagnitude > 0.01f;
+            var visible = playerRangeVisible || alwaysVisible || (turret != null && !turret.IsPreview && player != null &&
                 Vector2.Distance(player.transform.position, transform.position) <= 0.72f);
             circle.enabled = visible;
             if (!visible) return;
@@ -59,8 +60,8 @@ namespace KeySlaught.SceneGameplay
             circle.useWorldSpace = false;
             circle.loop = true;
             circle.positionCount = Mathf.Max(24, segments);
-            circle.startWidth = .055f;
-            circle.endWidth = .055f;
+            circle.startWidth = .025f;
+            circle.endWidth = .025f;
             circle.sortingOrder = 8;
             circleMaterial = new Material(Shader.Find("Sprites/Default"));
             circle.material = circleMaterial;

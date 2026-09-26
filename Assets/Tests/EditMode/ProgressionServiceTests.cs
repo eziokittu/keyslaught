@@ -1,8 +1,10 @@
 using System.Reflection;
 using KeySlaught.Progression;
 using KeySlaught.SceneGameplay;
+using KeySlaught.UI;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace KeySlaught.Tests.EditMode
 {
@@ -65,6 +67,38 @@ namespace KeySlaught.Tests.EditMode
         }
 
         [Test]
+        public void LaterLoreLevels_PersistIndependentlyAndKeepBestResults()
+        {
+            var go = new GameObject("Lore Sequence Progression");
+            var service = go.AddComponent<ProgressionService>(); service.Initialize(new MemoryStore());
+            service.CompleteLoreLevel(2, 2, 260f); service.CompleteLoreLevel(2, 3, 190f);
+            service.CompleteLoreLevel(3, 1, 340f);
+            Assert.That(service.Profile.loreOneLevelTwoCompleted, Is.True);
+            Assert.That(service.Profile.loreOneLevelTwoStars, Is.EqualTo(3));
+            Assert.That(service.Profile.loreOneLevelTwoBestSeconds, Is.EqualTo(190f));
+            Assert.That(service.Profile.loreOneLevelThreeCompleted, Is.True);
+            Assert.That(service.Profile.loreOneLevelThreeStars, Is.EqualTo(1));
+            Object.DestroyImmediate(go);
+        }
+
+        [Test]
+        public void ExtendedLoreLevels_FourThroughSixPersistIndependently()
+        {
+            var go = new GameObject("Extended Lore Progression");
+            var service = go.AddComponent<ProgressionService>(); service.Initialize(new MemoryStore());
+            service.CompleteLoreLevel(4, 2, 300f);
+            service.CompleteLoreLevel(5, 3, 280f);
+            service.CompleteLoreLevel(6, 1, 420f);
+            Assert.That(service.Profile.loreOneLevelFourCompleted, Is.True);
+            Assert.That(service.Profile.loreOneLevelFourStars, Is.EqualTo(2));
+            Assert.That(service.Profile.loreOneLevelFiveCompleted, Is.True);
+            Assert.That(service.Profile.loreOneLevelFiveStars, Is.EqualTo(3));
+            Assert.That(service.Profile.loreOneLevelSixCompleted, Is.True);
+            Assert.That(service.Profile.loreOneLevelSixBestSeconds, Is.EqualTo(420f));
+            Object.DestroyImmediate(go);
+        }
+
+        [Test]
         public void ResearchPurchase_RejectsInsufficientPointsAndMaximumLevel()
         {
             var definition = Definition("MAG", ResearchStat.MagazineCapacity, 1, 2, 1, 1f);
@@ -95,6 +129,118 @@ namespace KeySlaught.Tests.EditMode
             Assert.That(service.Profile.endlessModeUnlocked, Is.True);
             Assert.That(service.Profile.knowledgePoints, Is.EqualTo(1));
             Object.DestroyImmediate(flowObject); Object.DestroyImmediate(progressionObject);
+        }
+
+        [Test]
+        public void BrainCells_ArePersistentAndSpendableAcrossServiceInstances()
+        {
+            var store = new MemoryStore();
+            var firstObject = new GameObject("Brain Wallet One");
+            var first = firstObject.AddComponent<ProgressionService>(); first.Initialize(store);
+            first.CreditBrainCells(14);
+            Assert.That(first.TrySpendBrainCells(5), Is.True);
+            Assert.That(first.Profile.brainCells, Is.EqualTo(9));
+
+            var secondObject = new GameObject("Brain Wallet Two");
+            var second = secondObject.AddComponent<ProgressionService>(); second.Initialize(store);
+            Assert.That(second.Profile.brainCells, Is.EqualTo(9));
+            Assert.That(second.TrySpendBrainCells(10), Is.False);
+            Object.DestroyImmediate(secondObject); Object.DestroyImmediate(firstObject);
+        }
+
+        [Test]
+        public void Turrets_UnlockSequentiallyFromTutorialAndLoreCompletion()
+        {
+            var go = new GameObject("Turret Unlock Progression");
+            var service = go.AddComponent<ProgressionService>(); service.Initialize(new MemoryStore());
+            Assert.That(service.UnlockedTurretCount, Is.Zero);
+            service.CompleteTutorial();
+            Assert.That(service.IsTurretUnlocked(TurretKind.Teacher), Is.True);
+            Assert.That(service.IsTurretUnlocked(TurretKind.Engineer), Is.False);
+            service.CompleteLoreLevel(1, 1, 200f);
+            Assert.That(service.IsTurretUnlocked(TurretKind.Engineer), Is.True);
+            service.CompleteLoreLevel(2, 1, 200f);
+            Assert.That(service.IsTurretUnlocked(TurretKind.Scientist), Is.True);
+            service.CompleteLoreLevel(3, 1, 200f);
+            Assert.That(service.IsTurretUnlocked(TurretKind.President), Is.True);
+            Assert.That(service.UnlockedTurretCount, Is.EqualTo(4));
+            Object.DestroyImmediate(go);
+        }
+
+        [Test]
+        public void GameSpeed_ClampsToSupportedMultipliers()
+        {
+            var previous = PlayerPrefs.GetInt(GameSpeedSettings.PlayerPrefsKey, 1);
+            try
+            {
+                GameSpeedSettings.SetMultiplier(8);
+                Assert.That(GameSpeedSettings.Multiplier, Is.EqualTo(3));
+                GameSpeedSettings.SetMultiplier(-2);
+                Assert.That(GameSpeedSettings.Multiplier, Is.EqualTo(1));
+            }
+            finally
+            {
+                PlayerPrefs.SetInt(GameSpeedSettings.PlayerPrefsKey, previous);
+                Time.timeScale = 1f;
+            }
+        }
+
+        [Test]
+        public void TutorialGate_RestrictsEachForcedInputStage()
+        {
+            try
+            {
+                TutorialInputGate.MovementOnly();
+                Assert.That(TutorialInputGate.AllowMovement, Is.True);
+                Assert.That(TutorialInputGate.AllowsLetter('C'), Is.False);
+                TutorialInputGate.LettersOnly("CAT");
+                Assert.That(TutorialInputGate.AllowMovement, Is.False);
+                Assert.That(TutorialInputGate.AllowsLetter('C'), Is.True);
+                Assert.That(TutorialInputGate.AllowsLetter('Z'), Is.False);
+                TutorialInputGate.RefreshOnly();
+                Assert.That(TutorialInputGate.AllowRefresh, Is.True);
+                Assert.That(TutorialInputGate.AllowsLetter('A'), Is.False);
+            }
+            finally { TutorialInputGate.Clear(); }
+        }
+
+        [Test]
+        public void TutorialGate_RequiresTheNextExactLetterAndReportsMistakes()
+        {
+            string feedback = null; var accepted = true;
+            void Capture(string message, bool value) { feedback = message; accepted = value; }
+            TutorialInputGate.Feedback += Capture;
+            try
+            {
+                TutorialInputGate.RequireLetter('C');
+                Assert.That(TutorialInputGate.TryAllowLetter('A'), Is.False);
+                Assert.That(accepted, Is.False); Assert.That(feedback, Does.Contain("PRESS C"));
+                Assert.That(TutorialInputGate.TryAllowLetter('C'), Is.True);
+                Assert.That(accepted, Is.True); Assert.That(feedback, Does.Contain("CORRECT"));
+            }
+            finally { TutorialInputGate.Feedback -= Capture; TutorialInputGate.Clear(); }
+        }
+
+        [Test]
+        public void TutorialMovementChecklist_RequiresAllFourDirections()
+        {
+            var checklist = new TutorialMovementChecklist(.5f);
+            checklist.Advance(new Vector2(.6f, .6f));
+            Assert.That(checklist.UpComplete, Is.True); Assert.That(checklist.RightComplete, Is.True);
+            Assert.That(checklist.IsComplete, Is.False);
+            checklist.Advance(new Vector2(-.6f, -.6f));
+            Assert.That(checklist.LeftComplete, Is.True); Assert.That(checklist.DownComplete, Is.True);
+            Assert.That(checklist.IsComplete, Is.True);
+        }
+
+        [Test]
+        public void TutorialFocusGuide_HideToleratesDestroyedComponent()
+        {
+            var host = new GameObject("Destroyed Tutorial Focus Guide", typeof(RectTransform), typeof(CanvasRenderer), typeof(TutorialFocusGuide));
+            var guide = host.GetComponent<TutorialFocusGuide>();
+            Object.DestroyImmediate(host);
+
+            Assert.DoesNotThrow(() => guide.Hide());
         }
 
         private static ResearchDefinition Definition(string id, ResearchStat stat, int max, int cost, int growth, float value)

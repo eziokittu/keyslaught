@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d79451086a9555442a1e6abb7d9b417a, type: 3}
+  m_Name: KeySlaughtAudioLibrary
+  m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.Audio.KeySlaughtAudioLibrary
+  music: {fileID: 8300000, guid: 8b1b600fc44ee514fb2f0214d736b0bf, type: 3}
+  musicVolume: 0.34
+  enemyHit: {fileID: 8300000, guid: cfd0b97fd5d7bf1469c46d423fb0a44b, type: 3}
+  enemyHitVolume: 0.42
+  libraryHit: {fileID: 8300000, guid: 9223090502ea756409ea1c597f1acb41, type: 3}
+  libraryHitVolume: 0.55
+  playerCorrupted: {fileID: 8300000, guid: 54e36e89313e7e549814b648a27152d4, type: 3}
+  playerCorruptedVolume: 0.58
+  turretPlaced: {fileID: 8300000, guid: e30939e1e33a86548bdd39e978743b75, type: 3}
+  turretPlacedVolume: 0.48
+  turretFired: {fileID: 8300000, guid: b2734abf6dd57fb4a8e533ad391514a9, type: 3}
+  turretFiredVolume: 0.24
+  turretSold: {fileID: 8300000, guid: f39a148a4a1495248b3553d0141b2e3f, type: 3}
+  turretSoldVolume: 0.42
+  turretUpgraded: {fileID: 8300000, guid: 5bf0e02fa6efcf340964d1e58b688691, type: 3}
+  turretUpgradedVolume: 0.5
+  uiClick: {fileID: 8300000, guid: 40e0771d83eb38d4db829e5af227e865, type: 3}
+  uiClickVolume: 0.28
+  gameWin: {fileID: 8300000, guid: 4b7c91e6018cee34b8027de5b714bb05, type: 3}
+  gameWinVolume: 0.64
+  gameLost: {fileID: 8300000, guid: de4c39f2818b96242822592fcedc22e1, type: 3}
+  gameLostVolume: 0.58
+  roundStart: {fileID: 8300000, guid: 15cf741d4d56b0048818e95bc9f5ed92, type: 3}
+  roundStartVolume: 0.48

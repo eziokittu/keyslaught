@@ -20,7 +20,7 @@ MonoBehaviour:
   - displayName: N-Z
     coveredLetters: NOPQRSTUVWXYZ
   range: 4.2
-  secondsPerShot: 0.7
-  buildCost: 8
+  secondsPerShot: 1.65
+  buildCost: 18
   rangePerUpgrade: 0.4
-  cadenceMultiplierPerUpgrade: 0.84
+  cadenceMultiplierPerUpgrade: 0.86

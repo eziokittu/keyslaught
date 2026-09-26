@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: MagazineCapacity
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.Progression.ResearchDefinition
   id: MAGAZINE_CAPACITY
-  displayName: MAGAZINE CAPACITY
+  displayName: MAGAZINE
   stat: 1
-  maxLevel: 2
-  baseCost: 2
-  costIncreasePerLevel: 2
+  maxLevel: 3
+  baseCost: 4
+  costIncreasePerLevel: 3
   valuePerLevel: 1

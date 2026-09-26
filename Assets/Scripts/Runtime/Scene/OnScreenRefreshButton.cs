@@ -20,7 +20,7 @@ namespace KeySlaught.SceneGameplay
 
         private void Refresh()
         {
-            combatController?.TryStartRefresh();
+            if (TutorialInputGate.TryAllowRefresh()) combatController?.TryStartRefresh();
         }
     }
 }

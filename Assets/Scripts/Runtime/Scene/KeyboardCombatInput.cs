@@ -22,7 +22,7 @@ namespace KeySlaught.SceneGameplay
 
             if (keyboard.spaceKey.wasPressedThisFrame)
             {
-                combatController.TryStartRefresh();
+                if (TutorialInputGate.TryAllowRefresh()) combatController.TryStartRefresh();
             }
 
             foreach (var keyControl in keyboard.allKeys)
@@ -30,7 +30,8 @@ namespace KeySlaught.SceneGameplay
                 var code = keyControl.keyCode;
                 if (keyControl.wasPressedThisFrame && code >= Key.A && code <= Key.Z)
                 {
-                    combatController.TryTypeLetter((char)('A' + code - Key.A));
+                    var letter = (char)('A' + code - Key.A);
+                    if (TutorialInputGate.TryAllowLetter(letter)) combatController.TryTypeLetter(letter);
                 }
             }
         }

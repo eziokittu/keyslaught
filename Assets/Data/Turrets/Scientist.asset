@@ -18,7 +18,7 @@ MonoBehaviour:
   - displayName: A-Z
     coveredLetters: ABCDEFGHIJKLMNOPQRSTUVWXYZ
   range: 3.3
-  secondsPerShot: 1.05
-  buildCost: 10
+  secondsPerShot: 2.1
+  buildCost: 22
   rangePerUpgrade: 0.3
   cadenceMultiplierPerUpgrade: 0.86

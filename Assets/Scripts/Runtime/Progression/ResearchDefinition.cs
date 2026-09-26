@@ -2,7 +2,17 @@ using UnityEngine;
 
 namespace KeySlaught.Progression
 {
-    public enum ResearchStat { PlayerRange, MagazineCapacity, LibraryHealth, ReloadSpeed }
+    public enum ResearchStat
+    {
+        PlayerRange,
+        MagazineCapacity,
+        LibraryHealth,
+        ReloadSpeed,
+        TeacherRange,
+        EngineerRange,
+        ScientistRange,
+        PresidentRange
+    }
 
     [CreateAssetMenu(menuName = "KeySlaught/Research Definition", fileName = "ResearchDefinition")]
     public sealed class ResearchDefinition : ScriptableObject

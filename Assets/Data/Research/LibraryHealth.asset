@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: LibraryHealth
   m_EditorClassIdentifier: KeySlaught.Runtime::KeySlaught.Progression.ResearchDefinition
   id: LIBRARY_HEALTH
-  displayName: LIBRARY HEALTH
+  displayName: LIBRARY HP
   stat: 2
   maxLevel: 5
-  baseCost: 1
-  costIncreasePerLevel: 1
+  baseCost: 3
+  costIncreasePerLevel: 2
   valuePerLevel: 5

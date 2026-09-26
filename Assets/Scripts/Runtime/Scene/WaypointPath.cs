@@ -9,6 +9,8 @@ namespace KeySlaught.SceneGameplay
 
         public int WaypointCount => waypoints == null ? 0 : waypoints.Length;
 
+        public Transform[] Waypoints => waypoints;
+
         public float TotalLength => PathMath.CalculateLength(GetPositions());
 
         public Vector3 StartPosition => EvaluateDistance(0f);
@@ -97,6 +99,8 @@ namespace KeySlaught.SceneGameplay
 
             return positions;
         }
+
+        public Vector3[] CopyPositions() => GetPositions();
 
         private void OnValidate()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using KeySlaught.Gameplay;
 using UnityEngine;
 using UnityEngine.UI;
+using KeySlaught.Audio;
 
 namespace KeySlaught.SceneGameplay
 {
@@ -29,6 +30,7 @@ namespace KeySlaught.SceneGameplay
 
         public event Action<EnemyAgent> TargetHit;
         public event Action<EnemyAgent> TargetDefeated;
+        public event Action<float> Corrupted;
 
         public ErrorRefreshBuffer ErrorBuffer
         {
@@ -122,6 +124,17 @@ namespace KeySlaught.SceneGameplay
         public void CorruptFor(float durationSeconds)
         {
             Corruption.CorruptFor(durationSeconds);
+            ErrorBuffer.Clear();
+            Corrupted?.Invoke(durationSeconds);
+            PersistentAudioDirector.Play(KeySlaughtSound.PlayerCorrupted);
+            RefreshHud();
+        }
+
+        public void ClearMagazine()
+        {
+            EnsureRuntimeState();
+            errorBuffer.Clear();
+            activeRefreshDuration = 0f;
             RefreshHud();
         }
 
@@ -198,6 +211,7 @@ namespace KeySlaught.SceneGameplay
 
             enemy.RefreshLabel();
             ShowShot(enemy);
+            PersistentAudioDirector.Play(KeySlaughtSound.EnemyHit);
             TargetHit?.Invoke(enemy);
             if (!enemy.WordState.IsDefeated)
             {
@@ -278,7 +292,7 @@ namespace KeySlaught.SceneGameplay
                 currentContacts.Add(enemy);
                 if (!touchingEnemies.Contains(enemy))
                 {
-                    corruption.CorruptFor(corruptionDuration);
+                    CorruptFor(corruptionDuration);
                 }
             }
 
