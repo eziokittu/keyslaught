@@ -148,28 +148,51 @@ namespace KeySlaught.Tests.EditMode
         }
 
         [Test]
-        public void Turrets_UnlockSequentiallyFromTutorialAndLoreCompletion()
+        public void Turrets_UnlockFromTutorialOrResearchPurchases()
         {
             var go = new GameObject("Turret Unlock Progression");
-            var service = go.AddComponent<ProgressionService>(); service.Initialize(new MemoryStore());
+            var definitions = new[]
+            {
+                Definition("ENGINEER_UNLOCK", ResearchStat.EngineerUnlock, 1, 1, 0, 0f),
+                Definition("SCIENTIST_UNLOCK", ResearchStat.ScientistUnlock, 1, 1, 0, 0f),
+                Definition("PRESIDENT_UNLOCK", ResearchStat.PresidentUnlock, 1, 1, 0, 0f)
+            };
+            var service = go.AddComponent<ProgressionService>(); service.Configure(definitions); service.Initialize(new MemoryStore());
             Assert.That(service.UnlockedTurretCount, Is.Zero);
             service.CompleteTutorial();
             Assert.That(service.IsTurretUnlocked(TurretKind.Teacher), Is.True);
             Assert.That(service.IsTurretUnlocked(TurretKind.Engineer), Is.False);
-            service.CompleteLoreLevel(1, 1, 200f);
+            service.CreditKnowledge(3);
+            Assert.That(service.TryPurchase("ENGINEER_UNLOCK"), Is.True);
             Assert.That(service.IsTurretUnlocked(TurretKind.Engineer), Is.True);
-            service.CompleteLoreLevel(2, 1, 200f);
+            Assert.That(service.TryPurchase("SCIENTIST_UNLOCK"), Is.True);
             Assert.That(service.IsTurretUnlocked(TurretKind.Scientist), Is.True);
-            service.CompleteLoreLevel(3, 1, 200f);
+            Assert.That(service.TryPurchase("PRESIDENT_UNLOCK"), Is.True);
             Assert.That(service.IsTurretUnlocked(TurretKind.President), Is.True);
             Assert.That(service.UnlockedTurretCount, Is.EqualTo(4));
+            foreach (var definition in definitions) Object.DestroyImmediate(definition);
             Object.DestroyImmediate(go);
+        }
+
+        [Test]
+        public void TurretTutorial_UnlocksHistoryAndResearchHidesUnlockEntryAfterward()
+        {
+            var unlock = Definition("HISTORY_UNLOCK", ResearchStat.HistoryUnlock, 1, 3, 0, 0f);
+            var duration = Definition("HISTORY_DURATION", ResearchStat.HistoryDuration, 5, 3, 1, .75f);
+            var go = new GameObject("Ability Unlock Progression");
+            var service = go.AddComponent<ProgressionService>(); service.Configure(new[] { unlock, duration }); service.Initialize(new MemoryStore());
+            Assert.That(service.IsResearchVisible(unlock), Is.True);
+            Assert.That(service.IsResearchVisible(duration), Is.False);
+            service.CompleteTurretTutorial();
+            Assert.That(service.IsAbilityUnlocked(LibraryAbilityKind.History), Is.True);
+            Assert.That(service.IsResearchVisible(unlock), Is.False);
+            Assert.That(service.IsResearchVisible(duration), Is.True);
+            Object.DestroyImmediate(go); Object.DestroyImmediate(unlock); Object.DestroyImmediate(duration);
         }
 
         [Test]
         public void GameSpeed_ClampsToSupportedMultipliers()
         {
-            var previous = PlayerPrefs.GetInt(GameSpeedSettings.PlayerPrefsKey, 1);
             try
             {
                 GameSpeedSettings.SetMultiplier(8);
@@ -179,9 +202,17 @@ namespace KeySlaught.Tests.EditMode
             }
             finally
             {
-                PlayerPrefs.SetInt(GameSpeedSettings.PlayerPrefsKey, previous);
-                Time.timeScale = 1f;
+                GameSpeedSettings.ResetForLevel();
             }
+        }
+
+        [Test]
+        public void GameSpeed_ResetForLevelClearsSessionSelection()
+        {
+            GameSpeedSettings.SetMultiplier(3);
+            GameSpeedSettings.ResetForLevel();
+            Assert.That(GameSpeedSettings.Multiplier, Is.EqualTo(1));
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
         }
 
         [Test]
@@ -240,6 +271,23 @@ namespace KeySlaught.Tests.EditMode
             Object.DestroyImmediate(host);
 
             Assert.DoesNotThrow(() => guide.Hide());
+        }
+
+        [Test]
+        public void CameraMotionZoom_DampingIsFrameRateIndependentAndDoesNotOvershoot()
+        {
+            var stepped = 10f;
+            for (var i = 0; i < 60; i++)
+            {
+                var previous = stepped;
+                stepped = CameraMotionZoom.DampSize(stepped, 7f, .8f, 1f / 60f);
+                Assert.That(stepped, Is.LessThan(previous).And.GreaterThanOrEqualTo(7f));
+            }
+
+            Assert.That(stepped, Is.EqualTo(CameraMotionZoom.DampSize(10f, 7f, .8f, 1f)).Within(.001f));
+            var stalled = CameraMotionZoom.DampSize(10f, 7f, .8f, 6.5f);
+            Assert.That(stalled, Is.EqualTo(7f).Within(.001f));
+            Assert.That(CameraMotionZoom.DampSize(7f, 10f, .8f, 1f), Is.InRange(7f, 10f));
         }
 
         private static ResearchDefinition Definition(string id, ResearchStat stat, int max, int cost, int growth, float value)

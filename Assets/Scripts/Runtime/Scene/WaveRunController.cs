@@ -133,7 +133,7 @@ namespace KeySlaught.SceneGameplay
 
         public void RestartRun()
         {
-            GameSpeedSettings.ApplyGameplaySpeed();
+            GameSpeedSettings.ResetForLevel();
             spawner?.ClearAll();
             library?.ResetState();
             economy?.ResetState();
@@ -267,6 +267,7 @@ namespace KeySlaught.SceneGameplay
 
         private void EndRun(bool victory)
         {
+            GameSpeedSettings.ResetForLevel();
             Phase = victory ? WaveRunPhase.Victory : WaveRunPhase.Defeat;
             spawner?.SetMovementMultiplier(0f);
             if (combat != null) combat.enabled = false;

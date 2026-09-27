@@ -5,16 +5,21 @@ namespace KeySlaught.Progression
 {
     public static class GameSpeedSettings
     {
-        public const string PlayerPrefsKey = "KeySlaught.GameSpeed";
-
         public static event Action Changed;
+        private static int multiplier = 1;
 
-        public static int Multiplier => Mathf.Clamp(PlayerPrefs.GetInt(PlayerPrefsKey, 1), 1, 3);
+        public static int Multiplier => multiplier;
 
         public static void SetMultiplier(int value)
         {
-            PlayerPrefs.SetInt(PlayerPrefsKey, Mathf.Clamp(value, 1, 3));
-            PlayerPrefs.Save();
+            multiplier = Mathf.Clamp(value, 1, 3);
+            Changed?.Invoke();
+        }
+
+        public static void ResetForLevel()
+        {
+            multiplier = 1;
+            Time.timeScale = 1f;
             Changed?.Invoke();
         }
 

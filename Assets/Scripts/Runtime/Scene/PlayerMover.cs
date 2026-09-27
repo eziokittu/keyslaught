@@ -32,6 +32,27 @@ namespace KeySlaught.SceneGameplay
                 position.y >= minimumBounds.y && position.y <= maximumBounds.y;
         }
 
+        public Vector2 ClosestReachablePosition(Vector2 position)
+        {
+            var clamped = new Vector2(
+                Mathf.Clamp(position.x, minimumBounds.x, maximumBounds.x),
+                Mathf.Clamp(position.y, minimumBounds.y, maximumBounds.y));
+            if (!IsBlocked(clamped) || blockedTerrain == null) return clamped;
+
+            var origin = blockedTerrain.WorldToCell(clamped);
+            for (var radius = 1; radius <= 8; radius++)
+            {
+                for (var y = -radius; y <= radius; y++)
+                for (var x = -radius; x <= radius; x++)
+                {
+                    if (Mathf.Abs(x) != radius && Mathf.Abs(y) != radius) continue;
+                    var candidate = (Vector2)blockedTerrain.GetCellCenterWorld(origin + new Vector3Int(x, y, 0));
+                    if (IsInsidePlayableBounds(candidate) && !IsBlocked(candidate)) return candidate;
+                }
+            }
+            return (Vector2)transform.position;
+        }
+
         public void ApplyMovement(Vector2 input, float deltaSeconds)
         {
             var direction = Vector2.ClampMagnitude(input, 1f);

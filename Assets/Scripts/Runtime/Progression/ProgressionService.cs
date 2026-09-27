@@ -55,10 +55,10 @@ namespace KeySlaught.Progression
             EnsureInitialized();
             return kind switch
             {
-                TurretKind.Teacher => Profile.tutorialCompleted,
-                TurretKind.Engineer => Profile.loreOneLevelOneCompleted,
-                TurretKind.Scientist => Profile.loreOneLevelTwoCompleted,
-                TurretKind.President => Profile.loreOneLevelThreeCompleted,
+                TurretKind.Teacher => Profile.tutorialCompleted || Profile.GetLevel("TEACHER_UNLOCK") > 0,
+                TurretKind.Engineer => Profile.GetLevel("ENGINEER_UNLOCK") > 0,
+                TurretKind.Scientist => Profile.GetLevel("SCIENTIST_UNLOCK") > 0,
+                TurretKind.President => Profile.GetLevel("PRESIDENT_UNLOCK") > 0,
                 _ => false
             };
         }
@@ -86,8 +86,66 @@ namespace KeySlaught.Progression
         {
             EnsureInitialized();
             Profile.tutorialCompleted = true;
+            Profile.SetLevel("TEACHER_UNLOCK", 1);
             Save();
         }
+
+        public void CompleteTurretTutorial()
+        {
+            EnsureInitialized();
+            Profile.turretTutorialCompleted = true;
+            Profile.SetLevel("HISTORY_UNLOCK", 1);
+            Save();
+        }
+
+        public void CompleteAbilityTutorial()
+        {
+            EnsureInitialized();
+            Profile.abilityTutorialCompleted = true;
+            Save();
+        }
+
+        public bool IsAbilityUnlocked(LibraryAbilityKind kind)
+        {
+            EnsureInitialized();
+            return kind switch
+            {
+                LibraryAbilityKind.History => Profile.turretTutorialCompleted || Profile.GetLevel("HISTORY_UNLOCK") > 0,
+                LibraryAbilityKind.SocialMediaInfluence => Profile.GetLevel("SOCIAL_UNLOCK") > 0,
+                LibraryAbilityKind.Politics => Profile.GetLevel("POLITICS_UNLOCK") > 0,
+                _ => false
+            };
+        }
+
+        public bool IsResearchVisible(ResearchDefinition definition)
+        {
+            if (definition == null) return false;
+            EnsureInitialized();
+            if (definition.IsUnlock) return !UnlockSatisfied(definition.Stat);
+            return definition.Stat switch
+            {
+                ResearchStat.TeacherRange or ResearchStat.TeacherAttackSpeed => IsTurretUnlocked(TurretKind.Teacher),
+                ResearchStat.EngineerRange or ResearchStat.EngineerAttackSpeed => IsTurretUnlocked(TurretKind.Engineer),
+                ResearchStat.ScientistRange or ResearchStat.ScientistAttackSpeed => IsTurretUnlocked(TurretKind.Scientist),
+                ResearchStat.PresidentRange or ResearchStat.PresidentAttackSpeed => IsTurretUnlocked(TurretKind.President),
+                ResearchStat.HistoryDuration => IsAbilityUnlocked(LibraryAbilityKind.History),
+                ResearchStat.SocialInfluenceDuration => IsAbilityUnlocked(LibraryAbilityKind.SocialMediaInfluence),
+                ResearchStat.PoliticsTargetCount => IsAbilityUnlocked(LibraryAbilityKind.Politics),
+                _ => true
+            };
+        }
+
+        private bool UnlockSatisfied(ResearchStat stat) => stat switch
+        {
+            ResearchStat.TeacherUnlock => IsTurretUnlocked(TurretKind.Teacher),
+            ResearchStat.EngineerUnlock => IsTurretUnlocked(TurretKind.Engineer),
+            ResearchStat.ScientistUnlock => IsTurretUnlocked(TurretKind.Scientist),
+            ResearchStat.PresidentUnlock => IsTurretUnlocked(TurretKind.President),
+            ResearchStat.HistoryUnlock => IsAbilityUnlocked(LibraryAbilityKind.History),
+            ResearchStat.SocialInfluenceUnlock => IsAbilityUnlocked(LibraryAbilityKind.SocialMediaInfluence),
+            ResearchStat.PoliticsUnlock => IsAbilityUnlocked(LibraryAbilityKind.Politics),
+            _ => true
+        };
 
         public void CompleteLoreOneLevelOne()
         {

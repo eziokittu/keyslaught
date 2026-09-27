@@ -15,7 +15,17 @@ namespace KeySlaught.Progression
         TeacherAttackSpeed,
         EngineerAttackSpeed,
         ScientistAttackSpeed,
-        PresidentAttackSpeed
+        PresidentAttackSpeed,
+        HistoryDuration,
+        SocialInfluenceDuration,
+        PoliticsTargetCount,
+        TeacherUnlock,
+        EngineerUnlock,
+        ScientistUnlock,
+        PresidentUnlock,
+        HistoryUnlock,
+        SocialInfluenceUnlock,
+        PoliticsUnlock
     }
 
     [CreateAssetMenu(menuName = "KeySlaught/Research Definition", fileName = "ResearchDefinition")]
@@ -35,5 +45,8 @@ namespace KeySlaught.Progression
         public int MaxLevel => maxLevel;
         public float ValuePerLevel => valuePerLevel;
         public int CostForLevel(int currentLevel) => baseCost + Mathf.Max(0, currentLevel) * costIncreasePerLevel;
+        public bool IsUnlock => stat is ResearchStat.TeacherUnlock or ResearchStat.EngineerUnlock or
+            ResearchStat.ScientistUnlock or ResearchStat.PresidentUnlock or ResearchStat.HistoryUnlock or
+            ResearchStat.SocialInfluenceUnlock or ResearchStat.PoliticsUnlock;
     }
 }

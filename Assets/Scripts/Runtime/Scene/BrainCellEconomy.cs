@@ -92,14 +92,12 @@ namespace KeySlaught.SceneGameplay
         {
             if (enemy == null || enemy.WordState == null) return;
             var value = CalculateReward(enemy.WordState);
-            if (player != null && !player.IsInsidePlayableBounds(enemy.transform.position))
-            {
-                Credit(value);
-                return;
-            }
+            var spawnPosition = player == null
+                ? (Vector2)enemy.transform.position
+                : player.ClosestReachablePosition(enemy.transform.position);
             foreach (var existing in activePickups)
             {
-                if (existing != null && Vector2.Distance(existing.transform.position, enemy.transform.position) <= clumpRadius)
+                if (existing != null && Vector2.Distance(existing.transform.position, spawnPosition) <= clumpRadius)
                 {
                     existing.Add(value);
                     return;
@@ -110,13 +108,15 @@ namespace KeySlaught.SceneGameplay
             if (pickupPrefab != null)
             {
                 var scatter = UnityEngine.Random.insideUnitCircle * scatterRadius;
-                pickup = Instantiate(pickupPrefab, enemy.transform.position + (Vector3)scatter, Quaternion.identity, transform);
+                var scattered = spawnPosition + scatter;
+                var reachable = player == null ? scattered : player.ClosestReachablePosition(scattered);
+                pickup = Instantiate(pickupPrefab, (Vector3)reachable, Quaternion.identity, transform);
             }
             else
             {
                 var pickupObject = new GameObject($"Brain Cells +{value}");
                 pickupObject.transform.SetParent(transform, false);
-                pickupObject.transform.position = enemy.transform.position;
+                pickupObject.transform.position = spawnPosition;
                 pickupObject.transform.localScale = Vector3.one * 0.42f;
                 var renderer = pickupObject.AddComponent<SpriteRenderer>();
                 renderer.sprite = pickupSprite;

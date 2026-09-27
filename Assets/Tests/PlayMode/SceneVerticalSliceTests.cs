@@ -384,7 +384,7 @@ namespace KeySlaught.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator BrainCells_DefeatedOutsidePlayableBoundsAreCreditedImmediately()
+        public IEnumerator BrainCells_DefeatedOutsidePlayableBoundsSpawnAtReachablePosition()
         {
             var playerObject = new GameObject("Bounded Player");
             var player = playerObject.AddComponent<PlayerMover>();
@@ -401,8 +401,10 @@ namespace KeySlaught.Tests.PlayMode
 
             defeated.Invoke(economy, new object[] { enemy });
 
-            Assert.That(economy.Balance, Is.EqualTo(3));
-            Assert.That(economyObject.transform.childCount, Is.Zero);
+            Assert.That(economy.Balance, Is.Zero);
+            Assert.That(economyObject.transform.childCount, Is.EqualTo(1));
+            var pickup = economyObject.transform.GetChild(0);
+            Assert.That(player.IsInsidePlayableBounds(pickup.position), Is.True);
             Object.Destroy(economyObject); Object.Destroy(enemyObject); Object.Destroy(path.gameObject); Object.Destroy(playerObject);
             yield return null;
         }

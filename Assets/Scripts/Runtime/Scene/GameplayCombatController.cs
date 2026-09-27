@@ -51,6 +51,8 @@ namespace KeySlaught.SceneGameplay
         }
 
         public bool CanType => !Corruption.IsCorrupted && ErrorBuffer.CanAcceptInput;
+        public bool IsRefreshing => ErrorBuffer.IsRefreshing;
+        public float RefreshSecondsRemaining => ErrorBuffer.RefreshSecondsRemaining;
 
         public GameplaySceneCoordinator SceneCoordinator => sceneCoordinator;
 

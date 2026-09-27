@@ -22,7 +22,14 @@ namespace KeySlaught.UI
         public void Set2X() => Set(2);
         public void Set3X() => Set(3);
 
-        private void OnEnable() => Refresh();
+        private void OnEnable()
+        {
+            GameSpeedSettings.Changed -= Refresh;
+            GameSpeedSettings.Changed += Refresh;
+            Refresh();
+        }
+
+        private void OnDisable() => GameSpeedSettings.Changed -= Refresh;
 
         private void Set(int multiplier)
         {

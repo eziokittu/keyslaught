@@ -168,7 +168,7 @@ namespace KeySlaught.SceneGameplay
             {
                 var kind = (LibraryAbilityKind)(index - 1);
                 var definition = abilityController.GetDefinition(kind);
-                if (definition == null) return false;
+                if (definition == null || !abilityController.IsUnlocked(kind)) return false;
                 if (ConfirmInteractions && confirmationPanel != null)
                 {
                     confirmationPanel.Show($"USE {FormatAbility(kind)}?", "Activate this Library ability now?",
@@ -435,8 +435,9 @@ namespace KeySlaught.SceneGameplay
         {
             var definition = abilityController == null ? null : abilityController.GetDefinition(kind);
             var cost = definition == null ? 0 : definition.Cost;
-            SetAction(index, $"{label}     {cost}",
-                definition != null && economy != null && economy.Balance >= cost && abilityController.ActiveAbility == null);
+            var unlocked = abilityController != null && abilityController.IsUnlocked(kind);
+            SetAction(index, unlocked ? $"{label}     {cost}" : $"{label}     LOCKED",
+                unlocked && definition != null && economy != null && economy.Balance >= cost && abilityController.ActiveAbility == null);
         }
 
         private static string FormatAbility(LibraryAbilityKind kind) => kind switch

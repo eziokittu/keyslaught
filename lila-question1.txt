@@ -1,0 +1,50 @@
+Question #1: Build a Playable Prototype (Core Loop + D1) 
+Pick one game idea and build a small prototype we can actually play. It doesn’t need to be big or 
+pretty. It needs a single core loop that’s genuinely fun, and at least one day-1 hook that makes a 
+new player want another run.  
+Use any engine and any tools, and use as much AI as you like. 
+Then tell us how you thought about it: 
+● The pitch: what is it, who’s it for, and why would someone play it? 
+● Core loop and first session: what does a player do in the first few minutes, and what 
+brings them back tomorrow? 
+● Progression and metagame: what’s the day-1 hook you built, and what would keep 
+someone playing for months? 
+● Money: how would it make money without feeling like a cash grab? 
+● AI: how you used AI to build it, and whether AI is part of the game itself. We make AI 
+games, so this one matters to us. 
+● Shipping: what you’d test first, what would make you kill it or change direction, and the 
+couple of numbers you’d watch at soft launch. 
+● Reference games: what you played and pulled apart, what you borrowed, and what you 
+did differently. 
+Send us a web link we can play in the browser (one click, nothing to install), a GitHub link to the 
+code, and a detailed writeup of the points above. 
+Note: No art required, plain blocks and shapes are completely fine, it just has to feel fun. 
+Anything beyond that is your call.
+
+-----------------------
+Game - Keyslaught
+Itchio link - https://glitchbong.itch.io/keyslaught
+glitchbong link - https://glitchbong.com/games/keyslaught
+
+1. the pitch - It is a 2D game with combined genres of tower defence and typing. The player needs to type specific english alphabets as the enemies approach and defend the library. They can buy turrets and use abilities. Spend knowledge points on researching new abilities and turrets and prepare for the next battle.
+2. Who is it for - Anyone can play this targetting childern, teenagers and young adults mostly.
+3. why would someone play this - This game is mixing 2 different genres of tower defence and typing. there hasnt been many games which mixes both these genres. The tower dence angle of building defences would be a fun aspect on top of the base typing game.
+4. Core loop - Enemies come bearing English words. The player needs to type them which destroys them from reaching the library. The player can build defences too and buy upgrades and abilities along the way. The enemies come in waves followed with a boss wave. 
+5. first few minutes - The playe an play the tutorial on how to play this game and get comfortable. once done they can head to the lore levels and start completing the levels.
+6. Progression and metagame - As the game progresses, we unlock new abilities and turrets. Also in the research menu we can upgrade the stats to make things easier in the next run of the game.
+7. what would keep someone playing for months - The game is level oriented and more levels would come eventually making things harder for the player. Also there will be an endless mode where enemies keep coming and every 5th wave will be a boss levelgranting knowlesge points.
+8. Money - Gather knowledge points can be tiring to get the upgrades. Also the in game brain cell currenies need to be earned by hitting enemies to buit turrets, upgrade them or buying abilities. For all these we can have a real money hook where players can purchase extra in game currencies with money. but spending money is not a neccessity to win in the game and so it wont feel like a cash grab. it only adds an ease to the grind.
+9. how you used AI to build it - Took an entire day brain storming a game idea that fit well with the scenerio as needed as per the assessment. Made a detailed text file about all the things i want as game ideas, game mechanics. Created a 2D project in Unity and asked CODEX (GPT-5.6 SOL) to make this game. After each output had created more text files (issues1.txt ... issues11.txt) and passed it along the next chat in a new conversation so the AI can further enhance the experience and fix related bugs and issues the players may face
+10. Currently Ai is not part of the game but in the endless mode I was inteding to add some deterministic generative AI model (so it can run without internet) which will generate words and tuning the enmies speed acordingly.
+11. Shipping - Havent focussed on shipped yet until the game is complete as per my requirements. But would be putting it into itch io and my own website for now and when the base version of the game wil be done I will make a Linkedin Post about this game. In future after some more tuning and updates to the game, I will be making a Google play store release along with making a gameplay Youtube video. 
+12. Reference games - The game is an inspiration from Bloons TD 5/6/Battles, "Vampire Survivors", and "The Textorcist: The Story of Ray Bibbia". I took the typing aspect of the game from Textorcist which also another survival story based game. Similar to bloons TD series, I can place turrets which wil shoot on their own and will be having a research menu and upgrades on my turrets and library and player itself. Vampire survivors is one of the most popular among these 3 of a rouge lite survival where we control a player and they are the sole entity. So my game also has a player to control but not the sole entity. I added turrents and then typing. Mixture of various genres to make things challenging and fun at the same time.
+
+Also --
+in the last 3 weeks I made another game which fits the core loop and replaybility feature. It does not fit much in the money aspect so didnt consider that for this assessment -- YesChef
+Itchio - https://glitchbong.itch.io/yes-chef
+Glitchbong - https://glitchbong.com/games/yes-chef
+
+Also --
+Had made a multiplayer board game - Mens Morris Collection. Here Had developed an AI (not generative) for working as enemies in 1v1 matches of morris. Do try out thet game as well.
+Itchio - https://glitchbong.itch.io/mens-morris-collection
+Glitchbong - https://glitchbong.com/games/mens-morris-collection

@@ -16,6 +16,13 @@ namespace KeySlaught.SceneGameplay
         [SerializeField, Min(1)] private int loreLevelNumber = 1;
         [SerializeField] private RunResultPresenter resultPresenter;
         private bool completionRecorded;
+        private string pendingUnlockedReward;
+        private Sprite pendingRewardSprite;
+        private Sprite engineerRewardSprite;
+        private Sprite scientistRewardSprite;
+        private Sprite presidentRewardSprite;
+        private bool rewardRevealActive;
+        private bool navigateToNextAfterReward;
 
         public LevelDefinition Level => level;
         public int LoreLevelNumber => loreLevelNumber;
@@ -31,9 +38,12 @@ namespace KeySlaught.SceneGameplay
         public void SetLoreLevelNumber(int value) => loreLevelNumber = Mathf.Max(1, value);
         public void SetLevelDefinition(LevelDefinition value) => level = value;
         public void ConfigureResultPresenter(RunResultPresenter presenter) => resultPresenter = presenter;
+        public void ConfigureRewardSprites(Sprite engineer, Sprite scientist, Sprite president)
+        { engineerRewardSprite = engineer; scientistRewardSprite = scientist; presidentRewardSprite = president; }
 
         public void ReturnToMainMenu()
         {
+            if (TryShowPendingReward(false)) return;
             GameSpeedSettings.ApplyMenuSpeed();
             PlayerPrefs.SetInt("KeySlaught.ReturnToMainMenu", 1);
             SceneManager.LoadScene(mainMenuSceneName);
@@ -41,6 +51,7 @@ namespace KeySlaught.SceneGameplay
 
         private void Awake()
         {
+            GameSpeedSettings.ResetForLevel();
             run?.SetLevel(level);
             run?.SetMenuSuspended(false);
         }
@@ -86,11 +97,21 @@ namespace KeySlaught.SceneGameplay
                 2 => "Scientist",
                 _ => "President"
             } : null;
+            pendingUnlockedReward = unlocked;
+            pendingRewardSprite = unlocked switch
+            {
+                "Engineer" => engineerRewardSprite,
+                "Scientist" => scientistRewardSprite,
+                "President" => presidentRewardSprite,
+                _ => null
+            };
+            rewardRevealActive = false;
             resultPresenter?.Present(true, reward, unlocked, loreLevelNumber < 6);
         }
 
         public void ContinueFromResult()
         {
+            if (TryShowPendingReward(true)) return;
             if (run != null && run.Phase == WaveRunPhase.Defeat)
             {
                 completionRecorded = false;
@@ -103,6 +124,26 @@ namespace KeySlaught.SceneGameplay
                 SceneManager.LoadScene(NextSceneName(loreLevelNumber + 1));
             }
             else ReturnToMainMenu();
+        }
+
+        public void ContinueAfterReward()
+        {
+            if (!rewardRevealActive) return;
+            rewardRevealActive = false;
+            pendingUnlockedReward = null;
+            pendingRewardSprite = null;
+            resultPresenter?.HideRewardReveal();
+            if (navigateToNextAfterReward) ContinueFromResult();
+            else ReturnToMainMenu();
+        }
+
+        private bool TryShowPendingReward(bool next)
+        {
+            if (rewardRevealActive || string.IsNullOrWhiteSpace(pendingUnlockedReward)) return false;
+            rewardRevealActive = true;
+            navigateToNextAfterReward = next;
+            resultPresenter?.PresentUnlockReward(pendingUnlockedReward, pendingRewardSprite);
+            return true;
         }
 
         private static string NextSceneName(int level) => level switch

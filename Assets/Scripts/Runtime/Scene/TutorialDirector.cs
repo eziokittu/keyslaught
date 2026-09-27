@@ -12,7 +12,8 @@ namespace KeySlaught.SceneGameplay
         {
             Inactive, ExploreMovement, MovementMessage, LoadBuffer, BufferLoadedMessage,
             RefreshBuffer, RefreshMessage, ApproachTarget, DefeatWord, TypingMessage,
-            CollectBrainCells, CollectionMessage, WatchLibrary, LibraryMessage, RepairMessage, Complete
+            CollectBrainCells, CollectionMessage, WatchLibrary, LibraryMessage, RepairLibrary,
+            RepairMessage, Complete
         }
 
         [SerializeField] private GameObject overlay;
@@ -41,6 +42,16 @@ namespace KeySlaught.SceneGameplay
         private int startingBalance;
         private bool refreshObserved;
         private EnemyAgent tutorialEnemy;
+        private int healthBeforeRepair;
+        private RectTransform pulsingControl;
+        private Vector3 pulsingBaseScale = Vector3.one;
+        private RectTransform objectiveRect;
+        private Vector2 objectiveAnchorMin;
+        private Vector2 objectiveAnchorMax;
+        private Vector2 objectivePivot;
+        private Vector2 objectivePosition;
+        private Vector2 objectiveSize;
+        private const float AcknowledgeDelay = .7f;
 
         public void Configure(GameObject root, Text title, Text body, Button next,
             PlayerMover mover, WaveRunController runController) =>
@@ -73,6 +84,8 @@ namespace KeySlaught.SceneGameplay
             movementChecklist = new TutorialMovementChecklist(.7f);
             previousPlayerPosition = player == null ? Vector3.zero : player.transform.position;
             startingBalance = economy == null ? 0 : economy.Balance;
+            CacheObjectiveLayout();
+            SetObjectiveBelowContext(false);
             run?.SetGuidanceSuspended(true);
             TutorialInputGate.Feedback -= OnInputFeedback;
             TutorialInputGate.Feedback += OnInputFeedback;
@@ -81,6 +94,11 @@ namespace KeySlaught.SceneGameplay
                 combat.enabled = true; combat.ClearMagazine();
                 combat.TargetHit -= OnTargetHit; combat.TargetHit += OnTargetHit;
                 combat.TargetDefeated -= OnTargetDefeated; combat.TargetDefeated += OnTargetDefeated;
+            }
+            if (library != null)
+            {
+                library.Repaired -= OnLibraryRepaired;
+                library.Repaired += OnLibraryRepaired;
             }
             if (overlay != null) overlay.SetActive(false);
             if (tutorialJoystickRoot != null) tutorialJoystickRoot.SetActive(true);
@@ -126,9 +144,14 @@ namespace KeySlaught.SceneGameplay
                     StartCoroutine(DemonstrateLibraryAttack());
                     break;
                 case TutorialStage.LibraryMessage:
-                    var repaired = library == null || library.State == null ? 0 : library.Repair(library.State.MaximumHealth);
-                    stage = TutorialStage.RepairMessage;
-                    ShowMessage("LIBRARY REPAIRED", $"Repair restored {repaired} HP. During a run, stand near the Library and spend brain cells on REPAIR.");
+                    stage = TutorialStage.RepairLibrary;
+                    healthBeforeRepair = library?.State?.CurrentHealth ?? 0;
+                    if (economy != null && economy.Balance < 5) economy.Credit(5 - economy.Balance);
+                    ShowObjective("REPAIR IT YOURSELF", $"{Tick(false)} MOVE ONTO THE LIBRARY TILE\n{Tick(false)} CHOOSE REPAIR\n{Tick(false)} SPEND 5 BRAIN CELLS", "Movement is active. The Library will not repair itself.");
+                    TutorialInputGate.MovementOnly();
+                    if (tutorialJoystickRoot != null) tutorialJoystickRoot.SetActive(true);
+                    if (focusGuide != null) focusGuide.Focus(arenaFocusTarget, new Vector2(20f, 20f));
+                    SetObjectiveBelowContext(true);
                     break;
                 case TutorialStage.RepairMessage:
                     CompleteTutorialGuidance();
@@ -148,7 +171,7 @@ namespace KeySlaught.SceneGameplay
                 {
                     stage = TutorialStage.MovementMessage;
                     if (tutorialJoystickRoot != null) tutorialJoystickRoot.SetActive(false);
-                    ShowMessage("MOVEMENT COMPLETE", "All four directions are checked. You can use arrow keys, a controller, or the on-screen drag control; blocked terrain still stops movement.");
+                    StartCoroutine(ShowMessageAfterDelay("MOVEMENT COMPLETE", "All four directions are checked. You can use arrow keys, a controller, or the on-screen drag control; blocked terrain still stops movement."));
                 }
             }
             else if (stage == TutorialStage.LoadBuffer && combat != null)
@@ -156,7 +179,7 @@ namespace KeySlaught.SceneGameplay
                 if (combat.ErrorBuffer.OccupiedSlotCount >= 3)
                 {
                     stage = TutorialStage.BufferLoadedMessage; ClearButtonHighlights();
-                    ShowMessage("WAND BUFFER LOADED", "C, A, and T are stored in order. When a matching word enters range, the wand can use those letters. First, clear them so you can practise firing manually.");
+                    StartCoroutine(ShowMessageAfterDelay("WAND BUFFER LOADED", "C, A, and T are stored in order. When a matching word enters range, the wand can use those letters. First, clear them so you can practise firing manually."));
                 }
                 else SetRequiredBufferLetter();
             }
@@ -170,7 +193,7 @@ namespace KeySlaught.SceneGameplay
                 if (refreshObserved && !combat.ErrorBuffer.IsRefreshing && combat.ErrorBuffer.OccupiedSlotCount == 0)
                 {
                     stage = TutorialStage.RefreshMessage; ClearButtonHighlights();
-                    ShowMessage("BUFFER CLEARED", "Next, CAT will enter from the real enemy route. Move near it, wait for it to enter your attack range, then type its visible letters.");
+                    StartCoroutine(ShowMessageAfterDelay("BUFFER CLEARED", "Next, CAT will enter from the real enemy route. Move near it, wait for it to enter your attack range, then type its visible letters."));
                 }
             }
             else if (stage == TutorialStage.ApproachTarget && tutorialEnemy != null)
@@ -191,8 +214,9 @@ namespace KeySlaught.SceneGameplay
             else if (stage == TutorialStage.CollectBrainCells && economy != null && economy.Balance > startingBalance)
             {
                 stage = TutorialStage.CollectionMessage;
-                ShowMessage("BRAIN CELLS COLLECTED", "Brain cells pay for clearing obstacles, placing and upgrading specialists, repairing the Library, and activating abilities.");
+                StartCoroutine(ShowMessageAfterDelay("BRAIN CELLS COLLECTED", "Brain cells pay for clearing obstacles, placing and upgrading specialists, repairing the Library, and activating abilities."));
             }
+            AnimatePulsingControl();
         }
 
         private void StartRoutedCatExercise()
@@ -238,7 +262,7 @@ namespace KeySlaught.SceneGameplay
         {
             if (stage != TutorialStage.DefeatWord || enemy != tutorialEnemy) return;
             stage = TutorialStage.TypingMessage; ClearButtonHighlights();
-            ShowMessage("WORD DEFEATED", "You stopped CAT on the route and fired each correct letter from attack range. Its card changed after every hit to show the remaining word.");
+            StartCoroutine(ShowMessageAfterDelay("WORD DEFEATED", "You stopped CAT on the route and fired each correct letter from attack range. Its card changed after every hit to show the remaining word."));
         }
 
         private IEnumerator DemonstrateLibraryAttack()
@@ -249,8 +273,25 @@ namespace KeySlaught.SceneGameplay
             var timeout = 45f;
             while (demo != null && !demo.HasArrived && timeout > 0f)
             { timeout -= Time.unscaledDeltaTime; yield return null; }
+            yield return new WaitForSecondsRealtime(.9f);
             stage = TutorialStage.LibraryMessage;
             ShowMessage("LIBRARY DAMAGED", "LOSS reached the Library at demonstration speed. Every remaining letter removed one HP. Continue to practise repairing it.");
+        }
+
+        private IEnumerator ShowMessageAfterDelay(string title, string body)
+        {
+            TutorialInputGate.DisableAll();
+            yield return new WaitForSecondsRealtime(AcknowledgeDelay);
+            ShowMessage(title, body);
+        }
+
+        private void OnLibraryRepaired(int amount)
+        {
+            if (stage != TutorialStage.RepairLibrary || amount <= 0 || library?.State == null ||
+                library.State.CurrentHealth <= healthBeforeRepair) return;
+            stage = TutorialStage.RepairMessage;
+            if (tutorialJoystickRoot != null) tutorialJoystickRoot.SetActive(false);
+            StartCoroutine(ShowMessageAfterDelay("LIBRARY REPAIRED", $"You moved to the Library and manually restored {amount} HP. Repair always costs run-scoped brain cells."));
         }
 
         private void CompleteTutorialGuidance()
@@ -282,6 +323,7 @@ namespace KeySlaught.SceneGameplay
 
         private void ShowMessage(string title, string body)
         {
+            SetObjectiveBelowContext(false);
             if (objectiveRoot != null) objectiveRoot.SetActive(false);
             if (overlay != null) overlay.SetActive(true);
             if (titleLabel != null) titleLabel.text = title;
@@ -303,13 +345,16 @@ namespace KeySlaught.SceneGameplay
                 foreach (var requested in labels) if (requested == label || (requested == "REFRESH" && isRefresh)) match = true;
                 button.interactable = match;
                 if (!match) continue;
-                button.transform.localScale = Vector3.one * 1.12f;
+                pulsingControl = button.transform as RectTransform;
+                pulsingBaseScale = button.transform.localScale;
                 var image = button.GetComponent<Image>(); if (image != null) image.color = new Color(.35f, .95f, .75f, 1f);
             }
         }
 
         private void ClearButtonHighlights()
         {
+            if (pulsingControl != null) pulsingControl.localScale = pulsingBaseScale;
+            pulsingControl = null;
             if (tutorialInputButtons == null) return;
             foreach (var button in tutorialInputButtons)
             {
@@ -322,6 +367,7 @@ namespace KeySlaught.SceneGameplay
         {
             TutorialInputGate.Feedback -= OnInputFeedback;
             if (combat != null) { combat.TargetHit -= OnTargetHit; combat.TargetDefeated -= OnTargetDefeated; }
+            if (library != null) library.Repaired -= OnLibraryRepaired;
             ClearButtonHighlights(); TutorialInputGate.Clear();
             if (focusGuide != null) focusGuide.Hide();
             if (stage != TutorialStage.Inactive) GameSpeedSettings.ApplyGameplaySpeed();
@@ -350,5 +396,47 @@ namespace KeySlaught.SceneGameplay
         private static string Tick(bool complete) => complete
             ? "<color=#62F0A7>\u2713</color>"
             : "<color=#A9B4C8>\u25A1</color>";
+
+        private void AnimatePulsingControl()
+        {
+            if (pulsingControl == null) return;
+            var pulse = 1.15f + Mathf.Sin(Time.unscaledTime * Mathf.PI * 5f) * .12f;
+            pulsingControl.localScale = pulsingBaseScale * pulse;
+        }
+
+        private void CacheObjectiveLayout()
+        {
+            objectiveRect = objectiveRoot == null ? null : objectiveRoot.GetComponent<RectTransform>();
+            if (objectiveRect == null) return;
+            objectiveAnchorMin = objectiveRect.anchorMin;
+            objectiveAnchorMax = objectiveRect.anchorMax;
+            objectivePivot = objectiveRect.pivot;
+            objectivePosition = objectiveRect.anchoredPosition;
+            objectiveSize = objectiveRect.sizeDelta;
+            var entrance = objectiveRoot.GetComponent<UiPanelEntranceAnimator>();
+            if (entrance != null) entrance.enabled = false;
+            var canvasGroup = objectiveRoot.GetComponent<CanvasGroup>();
+            if (canvasGroup != null) { canvasGroup.interactable = false; canvasGroup.blocksRaycasts = false; }
+            foreach (var graphic in objectiveRoot.GetComponentsInChildren<Graphic>(true)) graphic.raycastTarget = false;
+        }
+
+        private void SetObjectiveBelowContext(bool below)
+        {
+            if (objectiveRect == null) return;
+            if (below)
+            {
+                objectiveRect.anchorMin = objectiveRect.anchorMax = objectiveRect.pivot = new Vector2(.5f, 1f);
+                objectiveRect.anchoredPosition = new Vector2(0f, -380f);
+                objectiveRect.sizeDelta = new Vector2(780f, 300f);
+            }
+            else
+            {
+                objectiveRect.anchorMin = objectiveAnchorMin;
+                objectiveRect.anchorMax = objectiveAnchorMax;
+                objectiveRect.pivot = objectivePivot;
+                objectiveRect.anchoredPosition = objectivePosition;
+                objectiveRect.sizeDelta = objectiveSize;
+            }
+        }
     }
 }

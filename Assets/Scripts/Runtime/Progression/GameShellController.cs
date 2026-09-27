@@ -7,7 +7,7 @@ using KeySlaught.UI;
 
 namespace KeySlaught.Progression
 {
-    public enum GameModeSelection { None, Tutorial, LoreOneLevelOne, Endless }
+    public enum GameModeSelection { None, Tutorial, TutorialTurret, TutorialAbility, LoreOneLevelOne, Endless }
 
     public sealed class GameShellController : MonoBehaviour
     {
@@ -25,6 +25,9 @@ namespace KeySlaught.Progression
         [SerializeField] private GameObject creditsPanel;
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject loreLevelsPanel;
+        [SerializeField] private GameObject tutorialLevelsPanel;
+        [SerializeField] private Button[] tutorialLevelButtons;
+        [SerializeField] private Text[] tutorialLevelLabels;
         [SerializeField] private Text loreOneLevelOneStarsLabel;
         [SerializeField] private Button loreOneLevelTwoButton;
         [SerializeField] private Text loreOneLevelTwoStarsLabel;
@@ -51,6 +54,8 @@ namespace KeySlaught.Progression
         [SerializeField] private LevelDefinition loreOneLevelOne;
         [SerializeField] private LevelDefinition endlessLevel;
         [SerializeField] private TutorialDirector tutorialDirector;
+        [SerializeField] private TurretTutorialDirector turretTutorialDirector;
+        [SerializeField] private AbilityTutorialDirector abilityTutorialDirector;
         [SerializeField] private RunResultPresenter resultPresenter;
         [SerializeField] private Text[] gameSpeedLabels;
         [SerializeField] private GameObject tutorialReplayConfirmation;
@@ -64,6 +69,11 @@ namespace KeySlaught.Progression
         private bool musicEnabled = true;
         private bool sfxEnabled = true;
         private int lorePage = 1;
+        private string pendingUnlockedReward;
+        private Sprite pendingRewardSprite;
+        private Sprite teacherRewardSprite;
+        private bool rewardRevealActive;
+        private bool navigateToNextAfterReward;
 
         public GameModeSelection ActiveMode { get; private set; }
 
@@ -103,6 +113,7 @@ namespace KeySlaught.Progression
         public void ShowCredits() => ShowOnly(creditsPanel);
         public void ShowSettings() { ShowOnly(settingsPanel); Refresh(); }
         public void ShowLoreLevels() { lorePage = 1; ShowOnly(loreLevelsPanel); Refresh(); }
+        public void ShowTutorialLevels() { ShowOnly(tutorialLevelsPanel); Refresh(); }
         public void ExitGame()
         {
             if (exitConfirmationPanel != null) exitConfirmationPanel.SetActive(true);
@@ -117,12 +128,26 @@ namespace KeySlaught.Progression
                 if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(true);
                 return;
             }
-            BeginRun(GameModeSelection.Tutorial);
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("TutorialBasics");
+        }
+        public void StartTurretTutorial()
+        {
+            if (progression == null || progression.Profile == null || !progression.Profile.tutorialCompleted) return;
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("TutorialTurrets");
+        }
+        public void StartAbilityTutorial()
+        {
+            if (progression == null || progression.Profile == null || !progression.Profile.turretTutorialCompleted) return;
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("TutorialAbilities");
         }
         public void ConfirmTutorialReplay()
         {
             if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false);
-            BeginRun(GameModeSelection.Tutorial);
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("TutorialBasics");
         }
         public void CancelTutorialReplay() { if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false); }
         public void NextLore() { lorePage = lorePage == 1 ? 2 : 1; RefreshLorePage(); }
@@ -154,6 +179,14 @@ namespace KeySlaught.Progression
         }
         public void ReturnToMainFromRun()
         {
+            if (TryShowPendingReward(false)) return;
+            if (SceneManager.GetActiveScene().name != "SampleScene")
+            {
+                GameSpeedSettings.ApplyMenuSpeed();
+                PlayerPrefs.SetInt("KeySlaught.ReturnToMainMenu", 1);
+                SceneManager.LoadScene("SampleScene");
+                return;
+            }
             run?.RestartRun();
             run?.SetMenuSuspended(true);
             ActiveMode = GameModeSelection.None;
@@ -186,6 +219,16 @@ namespace KeySlaught.Progression
         { gameSpeedLabels = new[] { one, two, three }; }
 
         public void ConfigureResultPresenter(RunResultPresenter presenter) => resultPresenter = presenter;
+
+        public void ConfigureTutorialSelection(GameObject panel, Button[] buttons, Text[] labels,
+            TurretTutorialDirector turretDirector, AbilityTutorialDirector abilityDirector = null)
+        {
+            tutorialLevelsPanel = panel; tutorialLevelButtons = buttons; tutorialLevelLabels = labels;
+            turretTutorialDirector = turretDirector;
+            abilityTutorialDirector = abilityDirector;
+        }
+
+        public void ConfigureTeacherRewardSprite(Sprite sprite) => teacherRewardSprite = sprite;
 
         public void ConfigureLevelContent(LevelDefinition tutorial, LevelDefinition lore, LevelDefinition endless,
             TutorialDirector director, Text selectionSettingLabel)
@@ -240,6 +283,10 @@ namespace KeySlaught.Progression
                 run.RunEnded += OnRunEnded;
                 run.BossCheckpointReached += OnBossCheckpointReached;
             }
+            var sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == "TutorialBasics") { BeginRun(GameModeSelection.Tutorial); return; }
+            if (sceneName == "TutorialTurrets") { BeginRun(GameModeSelection.TutorialTurret); return; }
+            if (sceneName == "TutorialAbilities") { BeginRun(GameModeSelection.TutorialAbility); return; }
             run?.SetMenuSuspended(true);
             if (shellRoot != null) shellRoot.SetActive(true);
             if (PlayerPrefs.GetInt("KeySlaught.ReturnToMainMenu", 0) != 0)
@@ -272,6 +319,7 @@ namespace KeySlaught.Progression
 
         private void BeginRun(GameModeSelection mode)
         {
+            GameSpeedSettings.ResetForLevel();
             ActiveMode = mode;
             if (tutorialReplayConfirmation != null) tutorialReplayConfirmation.SetActive(false);
             if (endlessBossCheckpointPanel != null) endlessBossCheckpointPanel.SetActive(false);
@@ -279,6 +327,8 @@ namespace KeySlaught.Progression
             run?.SetLevel(mode switch
             {
                 GameModeSelection.Tutorial => tutorialLevel,
+                GameModeSelection.TutorialTurret => tutorialLevel,
+                GameModeSelection.TutorialAbility => tutorialLevel,
                 GameModeSelection.LoreOneLevelOne => loreOneLevelOne,
                 GameModeSelection.Endless => endlessLevel,
                 _ => null
@@ -287,6 +337,8 @@ namespace KeySlaught.Progression
             run?.SetMenuSuspended(false);
             run?.RestartRun();
             if (mode == GameModeSelection.Tutorial) tutorialDirector?.Begin();
+            if (mode == GameModeSelection.TutorialTurret) turretTutorialDirector?.Begin();
+            if (mode == GameModeSelection.TutorialAbility) abilityTutorialDirector?.Begin();
         }
 
         private void OnRunEnded(bool victory)
@@ -299,13 +351,36 @@ namespace KeySlaught.Progression
             }
             var previousUnlockCount = progression.UnlockedTurretCount;
             if (ActiveMode == GameModeSelection.Tutorial) progression.CompleteTutorial();
+            if (ActiveMode == GameModeSelection.TutorialTurret) progression.CompleteTurretTutorial();
             if (ActiveMode == GameModeSelection.LoreOneLevelOne) progression.CompleteLoreOneLevelOne();
             var reward = ActiveMode == GameModeSelection.Endless ? 0 : 1 + (run == null ? 0 : run.BossesDefeated);
             if (reward > 0) progression.CreditKnowledge(reward);
             var unlocked = progression.UnlockedTurretCount > previousUnlockCount
                 ? ActiveMode == GameModeSelection.Tutorial ? "Teacher" : "Engineer"
                 : null;
+            pendingUnlockedReward = unlocked;
+            pendingRewardSprite = unlocked == "Teacher" ? teacherRewardSprite : null;
+            rewardRevealActive = false;
             resultPresenter?.Present(true, reward, unlocked, ActiveMode == GameModeSelection.Tutorial);
+        }
+
+        public void CompleteTurretTutorialFromGuide()
+        {
+            progression?.CompleteTurretTutorial();
+            progression?.CreditKnowledge(1);
+            run?.SetMenuSuspended(true);
+            pendingUnlockedReward = "History Ability";
+            pendingRewardSprite = null;
+            rewardRevealActive = false;
+            resultPresenter?.Present(true, 1, "History Ability", true);
+        }
+
+        public void CompleteAbilityTutorialFromGuide()
+        {
+            progression?.CompleteAbilityTutorial();
+            progression?.CreditKnowledge(1);
+            run?.SetMenuSuspended(true);
+            resultPresenter?.Present(true, 1, null, true);
         }
 
         private void OnBossCheckpointReached(int waveNumber)
@@ -320,6 +395,7 @@ namespace KeySlaught.Progression
 
         public void ContinueFromResult()
         {
+            if (TryShowPendingReward(true)) return;
             if (run != null && run.Phase == WaveRunPhase.Defeat)
             {
                 run.RestartRun();
@@ -327,15 +403,37 @@ namespace KeySlaught.Progression
             }
             if (ActiveMode == GameModeSelection.Tutorial)
             {
-                ShowLoreLevels();
+                SceneManager.LoadScene("TutorialTurrets");
                 return;
             }
+            if (ActiveMode == GameModeSelection.TutorialTurret) { SceneManager.LoadScene("TutorialAbilities"); return; }
+            if (ActiveMode == GameModeSelection.TutorialAbility) { SceneManager.LoadScene("LoreOneLevelOne"); return; }
             ReturnToMainFromRun();
+        }
+
+        public void ContinueAfterReward()
+        {
+            if (!rewardRevealActive) return;
+            rewardRevealActive = false;
+            pendingUnlockedReward = null;
+            pendingRewardSprite = null;
+            resultPresenter?.HideRewardReveal();
+            if (navigateToNextAfterReward) ContinueFromResult();
+            else ReturnToMainFromRun();
+        }
+
+        private bool TryShowPendingReward(bool next)
+        {
+            if (rewardRevealActive || string.IsNullOrWhiteSpace(pendingUnlockedReward)) return false;
+            rewardRevealActive = true;
+            navigateToNextAfterReward = next;
+            resultPresenter?.PresentUnlockReward(pendingUnlockedReward, pendingRewardSprite);
+            return true;
         }
 
         private void ShowOnly(GameObject target)
         {
-            foreach (var panel in new[] { launchPanel, mainPanel, modePanel, researchPanel, creditsPanel, settingsPanel, loreLevelsPanel })
+            foreach (var panel in new[] { launchPanel, mainPanel, modePanel, researchPanel, creditsPanel, settingsPanel, loreLevelsPanel, tutorialLevelsPanel })
                 if (panel != null) panel.SetActive(panel == target);
         }
 
@@ -344,6 +442,24 @@ namespace KeySlaught.Progression
             if (progression == null || progression.Profile == null) return;
             var profile = progression.Profile;
             if (tutorialLabel != null) tutorialLabel.text = "TUTORIAL";
+            if (tutorialLevelButtons != null && tutorialLevelButtons.Length >= 3)
+            {
+                tutorialLevelButtons[0].interactable = true;
+                tutorialLevelButtons[1].interactable = profile.tutorialCompleted;
+                tutorialLevelButtons[2].interactable = profile.turretTutorialCompleted;
+                if (tutorialLevelLabels != null && tutorialLevelLabels.Length >= 3)
+                {
+                    tutorialLevelLabels[0].text = profile.tutorialCompleted ? "BASICS  ✓" : "BASICS";
+                    tutorialLevelLabels[1].text = profile.turretTutorialCompleted ? "TURRET TRAINING  ✓" : "TURRET TRAINING";
+                }
+                SetLockVisual(tutorialLevelButtons[0], false);
+                if (tutorialLevelLabels != null && tutorialLevelLabels.Length >= 3)
+                    tutorialLevelLabels[2].text = profile.abilityTutorialCompleted
+                        ? "LIBRARY ABILITIES  COMPLETE"
+                        : "LIBRARY ABILITIES";
+                SetLockVisual(tutorialLevelButtons[1], !profile.tutorialCompleted);
+                SetLockVisual(tutorialLevelButtons[2], !profile.turretTutorialCompleted);
+            }
             if (endlessButton != null) endlessButton.interactable = profile.endlessModeUnlocked;
             if (endlessLabel != null) endlessLabel.text = profile.endlessModeUnlocked ? "ENDLESS" : "ENDLESS  •  LOCKED";
             if (knowledgeLabel != null) knowledgeLabel.text = $"KNOWLEDGE POINTS  {profile.knowledgePoints}";
@@ -381,11 +497,11 @@ namespace KeySlaught.Progression
             if (loreLevelButtons != null && loreLevelLabels != null && loreLevelButtons.Length >= 6 && loreLevelLabels.Length >= 6)
             {
                 RefreshLoreButton(loreLevelButtons[0], loreLevelLabels[0], 1, true, profile.loreOneLevelOneCompleted, profile.loreOneLevelOneStars, profile.loreOneLevelOneBestSeconds);
-                RefreshLoreButton(loreLevelButtons[1], loreLevelLabels[1], 2, true, profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoStars, profile.loreOneLevelTwoBestSeconds);
-                RefreshLoreButton(loreLevelButtons[2], loreLevelLabels[2], 3, true, profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeStars, profile.loreOneLevelThreeBestSeconds);
-                RefreshLoreButton(loreLevelButtons[3], loreLevelLabels[3], 4, true, profile.loreOneLevelFourCompleted, profile.loreOneLevelFourStars, profile.loreOneLevelFourBestSeconds);
-                RefreshLoreButton(loreLevelButtons[4], loreLevelLabels[4], 5, true, profile.loreOneLevelFiveCompleted, profile.loreOneLevelFiveStars, profile.loreOneLevelFiveBestSeconds);
-                RefreshLoreButton(loreLevelButtons[5], loreLevelLabels[5], 6, true, profile.loreOneLevelSixCompleted, profile.loreOneLevelSixStars, profile.loreOneLevelSixBestSeconds);
+                RefreshLoreButton(loreLevelButtons[1], loreLevelLabels[1], 2, profile.loreOneLevelOneCompleted, profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoStars, profile.loreOneLevelTwoBestSeconds);
+                RefreshLoreButton(loreLevelButtons[2], loreLevelLabels[2], 3, profile.loreOneLevelTwoCompleted, profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeStars, profile.loreOneLevelThreeBestSeconds);
+                RefreshLoreButton(loreLevelButtons[3], loreLevelLabels[3], 4, profile.loreOneLevelThreeCompleted, profile.loreOneLevelFourCompleted, profile.loreOneLevelFourStars, profile.loreOneLevelFourBestSeconds);
+                RefreshLoreButton(loreLevelButtons[4], loreLevelLabels[4], 5, profile.loreOneLevelFourCompleted, profile.loreOneLevelFiveCompleted, profile.loreOneLevelFiveStars, profile.loreOneLevelFiveBestSeconds);
+                RefreshLoreButton(loreLevelButtons[5], loreLevelLabels[5], 6, profile.loreOneLevelFiveCompleted, profile.loreOneLevelSixCompleted, profile.loreOneLevelSixStars, profile.loreOneLevelSixBestSeconds);
                 RefreshBestTime(0, profile.loreOneLevelOneCompleted, profile.loreOneLevelOneBestSeconds);
                 RefreshBestTime(1, profile.loreOneLevelTwoCompleted, profile.loreOneLevelTwoBestSeconds);
                 RefreshBestTime(2, profile.loreOneLevelThreeCompleted, profile.loreOneLevelThreeBestSeconds);
@@ -399,10 +515,17 @@ namespace KeySlaught.Progression
         private static void RefreshLoreButton(Button button, Text label, int level, bool unlocked, bool completed, int stars, float best)
         {
             if (button != null) button.interactable = unlocked;
+            SetLockVisual(button, !unlocked);
             if (label == null) return;
-            if (!unlocked) { label.text = $"LEVEL {level}  •  LOCKED"; return; }
+            if (!unlocked) { label.text = $"LEVEL {level}"; return; }
             var rating = new string('★', Mathf.Clamp(stars, 0, 3)) + new string('☆', 3 - Mathf.Clamp(stars, 0, 3));
             label.text = $"LEVEL {level}  {rating}";
+        }
+
+        private static void SetLockVisual(Button button, bool locked)
+        {
+            var icon = button == null ? null : button.transform.Find("Lock Icon");
+            if (icon != null) icon.gameObject.SetActive(locked);
         }
 
         private void RefreshBestTime(int index, bool completed, float best)

@@ -14,6 +14,7 @@ namespace KeySlaught.SceneGameplay
 
         public LibraryState State { get; private set; }
         public event Action<int> EnemyDamageReceived;
+        public event Action<int> Repaired;
 
         public void Initialize(int health)
         {
@@ -45,6 +46,7 @@ namespace KeySlaught.SceneGameplay
 
             var repaired = State.Repair(amount);
             RefreshLabel();
+            if (repaired > 0) Repaired?.Invoke(repaired);
             return repaired;
         }
 

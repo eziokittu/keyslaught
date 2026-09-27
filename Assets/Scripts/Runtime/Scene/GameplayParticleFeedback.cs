@@ -31,9 +31,9 @@ namespace KeySlaught.SceneGameplay
             if (player == null || player.LastMovementInput.sqrMagnitude < .02f) return;
             movementTimer -= Time.deltaTime;
             if (movementTimer > 0f) return;
-            movementTimer = .055f;
-            Emit(cloudParticles, player.transform.position - (Vector3)player.LastMovementInput.normalized * .28f,
-                new Color(.72f, .78f, .82f, .58f), 2, .13f, .105f, .34f);
+            movementTimer = .045f;
+            Emit(cloudParticles, player.transform.position - (Vector3)player.LastMovementInput.normalized * .18f,
+                new Color(.78f, .84f, .9f, .78f), 5, .1f, .14f, .42f);
         }
 
         private void OnTargetHit(EnemyAgent enemy)
@@ -43,8 +43,13 @@ namespace KeySlaught.SceneGameplay
 
         private void OnLibraryDamaged(int damage)
         {
-            if (damage > 0 && library != null) Emit(impactParticles, library.transform.position + Vector3.up * .45f,
-                new Color(.55f, .28f, .11f, .92f), 13, .78f, .09f, .52f);
+            if (damage > 0 && library != null)
+            {
+                Emit(impactParticles, library.transform.position + Vector3.up * .42f,
+                    new Color(1f, .48f, .16f, 1f), 30, 1.15f, .14f, .78f);
+                Emit(cloudParticles, library.transform.position + Vector3.up * .3f,
+                    new Color(.42f, .12f, .08f, .88f), 16, .42f, .2f, .9f);
+            }
         }
 
         private void OnRunEnded(bool victory)

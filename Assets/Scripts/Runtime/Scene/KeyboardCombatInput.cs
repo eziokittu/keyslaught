@@ -20,7 +20,7 @@ namespace KeySlaught.SceneGameplay
                 return;
             }
 
-            if (keyboard.spaceKey.wasPressedThisFrame)
+            if (keyboard.spaceKey.wasPressedThisFrame || keyboard.backspaceKey.wasPressedThisFrame || keyboard.deleteKey.wasPressedThisFrame)
             {
                 if (TutorialInputGate.TryAllowRefresh()) combatController.TryStartRefresh();
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using KeySlaught.Progression;
 using UnityEngine;
 
 namespace KeySlaught.SceneGameplay
@@ -10,12 +11,21 @@ namespace KeySlaught.SceneGameplay
         [SerializeField] private GameplayCombatController combat;
         [SerializeField] private BrainCellEconomy economy;
         [SerializeField] private AbilityDefinition[] definitions;
+        [SerializeField] private ProgressionService progression;
 
         private AbilityDefinition activeTimedAbility;
         private float remainingSeconds;
+        private float historyDurationBonus;
+        private float socialDurationBonus;
+        private int politicsTargetBonus;
 
         public LibraryAbilityKind? ActiveAbility => activeTimedAbility == null ? null : activeTimedAbility.Kind;
         public float RemainingSeconds => remainingSeconds;
+        public bool IsUnlocked(LibraryAbilityKind kind)
+        {
+            progression ??= FindFirstObjectByType<ProgressionService>(FindObjectsInactive.Include);
+            return progression == null || progression.IsAbilityUnlocked(kind);
+        }
 
         public void Configure(EnemySpawner enemySpawner, GameplayCombatController combatController,
             BrainCellEconomy runEconomy, AbilityDefinition[] abilityDefinitions)
@@ -35,17 +45,18 @@ namespace KeySlaught.SceneGameplay
         public bool TryActivate(LibraryAbilityKind kind)
         {
             var definition = GetDefinition(kind);
-            if (definition == null || economy == null || activeTimedAbility != null || !economy.TrySpend(definition.Cost))
+            if (definition == null || !IsUnlocked(kind) || economy == null || activeTimedAbility != null || !economy.TrySpend(definition.Cost))
                 return false;
 
             if (kind == LibraryAbilityKind.Politics)
             {
-                ApplyPolitics(definition.TargetCount);
+                ApplyPolitics(definition.TargetCount + politicsTargetBonus);
                 return true;
             }
 
             activeTimedAbility = definition;
-            remainingSeconds = definition.Duration;
+            remainingSeconds = definition.Duration + (kind == LibraryAbilityKind.History
+                ? historyDurationBonus : socialDurationBonus);
             ApplyMovementEffect();
             return true;
         }
@@ -67,6 +78,13 @@ namespace KeySlaught.SceneGameplay
         }
 
         private void Update() => Tick(Time.deltaTime);
+
+        public void ApplyPermanentBonuses(float historySeconds, float socialSeconds, int politicsTargets)
+        {
+            historyDurationBonus = Mathf.Max(0f, historySeconds);
+            socialDurationBonus = Mathf.Max(0f, socialSeconds);
+            politicsTargetBonus = Mathf.Max(0, politicsTargets);
+        }
 
         private void ApplyMovementEffect()
         {

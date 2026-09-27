@@ -15,6 +15,8 @@ namespace KeySlaught.Progression
     {
         public bool firstLaunch = true;
         public bool tutorialCompleted;
+        public bool turretTutorialCompleted;
+        public bool abilityTutorialCompleted;
         public bool loreOneLevelOneCompleted;
         public int loreOneLevelOneStars;
         public float loreOneLevelOneBestSeconds;

@@ -26,6 +26,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoreOneLevelSix.unity
     guid: cbcbf5404181f764aade97ecfee9f093
+  - enabled: 1
+    path: Assets/Scenes/TutorialBasics.unity
+    guid: 4d46d6d23998a4545ac651fb12239595
+  - enabled: 1
+    path: Assets/Scenes/TutorialTurrets.unity
+    guid: 037355c3738b76b4bb863503ab4b9573
+  - enabled: 1
+    path: Assets/Scenes/TutorialAbilities.unity
+    guid: c499ea53bbe8d724c9b6e31761828814
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
